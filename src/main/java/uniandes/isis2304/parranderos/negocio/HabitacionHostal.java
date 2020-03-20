@@ -30,7 +30,7 @@ public class HabitacionHostal implements VOHabitacionHostal{
 	public void setIdHostal(long idHostal) {
 		this.idHostal = idHostal;
 	}
-	public int getNumero() {
+	public long getNumero() {
 		return numero;
 	}
 	public void setNumero(int numero) {

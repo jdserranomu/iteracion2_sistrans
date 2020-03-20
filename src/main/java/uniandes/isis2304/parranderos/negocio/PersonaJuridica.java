@@ -63,11 +63,15 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	@Override
+	public long getIdSuperIntendenciaTurismo() {
+		return idSuperIntendenciaTurismo;
+	}
 	public String toString() {
 		return "PersonaJuridica [id=" + id + ", idSuperintendeciaTurismo=" + idSuperIntendenciaTurismo
 				+ ", idCamaraComercio=" + idCamaraComercio + ", categoria=" + categoria + ", precioNoche=" + precioNoche
 				+ ", tipo=" + tipo + "]";
 	}
+	
+	
 	
 }
