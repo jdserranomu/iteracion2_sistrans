@@ -555,6 +555,65 @@ public class AlohAndes
         return re;
 	}
 	
+	public List<Reserva> darReservas ()
+	{
+		log.info ("Consultando Reservas");
+        List<Reserva> pn = pp.darReservas();
+        log.info ("Consultando Reservas: " + pn.size() + " existentes");
+        return pn;
+	}
+	
+	public List<Reserva> darReservasEnFechasParaInmueble (Date fechaStart, Date fechaEnd, long idInmueble) 
+	{
+		log.info ("Consultando Reservas en fechas"+ fechaStart+", fecha fin "+ fechaEnd+" del inmueble: "+ idInmueble);
+        List<Reserva> pn = pp.darReservasEnFechasParaInmueble(fechaStart, fechaEnd, idInmueble);
+        log.info ("Consultando Reservas: " + pn.size() + " existentes");
+        return pn;
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Servicio Menaje
+	 *****************************************************************/
+	public ServicioMenaje adicionarServicioMenaje (String nombre, String tipo)  {
+		
+		log.info ("Adicionando Servicio o Menaje" +nombre+ " y con tipo: "+ tipo );
+        ServicioMenaje sm = pp.adicionarServicioMenaje(nombre, tipo);
+        log.info ("Adicionando Servicio o Menaje: " + sm);
+        return sm;
+	}
+	
+	public long eliminarServicioMenajePorNombre (String nombre)  {
+		log.info("Eliminando el servicio o menaje: "+nombre);
+		long op=pp.eliminarServicioMenajePorNombre(nombre);
+		log.info("eliminando el servicio o menaje"+ op);
+		return op;
+	}
+	public ServicioMenaje darServicioMenajePorNombre (String nombre) 
+	{
+		log.info ("Consultando Servicio o Menaje con nombre:"+ nombre);
+        ServicioMenaje re= pp.darServicioMenajePorNombre(nombre);
+        log.info ("Consultando Servicio o Menaje: " + re);
+        return re;
+	}
+	
+	public List<ServicioMenaje> darServiciosMenajesPorTipo (String tipo) 
+	{
+		log.info ("Consultando Servicios o Menajes por tipo:"+ tipo);
+        List<ServicioMenaje> re= pp.darServiciosMenajesPorTipo(tipo);
+        log.info ("Consultando Servicios o Menajes: " + re);
+        return re;
+	}
+
+	
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Usuarios
+	 *****************************************************************/
+	
+	
+	
+	
+	
 	
 	/* ****************************************************************
 	 * 			Métodos para administración
