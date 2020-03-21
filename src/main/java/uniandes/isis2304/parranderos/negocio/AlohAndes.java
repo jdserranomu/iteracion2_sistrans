@@ -366,6 +366,194 @@ public class AlohAndes
         return inm;
 	}
 	
+	/* ****************************************************************
+	 * 			Métodos para manejar los OfreceServicio
+	 *****************************************************************/
+	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, double costo, int cantidad)
+	{
+        log.info ("Adicionando  servicio/menaje: " + idServicioMenaje+" al inmueble: "+idInmueble + ", con costo: "+ costo+" y cantidad: "+ cantidad  );
+        OfreceServicio os = pp.adicionarOfreceServicio(idServicioMenaje, idInmueble, costo, cantidad);
+        log.info ("Adicionando ofrece servicio: " + os);
+        return os;
+	}
+	
+	public long eliminarOfreceServicio(String idServicioMenaje, long idInmueble) {
+		log.info("Eliminando el servicio: "+idServicioMenaje+" ofrecido por: "+idInmueble);
+		long os=pp.eliminarOfreceServicio(idServicioMenaje, idInmueble);
+		log.info("eliminando el ofrece servicio");
+		return os;
+	}
+	
+	public OfreceServicio darOfreceServicio(String idServicioMenaje, long idInmueble)
+	{
+		log.info ("Consultando servicio/menaje:" + idServicioMenaje+" ofrecido por el inmueble:"+idInmueble);
+        OfreceServicio os = pp.darOfreceServicio(idServicioMenaje, idInmueble);	
+        log.info ("Consultando ofrece servicio: " + os);
+        return os;
+	}
+	
+	public List<OfreceServicio> darOfrecenServicios()
+	{
+		log.info ("Consultando Servicios ofrecidos");
+        List<OfreceServicio> os = pp.darOfrecenServicios();
+        log.info ("Consultando servicios ofrecidos: " + os.size() + " existentes");
+        return os;
+	}
+	
+	public List<OfreceServicio> darOfreceServicios(long idInmueble)
+	{
+		log.info ("Consultando Servicios ofrecidos por inmueble: "+ idInmueble);
+        List<OfreceServicio> os = pp.darOfreceServicios(idInmueble);
+        log.info ("Consultando servicios ofrecidos: " + os.size() + " existentes");
+        return os;
+	}
+	
+	public List<OfreceServicio> darOfrecenServicio(String idServicioMenaje)
+	{
+		log.info ("Consultando inmueble que ofrecen servicio: "+ idServicioMenaje);
+        List<OfreceServicio> os = pp.darOfrecenServicio(idServicioMenaje);
+        log.info ("Consultando servicios ofrecidos: " + os.size() + " existentes");
+        return os;
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar los Operador
+	 *****************************************************************/
+	public long eliminarOperadorPorId (long idOperador)  {
+		log.info("Eliminando el operador: "+idOperador);
+		long op=pp.eliminarOperadorPorId(idOperador);
+		log.info("eliminando el operador"+ op);
+		return op;
+	}
+	
+	public List<Operador> darOperadores ()
+	{
+		log.info ("Consultando Operadores");
+        List<Operador> hab = pp.darOperadores();
+        log.info ("Consultando Operadores: " + hab.size() + " existentes");
+        return hab;
+	}
+	
+	public Operador darOperadorPorId (int id)
+	{
+		log.info ("Consultando operador con id:"+ id);
+        Operador op= pp.darOperadorPorId(id);
+        log.info ("Consultando Operador: " + op);
+        return op;
+	}
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Juridicas
+	 *****************************************************************/
+	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, int categoria, double precioNoche, String tipo,
+			String nombre, String email, String telefono) {
+		
+		log.info ("Adicionando Persona Juridica con id de superIntendencia" + idSuperIntendenciaTurismo+", id camara comercio: "+idCamaraComercio + " y tipo: "+ tipo );
+        PersonaJuridica pj = pp.adicionarPersonaJuridica(idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo, nombre, email, telefono);
+        log.info ("Adicionando persona juridica: " + pj);
+        return pj;
+	}
+	
+	public List<PersonaJuridica> darPersonasJuridicas ()
+	{
+		log.info ("Consultando Personas Juridicas");
+        List<PersonaJuridica> pj = pp.darPersonasJuridicas();
+        log.info ("Consultando Personas Juridicas: " + pj.size() + " existentes");
+        return pj;
+	}
+	
+	public PersonaJuridica darPersonaJuridicaPorId (int id)
+	{
+		log.info ("Consultando Persona Juridica con id:"+ id);
+        PersonaJuridica pj= pp.darPersonaJuridicaPorId(id);
+        log.info ("Consultando Persona Juridica: " + pj);
+        return pj;
+	}
+	
+	public PersonaJuridica darPersonaJuridicaPorIdSuperIntendenciaTurismo (long idSuperIntendenciaTurismo)
+	{
+		log.info ("Consultando Persona Juridica con id de superintendencia:"+ idSuperIntendenciaTurismo);
+        PersonaJuridica pj= pp.darPersonaJuridicaPorIdSuperIntendenciaTurismo(idSuperIntendenciaTurismo);
+        log.info ("Consultando Persona Juridica: " + pj);
+        return pj;
+	}
+	
+	public PersonaJuridica darPersonaJuridicaPorIdCamaraComercio (long idCamaraComercio)
+	{
+		log.info ("Consultando Persona Juridica con id de camara de comercio:"+ idCamaraComercio);
+        PersonaJuridica pj= pp.darPersonaJuridicaPorIdCamaraComercio(idCamaraComercio);
+        log.info ("Consultando Persona Juridica: " + pj);
+        return pj;
+	}
+	
+	public List<PersonaJuridica> darPersonaJuridicaPorTipo (String tipo)
+	{
+		log.info ("Consultando Persona Juridica con tipo:"+ tipo);
+        List<PersonaJuridica> pj= pp.darPersonaJuridicasPorTipo(tipo);
+        log.info ("Consultando Persona Juridica: " + pj);
+        return pj;
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Naturales
+	 *****************************************************************/
+	public PersonaNatural adicionarPersonaNatural(String tipo, String nombre, String email, String telefono) {
+		
+		log.info ("Adicionando Persona Natural con nombre" +nombre+", email: "+email + ", telefono:"+telefono+" y tipo: "+ tipo );
+        PersonaNatural pn = pp.adicionarPersonaNatural(tipo, nombre, email, telefono);
+        log.info ("Adicionando persona natural: " + pn);
+        return pn;
+	}
+	
+	public List<PersonaNatural> darPersonasNaturales ()
+	{
+		log.info ("Consultando Personas Naturales");
+        List<PersonaNatural> pn = pp.darPersonasNaturales();
+        log.info ("Consultando Personas Natural: " + pn.size() + " existentes");
+        return pn;
+	}
+	
+	public PersonaNatural darPersonaNaturalPorId (int id)
+	{
+		log.info ("Consultando Persona Natural con id:"+ id);
+        PersonaNatural pn= pp.darPersonaNaturalPorId(id);
+        log.info ("Consultando Persona Natural: " + pn);
+        return pn;
+	}
+	
+	public List<PersonaNatural> darPersonaNaturalPorTipo (String tipo)
+	{
+		log.info ("Consultando Personas Naturales con tipo:"+ tipo);
+        List<PersonaNatural> pn= pp.darPersonasNaturalesPorTipo(tipo);
+        log.info ("Consultando Persona Natural: " + pn);
+        return pn;
+	}
+	
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Reserva
+	 *****************************************************************/
+	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
+			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
+		
+		log.info ("Adicionando reserva con fecha inicio" +fechaInicio+", fecha fin: "+fechaFin+", con valor de: "+valorTotal+", pagado: "+aTexto(pagado)+", con operador: "+idOperador + ", usuario:"+idUsuario+" y inmueble: "+ idInmueble );
+        Reserva re = pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        log.info ("Adicionando reserva: " + re);
+        return re;
+	}
+	
+	public long eliminarReservaporId (long idReserva)  {
+		log.info("Eliminando la reserva: "+idReserva);
+		long op=pp.eliminarReservaPorId(idReserva);
+		log.info("eliminando el reserva"+ op);
+		return op;
+	}
+	public Reserva darReservaPorId (int id)
+	{
+		log.info ("Consultando Reserva con id:"+ id);
+        Reserva re= pp.darReservaPorId(id);
+        log.info ("Consultando Reserva: " + re);
+        return re;
+	}
 	
 	
 	/* ****************************************************************
