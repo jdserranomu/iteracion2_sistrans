@@ -21,13 +21,13 @@ public class SQLPersonaNatural {
         q.setParameters(idPersonaNatural, tipo);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarPersonaNaturalPorId (PersistenceManager pm, long idPersonaNatural) {
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaPersonaNatural() + " WHERE id = ?");
         q.setParameters(idPersonaNatural);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public PersonaNatural darPersonaNaturalPorId (PersistenceManager pm, long idPersonaNatural) {
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaPersonaNatural() + " WHERE id = ?");
 		q.setResultClass(PersonaNatural.class);

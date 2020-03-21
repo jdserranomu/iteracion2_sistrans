@@ -22,14 +22,14 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
         q.setParameters(idVivienda, numeroHabitaciones, costoNoche, diasUtilizado, idPersona);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarViviendaPorId (PersistenceManager pm, long idVivienda)
 	{
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaVivienda() + " WHERE id = ?");
         q.setParameters(idVivienda);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public Vivienda darViviendaPorId (PersistenceManager pm, long idVivienda) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaVivienda() + " WHERE id = ?");
@@ -52,7 +52,7 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
 		q.setParameters(idPersona);
 		return (List<Vivienda>) q.executeList();
 	}
-	
+	/**
 	public List<Vivienda> darViviendasConCostoNocheMenorIgual (PersistenceManager pm, double costoUmbral) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaVivienda() + " WHERE costoNoche <= ?");
@@ -68,5 +68,5 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
 		q.setParameters(numeroHabitacionesUmbral);
 		return (List<Vivienda>) q.executeList();
 	}
-
+	*/
 }

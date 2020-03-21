@@ -22,13 +22,13 @@ public class SQLPersonaJuridica {
         q.setParameters(idPersonaJuridica, idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarPersonaJuridicaPorId (PersistenceManager pm, long idPersonaJuridica){
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaPersonaJuridica() + " WHERE id = ?");
         q.setParameters(idPersonaJuridica);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public PersonaJuridica darPersonaJuridicaPorId (PersistenceManager pm, long idPersonaJuridica) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaPersonaJuridica() + " WHERE id = ?");

@@ -23,6 +23,14 @@ import uniandes.isis2304.parranderos.negocio.HabitacionHotel;
 import uniandes.isis2304.parranderos.negocio.HabitacionVivienda;
 import uniandes.isis2304.parranderos.negocio.Horario;
 import uniandes.isis2304.parranderos.negocio.Inmueble;
+import uniandes.isis2304.parranderos.negocio.OfreceServicio;
+import uniandes.isis2304.parranderos.negocio.Operador;
+import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
+import uniandes.isis2304.parranderos.negocio.PersonaNatural;
+import uniandes.isis2304.parranderos.negocio.Reserva;
+import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
+import uniandes.isis2304.parranderos.negocio.Usuario;
+import uniandes.isis2304.parranderos.negocio.Vivienda;
 
 public class PersistenciaAlohAndes {
 	
@@ -404,7 +412,7 @@ public class PersistenciaAlohAndes {
             long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_HABITACIONVIVIENDA, capacidad, disponible, fechaReservaFinal);
             long tuplasInsertadas = sqlHabitacionVivienda.adicionarHabitacionVivienda(pm, idInmueble, idVivienda, numero, precioSemestre, precioMes, precioNoche, ubicacion, individual);
             tx.commit();
-            log.trace ("Inserción de Habitacion Hotel: " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas" + " tuples inmueble "+tuplaInmuble);
+            log.trace ("Inserción de Habitacion Vivienda: " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas" + " tuples inmueble "+tuplaInmuble);
             return new HabitacionVivienda(idInmueble, idVivienda, numero, precioSemestre, precioMes, precioNoche, ubicacion, individual);
         }
         catch (Exception e){
@@ -545,6 +553,332 @@ public class PersistenciaAlohAndes {
 	 * 			Métodos para manejar los OfreceServicio
 	 *****************************************************************/
 	
+	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, double costo, int cantidad) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long tuplasInsertadas = sqlOfreceServicio.adicionarOfreceServicio(pm, idServicioMenaje, idInmueble, costo, cantidad);
+            tx.commit();
+            log.trace ("Inserción de Ofrece Servicio: " + idServicioMenaje + " " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas");
+            return new OfreceServicio(idServicioMenaje, idInmueble, costo, cantidad);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        } 
+	}
+	
+	public long eliminarOfreceServicio (String idServicioMenaje, long idInmueble) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlOfreceServicio.eliminarOfreceServicio(pm, idServicioMenaje, idInmueble);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public OfreceServicio darOfreceServicio (String idServicioMenaje, long idInmueble)
+	{
+		return sqlOfreceServicio.darOfreceServicio(pmf.getPersistenceManager(), idServicioMenaje, idInmueble);
+	}
+	
+	public List<OfreceServicio> darOfrecenServicios(){
+		return sqlOfreceServicio.darOfrecenServicios(pmf.getPersistenceManager());
+	}
+	
+	public List<OfreceServicio> darOfreceServicios(long idInmueble){
+		return sqlOfreceServicio.darOfreceServicios(pmf.getPersistenceManager(), idInmueble);
+	}
+	
+	public List<OfreceServicio> darOfrecenServicio (String idServicioMenaje){
+		return sqlOfreceServicio.darOfrecenServicio(pmf.getPersistenceManager(), idServicioMenaje);
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar los Operador
+	 *****************************************************************/
+	
+	public long eliminarOperadorPorId (long idOperador) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlOperador.eliminarOperadorPorId(pm, idOperador);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public Operador darOperadorPorId (long idOperador)
+	{
+		return sqlOperador.darOperadorPorId(pmf.getPersistenceManager(), idOperador);
+	}
+	
+	public List<Operador> darOperadores (){
+		return sqlOperador.darOperadores(pmf.getPersistenceManager());
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Juridicas
+	 *****************************************************************/
+	
+	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, int categoria, double precioNoche, String tipo,
+			String nombre, String email, String telefono) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long idOperador = nextval ();
+            long tuplaOperador = sqlOperador.adicionarOperador(pm, idOperador, nombre, email, telefono);
+            long tuplasInsertadas = sqlPersonaJuridica.adicionarPersonaJuridica(pm, idOperador, idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo);
+            tx.commit();
+            log.trace ("Inserción de Persona Juridica: " + idOperador + ": " + tuplasInsertadas + " tuplas insertadas" + " tuplas operador "+tuplaOperador);
+            return new PersonaJuridica(idOperador, idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public List<PersonaJuridica> darPersonasJuridicas (){
+		return sqlPersonaJuridica.darPersonasJuridicas(pmf.getPersistenceManager());
+	}
+	
+	public PersonaJuridica darPersonaJuridicaPorId (long idPersonaJuridica)
+	{
+		return sqlPersonaJuridica.darPersonaJuridicaPorId(pmf.getPersistenceManager(), idPersonaJuridica);
+	}
+	
+	public PersonaJuridica darPersonaJuridicaPorIdSuperIntendenciaTurismo (long idSuperIntendenciaTurismo)
+	{
+		return sqlPersonaJuridica.darPersonaJuridicaPorIdSuperIntendenciaTurismo(pmf.getPersistenceManager(), idSuperIntendenciaTurismo);
+	}
+	
+	public PersonaJuridica darPersonaJuridicaPorIdCamaraComercio (long idCamaraComercio)
+	{
+		return sqlPersonaJuridica.darPersonaJuridicaPorIdCamaraComercio(pmf.getPersistenceManager(), idCamaraComercio);
+	}
+	
+	public List<PersonaJuridica> darPersonaJuridicasPorTipo (String tipo){
+		return sqlPersonaJuridica.darPersonaJuridicaPorTipo(pmf.getPersistenceManager(), tipo);
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Naturales
+	 *****************************************************************/
+	
+	public PersonaNatural adicionarPersonaNatural(String tipo, String nombre, String email, String telefono) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long idOperador = nextval ();
+            long tuplaOperador = sqlOperador.adicionarOperador(pm, idOperador, nombre, email, telefono);
+            long tuplasInsertadas = sqlPersonaNatural.adicionarPersonaNatural(pm, idOperador, tipo);
+            tx.commit();
+            log.trace ("Inserción de Persona Natural: " + idOperador + ": " + tuplasInsertadas + " tuplas insertadas" + " tuplas operador "+tuplaOperador);
+            return new PersonaNatural(idOperador, tipo);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public List<PersonaNatural> darPersonasNaturales (){
+		return sqlPersonaNatural.darPersonasNaturales(pmf.getPersistenceManager());
+	}
+	
+	public PersonaNatural darPersonaNaturalPorId (long idPersonaNatural)
+	{
+		return sqlPersonaNatural.darPersonaNaturalPorId(pmf.getPersistenceManager(), idPersonaNatural);
+	}
+	
+	
+	public List<PersonaNatural> darPersonasNaturalesPorTipo (String tipo){
+		return sqlPersonaNatural.darPersonasNaturalesPorTipo(pmf.getPersistenceManager(), tipo);
+	}
+	
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Reserva
+	 *****************************************************************/
+	
+	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
+			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long idReserva = nextval ();
+            long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idReserva, fechaInicio, fechaFin, valorTotal, 
+            		fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+            tx.commit();
+            log.trace ("Inserción de Reserva: " + idReserva + ": " + tuplasInsertadas + " tuplas insertadas" );
+            return new Reserva(idReserva, fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, 
+            		descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public long eliminarReservaPorId (long idReserva)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlReserva.eliminarReservaPorId(pm, idReserva);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public Reserva darReservaPorId (PersistenceManager pm, long idReserva) 
+	{
+		return sqlReserva.darReservaPorId(pmf.getPersistenceManager(), idReserva);
+	}
+	
+	public List<Reserva> darReservas (PersistenceManager pm)
+	{
+		return sqlReserva.darReservas(pmf.getPersistenceManager());
+	}
+	
+	public List<Reserva> darReservasEnFechasParaInmueble (Date fechaStart, Date fechaEnd, long idInmueble) 
+	{
+		return sqlReserva.darReservasEnFechasParaInmueble(pmf.getPersistenceManager(), fechaStart, fechaEnd, idInmueble);
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Servicio Menaje
+	 *****************************************************************/
+	
+	
+	public ServicioMenaje adicionarServicioMenaje (String nombre, String tipo) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long tuplasInsertadas = sqlServicioMenaje.adicionarServicioMenaje(pm, nombre, tipo);
+            tx.commit();
+            log.trace ("Inserción de Servicio Menaje: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
+            return new ServicioMenaje(nombre, tipo);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public long eliminarServicioMenajePorNombre (String nombre)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlServicioMenaje.eliminarServicioMenajePorNombre(pm, nombre);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public ServicioMenaje darServicioMenajePorNombre (PersistenceManager pm, String nombre) 
+	{
+		return sqlServicioMenaje.darServicioMenajePorNombre(pmf.getPersistenceManager(), nombre);
+	}
+	
+	public List<ServicioMenaje> darServiciosMenajesPorTipo (String tipo) 
+	{
+		return sqlServicioMenaje.darServiciosMenajesPorTipo(pmf.getPersistenceManager(), tipo);
+	}
+	
+	public List<ServicioMenaje> darServiciosMenajes (PersistenceManager pm)
+	{
+		return sqlServicioMenaje.darServiciosMenajes(pmf.getPersistenceManager());
+	}
 	
 	
 	
@@ -552,20 +886,116 @@ public class PersistenciaAlohAndes {
 	
 	
 	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Personas Usuarios
+	 *****************************************************************/
+	public Usuario adicionarUsuario (String nombre, String email, String telefono, String tipo) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long idUsuario = nextval ();
+            long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, idUsuario, nombre, email, telefono, tipo);
+            tx.commit();
+            log.trace ("Inserción de Usuario: " + idUsuario + ": " + tuplasInsertadas + " tuplas insertadas");
+            return new Usuario(idUsuario, nombre, email, telefono, tipo);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        } 
+	}
 	
+	public long eliminarUsuarioPorId (long idUsuario)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlUsuario.eliminarUsuarioPorId(pmf.getPersistenceManager(), idUsuario);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
 	
+	public Usuario darUsuarioPorId(long idUsuario) 
+	{
+		return sqlUsuario.darUsuarioPorId(pmf.getPersistenceManager(), idUsuario);
+	}
 	
+	public Usuario darUsuarioPorEmail(String email) 
+	{
+		return sqlUsuario.darUsuarioPorEmail(pmf.getPersistenceManager(), email);
+	}
 	
+	public List<Usuario> darUsuarios ()
+	{
+		return sqlUsuario.darUsuarios(pmf.getPersistenceManager());
+	}
 	
+	public List<Usuario> darUsuariosPorTipo (String tipo) 
+	{
+		return sqlUsuario.darUsuariosPorTipo(pmf.getPersistenceManager(), tipo);
+	}
 	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Viviendas
+	 *****************************************************************/
 	
+	public Vivienda adicionarVivienda(int numeroHabitaciones, double costoNoche, int diasUtilizado, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long idInmueble = nextval ();
+            long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_VIVIENDA, capacidad, disponible, fechaReservaFinal);
+            long tuplasInsertadas = sqlVivienda.adicionarVivienda(pm, idInmueble, numeroHabitaciones, costoNoche, diasUtilizado, idPersona);
+            tx.commit();
+            log.trace ("Inserción de Vivienda: " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas" + " tuples inmueble "+tuplaInmuble);
+            return new Vivienda(idInmueble, numeroHabitaciones, costoNoche, diasUtilizado, idPersona);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
 	
+	public List<Vivienda> darViviendas (){
+		return sqlVivienda.darViviendas(pmf.getPersistenceManager());
+	}
 	
+	public Vivienda darViviendaPorId (long idVivienda)
+	{
+		return sqlVivienda.darViviendaPorId(pmf.getPersistenceManager(), idVivienda);
+	}
 	
-	
-	
-	
-	
+	public List<Vivienda> darViviendasPorIdPersona (long idPersona){
+		return sqlVivienda.darViviendasPorIdPersona (pmf.getPersistenceManager(), idPersona);
+	}
 	
 	
 	public long [] limpiarAlohAndes ()
