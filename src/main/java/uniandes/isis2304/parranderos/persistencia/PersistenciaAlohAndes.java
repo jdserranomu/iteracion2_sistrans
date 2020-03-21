@@ -5,13 +5,17 @@ import java.util.List;
 
 import javax.jdo.JDODataStoreException;
 import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Transaction;
 
 import org.apache.log4j.Logger;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import uniandes.isis2304.parranderos.negocio.Apartamento;
 
 public class PersistenciaAlohAndes {
 	
@@ -64,17 +68,17 @@ public class PersistenciaAlohAndes {
 		tablas.add ("AlohAndes_sequence");
 		tablas.add ("APARTAMENTO");
 		tablas.add ("HABITACION");
-		tablas.add ("HABITACION_HOSTAL");
-		tablas.add ("HABITACION_HOTEL");
-		tablas.add ("HABITACION_VIVIENDA");
+		tablas.add ("HABITACIONHOSTAL");
+		tablas.add ("HABITACIONHOTEL");
+		tablas.add ("HABITACIONVIVIENDA");
 		tablas.add ("HORARIO");
 		tablas.add ("INMUEBLE");
-		tablas.add ("OFRECE_SERVICIO");
+		tablas.add ("OFRECESERVICIO");
 		tablas.add ("OPERADOR");
-		tablas.add ("PERSONA_JURIDICA");
-		tablas.add ("PERSONA_NATURAL");
+		tablas.add ("PERSONAJURIDICA");
+		tablas.add ("PERSONANATURAL");
 		tablas.add ("RESERVA");
-		tablas.add ("SERVICIO_MENAJE");
+		tablas.add ("SERVICIOMENAJE");
 		tablas.add ("USUARIO");
 		tablas.add ("VIVIENDA");
 	}
@@ -215,5 +219,107 @@ public class PersistenciaAlohAndes {
 		return resp;
 	}
 	
+	/* ****************************************************************
+	 * 			Métodos para manejar los APARTAMENTOS
+	 *****************************************************************/
 	
+	public Apartamento adicionarApartamento(int amoblado, double precioMes, long idPersona) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long idApartamento = nextval ();
+            long tuplasInsertadas = sqlApartamento.adicionarApartamento(pm, idApartamento, amoblado,precioMes,idPersona);
+            tx.commit();
+
+            log.trace ("Inserción de Apartamento: " + idApartamento + ": " + tuplasInsertadas + " tuplas insertadas");
+
+            return new Apartamento(idApartamento, amoblado, precioMes, idPersona);
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public long eliminarApartamentoPorId (long idApartamento) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlApartamento.eliminarApartamentoPorId(pm, idApartamento);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally
+        {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public List<Apartamento> darApartamentos ()
+	{
+		return sqlApartamento.darApartamentos (pmf.getPersistenceManager());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public long [] limpiarAlohAndes ()
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long [] resp = sqlUtil.limpiarAlohAndes (pm);
+            tx.commit ();
+            log.info ("Borrada la base de datos");
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return new long[] {-1, -1, -1, -1, -1, -1, -1};
+        }
+        finally{
+            if (tx.isActive()){
+                tx.rollback();
+            }
+            pm.close();
+        }
+		
+	}
 }
