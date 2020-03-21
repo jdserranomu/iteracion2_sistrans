@@ -9,7 +9,7 @@ public class HabitacionVivienda implements VOHabitacionVivienda{
 		private double precioMes;
 		private double precioNoche;
 		private String ubicacion;
-		private String individual;
+		private int individual;
 		
 		public HabitacionVivienda() {
 			this.id=0;
@@ -19,10 +19,10 @@ public class HabitacionVivienda implements VOHabitacionVivienda{
 			this.precioMes=0;
 			this.precioNoche=0;
 			this.ubicacion="";
-			this.individual="";
+			this.individual=0;
 		}
 		public HabitacionVivienda(long id, long idVivienda, int numero, double precioSemestre, double precioMes,
-				double precioNoche, String ubicacion, String individual) {
+				double precioNoche, String ubicacion, int individual) {
 			
 			this.id = id;
 			this.idVivienda = idVivienda;
@@ -75,10 +75,10 @@ public class HabitacionVivienda implements VOHabitacionVivienda{
 		public void setUbicacion(String ubicacion) {
 			this.ubicacion = ubicacion;
 		}
-		public String getIndividual() {
+		public int getIndividual() {
 			return individual;
 		}
-		public void setIndividual(String individual) {
+		public void setIndividual(int individual) {
 			this.individual = individual;
 		}
 		@Override

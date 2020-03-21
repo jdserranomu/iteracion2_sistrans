@@ -9,7 +9,7 @@ public interface VOHabitacionVivienda {
 	public double getPrecioMes();
 	public double getPrecioNoche();
 	public String getUbicacion();
-	public String getIndividual();
+	public int getIndividual();
 	public String toString();
 	
 }

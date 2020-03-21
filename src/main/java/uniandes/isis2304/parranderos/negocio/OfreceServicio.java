@@ -1,31 +1,31 @@
 package uniandes.isis2304.parranderos.negocio;
 
-public class OfreceServicio {
+public class OfreceServicio implements VOOfreceServicio{
 
-	private long idServicioMenaje;
+	private String nombreServicioMenaje;
 	private long idInmueble;
 	private double costo;
-	private double cantidad;
+	private int cantidad;
 	
 	public OfreceServicio() {
-		this.idServicioMenaje=0;
+		this.nombreServicioMenaje="";
 		this.idInmueble=0;
 		this.costo=0;
 		this.cantidad=0;
 		
 	}
-	public OfreceServicio(long idServicioMenaje, long idInmueble, double costo, double cantidad) {
+	public OfreceServicio(String nombreServicioMenaje, long idInmueble, double costo, int cantidad) {
 		
-		this.idServicioMenaje = idServicioMenaje;
+		this.nombreServicioMenaje = nombreServicioMenaje;
 		this.idInmueble = idInmueble;
 		this.costo = costo;
 		this.cantidad = cantidad;
 	}
-	public long getIdServicioMenaje() {
-		return idServicioMenaje;
+	public String getNombreServicioMenaje() {
+		return nombreServicioMenaje;
 	}
-	public void setIdServicioMenaje(long idServicioMenaje) {
-		this.idServicioMenaje = idServicioMenaje;
+	public void setNombreServicioMenaje(String nombreServicioMenaje) {
+		this.nombreServicioMenaje = nombreServicioMenaje;
 	}
 	public long getIdInmueble() {
 		return idInmueble;
@@ -39,15 +39,15 @@ public class OfreceServicio {
 	public void setCosto(double costo) {
 		this.costo = costo;
 	}
-	public double getCantidad() {
+	public int getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(double cantidad) {
+	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
 	@Override
 	public String toString() {
-		return "OfreceServicio [idServicioMenaje=" + idServicioMenaje + ", idInmueble=" + idInmueble + ", costo="
+		return "OfreceServicio [idServicioMenaje=" + nombreServicioMenaje + ", idInmueble=" + idInmueble + ", costo="
 				+ costo + ", cantidad=" + cantidad + "]";
 	}
 	
