@@ -23,13 +23,13 @@ public class SQLHabitacionVivienda {
         q.setParameters(idHabitacionVivienda, idVivenda, numero, precioSemestre, precioMes, precioNoche, ubicacion, individual);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarHabitacionViviendaPorId (PersistenceManager pm, long idHabitacionVivienda){
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaHabitacionVivienda() + " WHERE id = ?");
         q.setParameters(idHabitacionVivienda);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public HabitacionVivienda darHabitacionViviendaPorId (PersistenceManager pm, long idHabitacionVivienda) {
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaHabitacionVivienda() + " WHERE id = ?");
 		q.setResultClass(HabitacionVivienda.class);

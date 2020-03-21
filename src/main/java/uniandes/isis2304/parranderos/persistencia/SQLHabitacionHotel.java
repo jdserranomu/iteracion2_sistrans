@@ -24,14 +24,14 @@ public class SQLHabitacionHotel {
         q.setParameters(idHabitacionHotel, idHotel, numero, tipo, precioNoche, tamanho, ubicacion);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarHabitacionHotelPorId (PersistenceManager pm, long idHabitacionHotel)
 	{
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaHabitacionHotel() + " WHERE id = ?");
         q.setParameters(idHabitacionHotel);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public HabitacionHotel darHabitacionHotelPorId (PersistenceManager pm, long idHabitacionHotel) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaHabitacionHotel() + " WHERE id = ?");

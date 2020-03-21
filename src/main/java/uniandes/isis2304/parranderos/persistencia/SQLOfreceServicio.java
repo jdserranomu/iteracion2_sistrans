@@ -44,5 +44,23 @@ public class SQLOfreceServicio {
 		q.setResultClass(OfreceServicio.class);
 		return (List<OfreceServicio>) q.executeList();
 	}
+	
+	public List<OfreceServicio> darOfreceServicios (PersistenceManager pm, long idInmueble)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaOfreceServicio() + " WHERE idInmueble = ?");
+		q.setResultClass(OfreceServicio.class);
+		q.setParameters(idInmueble);
+		return (List<OfreceServicio>) q.executeList();
+	}
+	
+	public List<OfreceServicio> darOfrecenServicio (PersistenceManager pm, String idServicioMenaje)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaOfreceServicio() + " WHERE idServicioMenaje = ?");
+		q.setResultClass(OfreceServicio.class);
+		q.setParameters(idServicioMenaje);
+		return (List<OfreceServicio>) q.executeList();
+	}
+	
+	
 
 }

@@ -3,6 +3,14 @@ package uniandes.isis2304.parranderos.negocio;
 import java.sql.Date;
 
 public class Inmueble implements VOInmueble {
+	
+	public final static String TIPO_APARTAMENTO = "Apartamento";
+	public final static String TIPO_HABITACION = "Habitacion";
+	public final static String TIPO_VIVIENDA = "Vivienda";
+	public final static String TIPO_HABITACIONHOTEL = "Habitacion Hotel";
+	public final static String TIPO_HABITACIONHOSTAL = "Habitacion Hostal";
+	public final static String TIPO_HABITACIONVIVIENDA = "Habitacion Vivienda";
+	
 
 	private long id;
 	private String direccion;

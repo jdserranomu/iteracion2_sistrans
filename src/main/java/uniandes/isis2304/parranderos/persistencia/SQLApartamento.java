@@ -22,14 +22,14 @@ public class SQLApartamento {
         q.setParameters(idApartamento, amoblado, precioMes, idPersona);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarApartamentoPorId (PersistenceManager pm, long idApartamento)
 	{
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaApartamento () + " WHERE id = ?");
         q.setParameters(idApartamento);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public Apartamento darApartamentoPorId (PersistenceManager pm, long idApartamento) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaApartamento() + " WHERE id = ?");

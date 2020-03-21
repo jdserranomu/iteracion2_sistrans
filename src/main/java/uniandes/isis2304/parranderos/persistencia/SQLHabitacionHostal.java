@@ -21,14 +21,14 @@ public class SQLHabitacionHostal {
         q.setParameters(idHabitacionHostal, numero, idHostal);
         return (long) q.executeUnique();
 	}
-	
+	/**
 	public long eliminarHabitacionHostalPorId (PersistenceManager pm, long idHabitacionHostal)
 	{
         Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaHabitacionHostal() + " WHERE id = ?");
         q.setParameters(idHabitacionHostal);
         return (long) q.executeUnique();
 	}
-	
+	*/
 	public HabitacionHostal darHabitacionHostalPorId (PersistenceManager pm, long idHabitacionHostal) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaHabitacionHostal() + " WHERE id = ?");

@@ -54,9 +54,9 @@ public class SQLInmueble {
 		return (List<Inmueble>) q.executeList();
 	}
 	
-	public List<Inmueble> darInmueblesPorCapacidad (PersistenceManager pm, int capacidad) 
+	public List<Inmueble> darInmueblesPorMayorCapacidad (PersistenceManager pm, int capacidad) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaInmueble() + " WHERE capacidad = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaInmueble() + " WHERE capacidad > ?");
 		q.setResultClass(Inmueble.class);
 		q.setParameters(capacidad);
 		return (List<Inmueble>) q.executeList();
