@@ -609,9 +609,86 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar las Personas Usuarios
 	 *****************************************************************/
+	public  Usuario adicionarUsuario (String nombre, String email, String telefono, String tipo)  {
+		
+		log.info ("Adicionando usuario" +nombre+ ", email: "+ email+ ", telefono: " + telefono+ " y tipo: "+tipo);
+        Usuario sm = pp.adicionarUsuario(nombre, email, telefono, tipo);
+        log.info ("Adicionando Servicio o Menaje: " + sm);
+        return sm;
+	}
 	
+	public long eliminarUsuario(long idUsuario)  {
+		log.info("Eliminando Usuario: "+idUsuario);
+		long op=pp.eliminarUsuarioPorId(idUsuario);
+		log.info("eliminando usuario"+ op);
+		return op;
+	}
 	
+	public  Usuario darUsuarioPorId(long idUsuario) 
+	{
+		log.info ("Consultando Usuario : "+ idUsuario);
+        Usuario us= pp.darUsuarioPorId(idUsuario);
+        log.info ("Consultando Usuario: " + us);
+        return us;
+	}
 	
+	public  Usuario darUsuarioPorEmail(String email) 
+	{
+		log.info ("Consultando Usuario por email : "+ email);
+        Usuario us= pp.darUsuarioPorEmail(email);
+        log.info ("Consultando Usuario por email: " + us);
+        return us;
+	}
+	
+	public List<Usuario> darUsuarios ()
+	{
+		log.info ("Consultando usuarios");
+        List<Usuario> re= pp.darUsuarios();
+        log.info ("Consultando Usuarios: " + re);
+        return re;
+	}
+	
+	public List<Usuario> darUsuariosPorTipo (String tipo)
+	{
+		log.info ("Consultando usuarios por tipo");
+        List<Usuario> re= pp.darUsuariosPorTipo(tipo);
+        log.info ("Consultando Usuarios por tipo: " + re);
+        return re;
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para manejar las Viviendas
+	 *****************************************************************/
+	public Vivienda adicionarVivienda (int numeroHabitaciones, double costoNoche, int diasUtilizado, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal)
+	{
+        log.info ("Adicionando Vivienda en: " +direccion +" con capacidad: "+ capacidad+ ", costo noche: "+ costoNoche+ ", numero habitaciones: "+numeroHabitaciones+", disponible: "+ aTexto(disponible)+ " y dueño: "+ idPersona  );
+        Vivienda viv = pp.adicionarVivienda(numeroHabitaciones, costoNoche, diasUtilizado, idPersona, direccion, capacidad, disponible, fechaReservaFinal);
+        log.info ("Adicionando Vivienda: " + viv);
+        return viv;
+	}
+	public List<Vivienda> darViviendas ()
+	{
+		log.info ("Consultando Viviendas");
+        List<Vivienda> re= pp.darViviendas();
+        log.info ("Consultando Vivienda: " + re);
+        return re;
+	}
+	
+	public Vivienda darViviendaPorId(long idVivienda) 
+	{
+		log.info ("Consultando Vivienda : "+ idVivienda);
+        Vivienda us= pp.darViviendaPorId(idVivienda);
+        log.info ("Consultando Vivienda: " + us);
+        return us;
+	}
+	
+	public List<Vivienda> darViviendaPorIdPersona(long idPersona) 
+	{
+		log.info ("Consultando Viviendas de la persona con id : "+ idPersona);
+        List<Vivienda> us= pp.darViviendasPorIdPersona(idPersona);
+        log.info ("Consultando Viviendas: " + us);
+        return us;
+	}
 	
 	
 	
@@ -624,11 +701,11 @@ public class AlohAndes
 	 * @return Un arreglo con 7 números que indican el número de tuplas borradas en las tablas GUSTAN, SIRVEN, VISITAN, BEBIDA,
 	 * TIPOBEBIDA, BEBEDOR y BAR, respectivamente
 	 */
-	public long [] limpiarParranderos ()
+	public long [] limpiarAlohAndes ()
 	{
-        log.info ("Limpiando la BD de Parranderos");
-        long [] borrrados = pp.limpiarParranderos();	
-        log.info ("Limpiando la BD de Parranderos: Listo!");
+        log.info ("Limpiando la BD de AlohAndes");
+        long [] borrrados = pp.limpiarAlohAndes();	
+        log.info ("Limpiando la BD de AlohAndes: Listo!");
         return borrrados;
 	}
 }
