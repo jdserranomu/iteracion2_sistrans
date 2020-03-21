@@ -799,12 +799,12 @@ public class PersistenciaAlohAndes {
         }
 	}
 	
-	public Reserva darReservaPorId (PersistenceManager pm, long idReserva) 
+	public Reserva darReservaPorId (long idReserva) 
 	{
 		return sqlReserva.darReservaPorId(pmf.getPersistenceManager(), idReserva);
 	}
 	
-	public List<Reserva> darReservas (PersistenceManager pm)
+	public List<Reserva> darReservas ()
 	{
 		return sqlReserva.darReservas(pmf.getPersistenceManager());
 	}
@@ -865,7 +865,7 @@ public class PersistenciaAlohAndes {
         }
 	}
 	
-	public ServicioMenaje darServicioMenajePorNombre (PersistenceManager pm, String nombre) 
+	public ServicioMenaje darServicioMenajePorNombre (String nombre) 
 	{
 		return sqlServicioMenaje.darServicioMenajePorNombre(pmf.getPersistenceManager(), nombre);
 	}
@@ -875,7 +875,7 @@ public class PersistenciaAlohAndes {
 		return sqlServicioMenaje.darServiciosMenajesPorTipo(pmf.getPersistenceManager(), tipo);
 	}
 	
-	public List<ServicioMenaje> darServiciosMenajes (PersistenceManager pm)
+	public List<ServicioMenaje> darServiciosMenajes ()
 	{
 		return sqlServicioMenaje.darServiciosMenajes(pmf.getPersistenceManager());
 	}
