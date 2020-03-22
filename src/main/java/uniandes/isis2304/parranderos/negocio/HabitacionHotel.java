@@ -1,6 +1,10 @@
 package uniandes.isis2304.parranderos.negocio;
 
 public class HabitacionHotel implements VOHabitacionHotel{
+	
+	public final static String TIPO_SUITE = "Suite";
+	public final static String TIPO_SEMISUITE = "Semisuite";
+	public final static String TIPO_ESTANDAR = "Estandar";
 
 	
 	private long id;

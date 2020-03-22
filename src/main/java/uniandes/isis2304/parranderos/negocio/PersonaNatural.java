@@ -1,6 +1,10 @@
 package uniandes.isis2304.parranderos.negocio;
 
 public class PersonaNatural implements VOPersonaNatural{
+	public final static String TIPO_VECINO = "Vecino";
+	public final static String TIPO_MEMBROCOMUNIDAD = "Miembro Comunidad";
+	
+	
 	private long id;
 	private String tipo;
 	

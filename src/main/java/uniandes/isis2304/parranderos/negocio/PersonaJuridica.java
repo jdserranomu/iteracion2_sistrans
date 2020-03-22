@@ -1,6 +1,10 @@
 package uniandes.isis2304.parranderos.negocio;
 
 public class PersonaJuridica implements VOPersonaJuridica{
+	
+	
+	public final static String TIPO_HOTEL = "Hotel";
+	public final static String TIPO_HOSTAL = "Hostal";
 
 	private long id;
 	private long idSuperIntendenciaTurismo;

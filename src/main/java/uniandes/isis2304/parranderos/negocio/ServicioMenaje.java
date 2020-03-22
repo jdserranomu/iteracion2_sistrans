@@ -2,6 +2,9 @@ package uniandes.isis2304.parranderos.negocio;
 
 public class ServicioMenaje implements VOServicioMenaje{
 	
+	public final static String TIPO_MENAJE= "Menaje";
+	public final static String TIPO_SERVICIO= "Servicio";
+	
 	private String nombre;
 	private String tipo;
 	

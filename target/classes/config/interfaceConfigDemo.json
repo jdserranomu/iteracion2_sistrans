@@ -1,8 +1,8 @@
 {
-	"title": "Demostración de Parranderos Uniandes",
+	"title": "AlohAndes Uniandes",
 	"frameH": 600,
 	"frameW": 800,
-	"bannerPath": "./src/main/resources/config/logo.png",
+	"bannerPath": "./src/main/resources/config/AlohAndes.png",
 	"menuBar":
 	[
 		{ "menuTitle": "TipoBebida",

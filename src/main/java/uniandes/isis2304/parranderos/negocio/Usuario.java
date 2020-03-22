@@ -2,7 +2,13 @@ package uniandes.isis2304.parranderos.negocio;
 
 public class Usuario implements VOUsuario{
 
-		
+	public final static String TIPO_PROFESOR = "Profesor";
+	public final static String TIPO_PROFESORINVITADO = "Profesor Invitado";
+	public final static String TIPO_ESTUDIANTE = "Estudiante";
+	public final static String TIPO_EGRESADO = "Egresado";
+	public final static String TIPO_EMPLEADO = "Empleado";
+	public final static String TIPO_PADRAESTUDIANTE = "Padre Estudiante";
+	public final static String TIPO_INVITADO = "Invitado";
 	
 	private long id;
 	private String nombre;
