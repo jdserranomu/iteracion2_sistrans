@@ -58,6 +58,7 @@ public class AlohAndes
 	 */
 	public AlohAndes ()
 	{
+	
 		pp = PersistenciaAlohAndes.getInstance ();
 	}
 	
@@ -613,6 +614,7 @@ public class AlohAndes
 		log.info ("Adicionando usuario" +nombre+ ", email: "+ email+ ", telefono: " + telefono+ " y tipo: "+tipo);
         Usuario sm = pp.adicionarUsuario(nombre, email, telefono, tipo);
         log.info ("Adicionando Servicio o Menaje: " + sm);
+    	
         return sm;
 	}
 	

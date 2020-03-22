@@ -103,8 +103,11 @@ public class PersistenciaAlohAndes {
 		tablas = leerNombresTablas (tableConfig);
 		
 		String unidadPersistencia = tableConfig.get ("unidadPersistencia").getAsString ();
+		
 		log.trace ("Accediendo unidad de persistencia: " + unidadPersistencia);
+		
 		pmf = JDOHelper.getPersistenceManagerFactory (unidadPersistencia);
+		
 	}
 	
 	private List <String> leerNombresTablas (JsonObject tableConfig){
@@ -893,6 +896,7 @@ public class PersistenciaAlohAndes {
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
+        
         try{
             tx.begin();
             long idUsuario = nextval ();
@@ -902,6 +906,7 @@ public class PersistenciaAlohAndes {
             return new Usuario(idUsuario, nombre, email, telefono, tipo);
         }
         catch (Exception e){
+        	System.out.println("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
         	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
         	return null;
         }

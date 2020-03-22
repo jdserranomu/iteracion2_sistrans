@@ -63,6 +63,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         tableConfig = openConfig ("Tablas BD", CONFIG_TABLAS);
         alohAndes = new AlohAndes(tableConfig);
         
+        
     	String path = guiConfig.get("bannerPath").getAsString();
         panelDatos = new PanelDatos ( );
 
@@ -146,7 +147,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		String[] choices = {Usuario.TIPO_ESTUDIANTE, Usuario.TIPO_PROFESOR, Usuario.TIPO_PROFESORINVITADO, Usuario.TIPO_EMPLEADO,
     				Usuario.TIPO_EGRESADO, Usuario.TIPO_PADRAESTUDIANTE, Usuario.TIPO_INVITADO};
     		String tipo = (String) JOptionPane.showInputDialog(null, "Choose now...","The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
-    		if (nombre!=null && email!=null && telefono!=null)
+    	
+    		if (nombre!=null && email!=null && telefono!=null && tipo!=null)
     		{
         		Usuario usuario = alohAndes.adicionarUsuario(nombre, email, telefono, tipo);
         		if (usuario == null)
