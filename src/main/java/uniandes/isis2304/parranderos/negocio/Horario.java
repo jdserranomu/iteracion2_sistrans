@@ -1,6 +1,14 @@
 package uniandes.isis2304.parranderos.negocio;
 
 public class Horario implements VOHorario{
+	
+	public final static String DIA_LUNES = "L";
+	public final static String DIA_MARTES = "M";
+	public final static String DIA_MIERCOLES = "I";
+	public final static String DIA_JUEVES = "J";
+	public final static String DIA_VIERNES = "V";
+	public final static String DIA_SABADO = "S";
+	public final static String DIA_DOMINGO = "D";
 
 	private long idHostal;
 	

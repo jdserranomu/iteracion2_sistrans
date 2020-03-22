@@ -31,7 +31,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 
 import uniandes.isis2304.parranderos.negocio.AlohAndes;
 import uniandes.isis2304.parranderos.negocio.Apartamento;
@@ -48,7 +47,6 @@ import uniandes.isis2304.parranderos.negocio.PersonaNatural;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
-import uniandes.isis2304.parranderos.negocio.VOApartamento;
 import uniandes.isis2304.parranderos.negocio.Vivienda;
 
 @SuppressWarnings("serial")
@@ -171,7 +169,6 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE);
 			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
 			int disponible = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponible?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
-			//Date fechaDate = null;
 			Apartamento apto = alohAndes.adicionarApartamento(amoblado, precioMes, idPersona, direccion, capacidad, disponible, null);
 			if(apto == null) {
 				throw new Exception ("No se pudo crear apartamento");
@@ -195,7 +192,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 		try {
 			List <Apartamento> lista = alohAndes.darApartamentos();
 
-			String resultado = "En listarTipoBebida";
+			String resultado = "En darApartamentos";
 			resultado +=  "\n" + listarApartamento(lista);
 			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
@@ -209,7 +206,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     	try {
     		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar apartamento por Id", JOptionPane.QUESTION_MESSAGE));
     		Apartamento apto = alohAndes.darApartamentoPorId(id);
-    		String resultado = "En buscar Apartamento por Id\n\n";
+    		String resultado = "En darApartamentoPorId\n\n";
     		if(apto!=null) {
     			resultado += "El apartamento es: " + apto;
     		}
@@ -229,7 +226,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			int idPersona = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar apartamento por Id Persona", JOptionPane.QUESTION_MESSAGE));
 			List <Apartamento> lista = alohAndes.darApartamentosPorIdPersona(idPersona);
 
-			String resultado = "En listarTipoBebida";
+			String resultado = "En darApartamentosPorIdPersona";
 			resultado +=  "\n" + listarApartamento(lista);
 			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
@@ -246,30 +243,529 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	 * 			CRUD de Habitacion
 	 *****************************************************************/
     
+    public void adicionarHabitacion ()
+	{
+    	//double tamanho, double precioMes, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal
+		try {
+			double tamanho = Double.parseDouble(JOptionPane.showInputDialog (this, "Tamaño?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			double precioMes = Double.parseDouble(JOptionPane.showInputDialog (this, "Precio mes?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			long idPersona = Long.parseLong(JOptionPane.showInputDialog (this, "Id Dueño?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE);
+			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			int disponible = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponible?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			Habitacion habitacion = alohAndes.adicionarHabitacion(tamanho, precioMes, idPersona, direccion, capacidad, disponible, null);
+			if(habitacion == null) {
+				throw new Exception ("No se pudo crear habitacion");
+			}
+			else {
+				String resultado = "En adicionarHabitacion\n\n";
+        		resultado += "Habitacion adicionada exitosamente: " + habitacion;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+			
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+        
+	}
+    
+    public void darHabitaciones(){
+		try {
+			List <Habitacion> lista = alohAndes.darHabitaciones();
+
+			String resultado = "En darHabitaciones";
+			resultado +=  "\n" + listarHabitacion(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    public void darHabitacionPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar habitacion por Id", JOptionPane.QUESTION_MESSAGE));
+    		Habitacion habitacion = alohAndes.darHabitacionPorId(id);
+    		String resultado = "En darHabitacionPorId\n\n";
+    		if(habitacion!=null) {
+    			resultado += "La habitacion es: " + habitacion;
+    		}
+    		else {
+    			resultado += "La habitacion con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+    
+    public void darHabitacionesPorIdPersona(){
+		try {
+			int idPersona = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar habitacion por Id Persona", JOptionPane.QUESTION_MESSAGE));
+			List <Habitacion> lista = alohAndes.darHabitacionesPorIdPersona(idPersona);
+
+			String resultado = "En darHabitacionesPorIdPerson";
+			resultado +=  "\n" + listarHabitacion(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
     
     /* ****************************************************************
 	 * 			CRUD de Habitacion Hostal
 	 *****************************************************************/
     
+    public void adicionarHabitacionHostal ()
+	{
+    	//int numero, long idHostal, String direccion, int capacidad, int disponible, Date fechaReservaFinal
+		try {
+			int numero = Integer.parseInt(JOptionPane.showInputDialog (this, "Numero?", "Adicionar habitacion hostal", JOptionPane.QUESTION_MESSAGE));
+			long idHostal = Long.parseLong(JOptionPane.showInputDialog (this, "Id Hostal?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE);
+			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			int disponible = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponible?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			HabitacionHostal habitacion = alohAndes.adicionarHabitacionHostal(numero, idHostal, direccion, capacidad, disponible, null);
+			if(habitacion == null) {
+				throw new Exception ("No se pudo crear habitacion");
+			}
+			else {
+				String resultado = "En adicionarHabitacionHostal\n\n";
+        		resultado += "Habitacion Hostal adicionada exitosamente: " + habitacion;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+			
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+        
+	}
+    
+    public void darHabitacionesHostales(){
+		try {
+			List <HabitacionHostal> lista = alohAndes.darHabitacionesHostales();
+
+			String resultado = "En darHabitacionesHostales";
+			resultado +=  "\n" + listarHabitacionhostal(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    public void darHabitacionHostalPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar habitacion hostal por Id", JOptionPane.QUESTION_MESSAGE));
+    		HabitacionHostal habitacion = alohAndes.darHabitacionHostalPorId(id);
+    		String resultado = "En darHabitacionHostalPorId\n\n";
+    		if(habitacion!=null) {
+    			resultado += "La habitacion hostal es: " + habitacion;
+    		}
+    		else {
+    			resultado += "La habitacion hostal con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+    
+    public void darHabitacionesHostal(){
+		try {
+			int idHostal = Integer.parseInt(JOptionPane.showInputDialog (this, "Id Hostal?", "Buscar habitacion por Id Persona", JOptionPane.QUESTION_MESSAGE));
+			List <HabitacionHostal> lista = alohAndes.darHabitacionesHostal(idHostal);
+
+			String resultado = "En darHabitacionesHostal";
+			resultado +=  "\n" + listarHabitacionhostal(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
     
     /* ****************************************************************
 	 * 			CRUD de Habitacion Hotel
 	 *****************************************************************/
+    public void adicionarHabitacionHotel ()
+	{
+    	//long idHotel, int numero, String tipo, double precioNoche, double tamanho, String ubicacion, String direccion, int capacidad, int disponible, Date fechaReservaFinal
+		try {
+			int numero = Integer.parseInt(JOptionPane.showInputDialog (this, "Numero?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			long idHotel = Long.parseLong(JOptionPane.showInputDialog (this, "Id Hostal?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			String[] choices = {HabitacionHotel.TIPO_ESTANDAR, HabitacionHotel.TIPO_SEMISUITE, HabitacionHotel.TIPO_SUITE};
+    		String tipo = (String) JOptionPane.showInputDialog(null, "Elegir tipo habitacion","Adicionar habitacion", JOptionPane.QUESTION_MESSAGE, null,choices, choices[2]);
+    		double precioNoche = Double.parseDouble(JOptionPane.showInputDialog (this, "Precio noche?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		double tamanho = Double.parseDouble(JOptionPane.showInputDialog (this, "Tamaño?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		String ubicacion  = JOptionPane.showInputDialog (this, "Ubicacion?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE);
+			String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE);
+			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			int disponible = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponible?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			HabitacionHotel habitacion = alohAndes.adicionarHabitacionHotel(idHotel, numero, tipo, precioNoche, tamanho, ubicacion, direccion, capacidad, disponible, null);
+			if(habitacion == null) {
+				throw new Exception ("No se pudo crear habitacion");
+			}
+			else {
+				String resultado = "En adicionarHabitacionHotel\n\n";
+        		resultado += "Habitacion Hotel adicionada exitosamente: " + habitacion;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+			
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+        
+	}
     
+    public void darHabitacionesHoteles(){
+		try {
+			List <HabitacionHotel> lista = alohAndes.darHabitacionesHoteles();
+
+			String resultado = "En darHabitacionesHoteles";
+			resultado +=  "\n" + listarHabitacionHotel(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    public void darHabitacionHostelPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar habitacion hotel por Id", JOptionPane.QUESTION_MESSAGE));
+    		HabitacionHotel habitacion = alohAndes.darHabitacionHotelPorId(id);
+    		String resultado = "En darHabitacionHostelPorId\n\n";
+    		if(habitacion!=null) {
+    			resultado += "La habitacion hotel es: " + habitacion;
+    		}
+    		else {
+    			resultado += "La habitacion hotel con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+    
+    public void darHabitacionesHotel(){
+		try {
+			int idHotel = Integer.parseInt(JOptionPane.showInputDialog (this, "Id Hotel?", "Buscar habitacion por Id Hotel", JOptionPane.QUESTION_MESSAGE));
+			List <HabitacionHotel> lista = alohAndes.darHabitacionesHotel(idHotel);
+
+			String resultado = "En darHabitacionesHotel";
+			resultado +=  "\n" + listarHabitacionHotel(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
     
     /* ****************************************************************
 	 * 			CRUD de Habitacion Vivienda
 	 *****************************************************************/
     
+    public void adicionarHabitacionVivienda ()
+	{
+    	// long idVivienda, int numero, double precioSemestre, double precioMes, double precioNoche, String ubicacion, int individual, String direccion, int capacidad, int disponible, Date fechaReservaFinal
+    	try {
+			int numero = Integer.parseInt(JOptionPane.showInputDialog (this, "Numero?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			long idVivienda = Long.parseLong(JOptionPane.showInputDialog (this, "Id Vivienda?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		double precioNoche = Double.parseDouble(JOptionPane.showInputDialog (this, "Precio noche?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		double precioMes = Double.parseDouble(JOptionPane.showInputDialog (this, "Precio mes?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		double precioSemestre = Double.parseDouble(JOptionPane.showInputDialog (this, "Precio semestre?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		String ubicacion  = JOptionPane.showInputDialog (this, "Ubicacion?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE);
+    		int individual = Integer.parseInt(JOptionPane.showInputDialog (this, "Individual?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+    		String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE);
+			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			int disponible = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponible?", "Adicionar habitacion", JOptionPane.QUESTION_MESSAGE));
+			HabitacionVivienda habitacion = alohAndes.adicionarHabitacionVivienda(idVivienda, numero, precioSemestre, precioMes, precioNoche, ubicacion, individual, direccion, capacidad, disponible, null);
+			if(habitacion == null) {
+				throw new Exception ("No se pudo crear habitacion vivienda");
+			}
+			else {
+				String resultado = "En adicionarHabitacionVivienda\n\n";
+        		resultado += "Habitacion Vivienda adicionada exitosamente: " + habitacion;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+			
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+        
+	}
+    
+    public void darHabitacionesViviendas(){
+		try {
+			List <HabitacionVivienda> lista = alohAndes.darHabitacionesViviendas();
+
+			String resultado = "En darHabitacionesViviendas";
+			resultado +=  "\n" + listarHabitacionVivienda(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    public void darHabitacionViviendaPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar habitacion vivienda por Id", JOptionPane.QUESTION_MESSAGE));
+    		HabitacionVivienda habitacion = alohAndes.darHabitacionViviendaPorId(id);
+    		String resultado = "En darHabitacionViviendaPorId\n\n";
+    		if(habitacion!=null) {
+    			resultado += "La habitacion vivienda es: " + habitacion;
+    		}
+    		else {
+    			resultado += "La habitacion vivienda con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+    
+    public void darHabitacionesVivienda(){
+		try {
+			int idVivienda = Integer.parseInt(JOptionPane.showInputDialog (this, "Id Vivienda?", "Buscar habitacion por Id Vivienda", JOptionPane.QUESTION_MESSAGE));
+			List <HabitacionVivienda> lista = alohAndes.darHabitacionesVivienda(idVivienda);
+
+			String resultado = "En darHabitacionesVivienda";
+			resultado +=  "\n" + listarHabitacionVivienda(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
     
     /* ****************************************************************
 	 * 			CRUD de Horario
 	 *****************************************************************/
     
+    public void adicionarHorario()
+	{
+    	try {
+    		//long idHostal, String dia, int horaAbre, int horaCierra
+    		int horaAbre = Integer.parseInt(JOptionPane.showInputDialog (this, "Hora abre?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+    		int horaCierra = Integer.parseInt(JOptionPane.showInputDialog (this, "Hora cierra?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+			long idHostal = Long.parseLong(JOptionPane.showInputDialog (this, "Id Hostal?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+			String[] choices = {Horario.DIA_LUNES, Horario.DIA_MARTES, Horario.DIA_MIERCOLES, Horario.DIA_JUEVES, Horario.DIA_VIERNES, Horario.DIA_SABADO,
+					Horario.DIA_DOMINGO };
+    		String dia = (String) JOptionPane.showInputDialog(null, "Elegir dia","Adicionar horario", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
+    		Horario horario = alohAndes.adicionarHorario(idHostal, dia, horaAbre, horaCierra);
+    		if(horario == null) {
+				throw new Exception ("No se pudo crear horario");
+			}
+			else {
+				String resultado = "En adicionarHorario\n\n";
+        		resultado += "Horario adicionado exitosamente: " + horario;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+    		
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void eliminarHorarioPorIdHostalYDia() {
+		try {
+			//long idHostal, String dia
+			long idHostal = Long.parseLong(JOptionPane.showInputDialog (this, "Id Hostal?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+			String[] choices = {Horario.DIA_LUNES, Horario.DIA_MARTES, Horario.DIA_MIERCOLES, Horario.DIA_JUEVES, Horario.DIA_VIERNES, Horario.DIA_SABADO,
+					Horario.DIA_DOMINGO };
+    		String dia = (String) JOptionPane.showInputDialog(null, "Elegir dia","Adicionar horario", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
+    		long tbEliminados = alohAndes.eliminarHorarioPorIdHostalYDia(idHostal, dia);
+			String resultado = "En eliminarHorarioPorIdHostalYDia\n\n";
+			resultado += tbEliminados + " Horarios eliminados\n";
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	public void darHorarioPorIdHostalYDia ()
+	{
+		try {
+    		//long idHostal, String dia
+			long idHostal = Long.parseLong(JOptionPane.showInputDialog (this, "Id Hostal?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+			String[] choices = {Horario.DIA_LUNES, Horario.DIA_MARTES, Horario.DIA_MIERCOLES, Horario.DIA_JUEVES, Horario.DIA_VIERNES, Horario.DIA_SABADO,
+					Horario.DIA_DOMINGO };
+    		String dia = (String) JOptionPane.showInputDialog(null, "Elegir dia","Adicionar horario", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
+    		Horario horario = alohAndes.darHorarioPorIdHostalYDia(idHostal, dia);
+    		String resultado = "En buscar horario por id hostal y dia\n\n";
+    		if (horario != null)
+			{
+    			resultado += "El horario es: " + horario;
+			}
+			else
+			{
+    			resultado += "Un horario: " + dia + " " + idHostal + " NO EXISTE\n";    				
+			}
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darHorarios ()
+	{
+		try {
+			List <Horario> lista = alohAndes.darHorarios();
+
+			String resultado = "En darHorario";
+			resultado +=  "\n" + listarHorario (lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darHorariosPorIdHostal()
+	{
+		try {
+			long idHostal = Long.parseLong(JOptionPane.showInputDialog (this, "Id Hostal?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+			List <Horario> lista = alohAndes.darHorariosPorIdHostal((int)idHostal);
+			String resultado = "En darHorario";
+			resultado +=  "\n" + listarHorario (lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
     /* ****************************************************************
 	 * 			CRUD de Inmueble
 	 *****************************************************************/
     
+	public void eliminarInmueblePorId() {
+		try {
+			//long idInmueble
+			long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "Id Inmueble?", "Borrar Inmueble por Id", JOptionPane.QUESTION_MESSAGE));
+			long tbEliminados = alohAndes.eliminarInmueblePorId(idInmueble);
+
+			String resultado = "En eliminar Inmueble\n\n";
+			resultado += tbEliminados + " Inmuebles eliminados\n";
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darInmueblePorId()
+	{
+		try {
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darInmuebles ()
+	{
+		try {
+			List <Inmueble> lista = alohAndes.darInmuebles();
+			String resultado = "En darInmuebles";
+			resultado +=  "\n" + listarInmueble (lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darInmueblesPorMayorCapacidad ()
+	{
+		try {
+			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Listar inmubles por capacidad mayor", JOptionPane.QUESTION_MESSAGE));
+			List <Inmueble> lista = alohAndes.darInmueblesPorMayorCapacidad(capacidad);
+			String resultado = "En darInmueblesPorMayorCapacidad";
+			resultado +=  "\n" + listarInmueble (lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darInmueblesPorTipo ()
+	{
+		try {
+			String[] choices = {Inmueble.TIPO_APARTAMENTO, Inmueble.TIPO_HABITACION, Inmueble.TIPO_HABITACIONHOSTAL, Inmueble.TIPO_HABITACIONHOTEL, 
+					Inmueble.TIPO_HABITACIONVIVIENDA, Inmueble.TIPO_VIVIENDA};
+    		String tipo = (String) JOptionPane.showInputDialog(null, "Elegir tipo","Listar inmueble por tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
+			List <Inmueble> lista = alohAndes.darInmueblesPorTipo(tipo);
+			String resultado = "En darInmueblesPorMayorCapacidad";
+			resultado +=  "\n" + listarInmueble (lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darInmueblesPorDisponibilidad()
+	{
+		try {
+			int disponibilidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponibilidad?", "Listar inmuebles por disponibilidad", JOptionPane.QUESTION_MESSAGE));
+			List <Inmueble> lista = alohAndes.darInmueblesPorDisponibilidad(disponibilidad);
+			String resultado = "En darInmueblesPorMayorCapacidad";
+			resultado +=  "\n" + listarInmueble (lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
     /* ****************************************************************
 	 * 			CRUD de OfreceServicio
 	 *****************************************************************/
@@ -451,7 +947,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         return resp;
 	}
     
-    private String listarHbiatacionHotel(List<HabitacionHotel> lista) {
+    private String listarHabitacionHotel(List<HabitacionHotel> lista) {
     	String resp = "Los tipos de bebida existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
