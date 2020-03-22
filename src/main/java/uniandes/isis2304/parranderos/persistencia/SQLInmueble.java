@@ -21,7 +21,7 @@ public class SQLInmueble {
 	{
 		
 		System.out.println("Llego a SQLInmueble");
-        Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaInmueble() + "(id, direccion, tipo, capacidad, disponible, fechaReservaFinal) values (?, ?, ?, ?, ?, ?)");
+        Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaInmueble() + "(id, direccion, tipo, capacidad, disponible, fechaReservaFinal) values (?, ?,  ?, ?, ?, ?)");
         System.out.println("Creo Query");
         q.setParameters(idInmueble, direccion, tipo, capacidad, disponible, fechaReservaFinal);
    
