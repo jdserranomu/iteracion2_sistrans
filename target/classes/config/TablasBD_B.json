@@ -3,13 +3,21 @@
 	"unidadPersistencia": "Parranderos",
 	"tablas":
 	[
-		"Parranderos_sequence",
-		"B_TIPOBEBIDA",
-		"B_BEBIDA",
-		"B_BAR",
-		"B_BEBEDOR",
-		"B_GUSTAN",
-		"B_SIRVEN",
-		"B_VISITAN"
+		"ALOHANDES_SEQUENCE",
+		"APARTAMENTO",
+		"HABITACION",
+		"HABITACIONHOSTAL",
+		"HABITACIONHOTEL",
+		"HABITACIONVIVIENDA",
+		"HORARIO",
+		"INMUEBLE",
+		"OFRECESERVICIO",
+		"OPERADOR",
+		"PERSONAJURIDICA",
+		"PERSONANATURAL",
+		"RESERVA",
+		"SERVICIOMENAJE",
+		"USUARIO",
+		"VIVIENDA"
 	]
 }

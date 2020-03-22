@@ -241,5 +241,83 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         }
     }
 	
+	/* ****************************************************************
+	 * 			Métodos administrativos
+	 *****************************************************************/
+	/**
+	 * Muestra el log de Parranderos
+	 */
+	public void mostrarLogParranderos ()
+	{
+		mostrarArchivo ("parranderos.log");
+	}
+	
+	/**
+	 * Muestra el log de datanucleus
+	 */
+	public void mostrarLogDatanuecleus ()
+	{
+		mostrarArchivo ("datanucleus.log");
+	}
+	
+	/**
+	 * Limpia el contenido del log de parranderos
+	 * Muestra en el panel de datos la traza de la ejecución
+	 */
+	public void limpiarLogParranderos ()
+	{
+		// Ejecución de la operación y recolección de los resultados
+		boolean resp = limpiarArchivo ("parranderos.log");
+
+		// Generación de la cadena de caracteres con la traza de la ejecución de la demo
+		String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
+		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
+		resultado += "\nLimpieza terminada";
+
+		panelDatos.actualizarInterfaz(resultado);
+	}
+	
+	/**
+	 * Limpia el contenido del log de datanucleus
+	 * Muestra en el panel de datos la traza de la ejecución
+	 */
+	public void limpiarLogDatanucleus ()
+	{
+		// Ejecución de la operación y recolección de los resultados
+		boolean resp = limpiarArchivo ("datanucleus.log");
+
+		// Generación de la cadena de caracteres con la traza de la ejecución de la demo
+		String resultado = "\n\n************ Limpiando el log de datanucleus ************ \n";
+		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
+		resultado += "\nLimpieza terminada";
+
+		panelDatos.actualizarInterfaz(resultado);
+	}
+	
+	/**
+	 * Limpia todas las tuplas de todas las tablas de la base de datos de parranderos
+	 * Muestra en el panel de datos el número de tuplas eliminadas de cada tabla
+	 */
+	public void limpiarBD ()
+	{
+		try 
+		{
+    		// Ejecución de la demo y recolección de los resultados
+			long eliminados [] = alohAndes.limpiarAlohAndes();
+			
+			// Generación de la cadena de caracteres con la traza de la ejecución de la demo
+			String resultado = "\n\n************ Limpiando la base de datos ************ \n";
+			
+   
+			panelDatos.actualizarInterfaz(resultado);
+		} 
+		catch (Exception e) 
+		{
+//			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
 
 }

@@ -3,15 +3,13 @@ package uniandes.isis2304.parranderos.persistencia;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import oracle.net.aso.v;
-
 public class SQLUtil {
 	
 	private final static String SQL = PersistenciaAlohAndes.SQL;
 	
 	private PersistenciaAlohAndes paa;
 	
-	public SQLUtil(PersistenciaAlohAndes ppa){
+	public SQLUtil(PersistenciaAlohAndes paa){
 		this.paa = paa;
 	}
 	

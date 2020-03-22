@@ -223,7 +223,7 @@ public class PersistenciaAlohAndes {
 	}
 	
 	private long nextval(){
-        long resp = sqlUtil.nextval (pmf.getPersistenceManager());
+        long resp = sqlUtil.nextval(pmf.getPersistenceManager());
         log.trace ("Generando secuencia: " + resp);
         return resp;
     }
@@ -896,7 +896,6 @@ public class PersistenciaAlohAndes {
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
-        
         try{
             tx.begin();
             long idUsuario = nextval ();
@@ -906,7 +905,6 @@ public class PersistenciaAlohAndes {
             return new Usuario(idUsuario, nombre, email, telefono, tipo);
         }
         catch (Exception e){
-        	System.out.println("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
         	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
         	return null;
         }
