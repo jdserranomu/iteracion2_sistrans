@@ -785,13 +785,10 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     /* ****************************************************************
 	 * 			CRUD de Reserva
 	 *****************************************************************/
-    public void adicionarReserva( )
+    public void adicionarReserva()
     {
     	try 
-    	{
-    		//Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
-			//double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble
-			
+    	{	
 			String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
 			Date fechaInicio=Date.valueOf(fechaIni);
 			
@@ -800,22 +797,21 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			
 			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "capacidad?", "Adicionar capacidad", JOptionPane.QUESTION_MESSAGE));
     		long idUsuario = Long.parseLong(JOptionPane.showInputDialog (this, "id?", "Adicionar id del usuario", JOptionPane.QUESTION_MESSAGE));
+    		long idOperador= Long.parseLong(JOptionPane.showInputDialog (this, "id?", "Adicionar id del operador", JOptionPane.QUESTION_MESSAGE));
     		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "inmueble?", "Adicionar id del inmueble", JOptionPane.QUESTION_MESSAGE));
-		
-    		Inmueble inmu=this.darInmueblePor
-    		
-    		String[] choices = {ServicioMenaje.TIPO_MENAJE, ServicioMenaje.TIPO_SERVICIO};
-    		String tipo = (String) JOptionPane.showInputDialog(null, "Selecciones el tipo","Seleccione el tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
-    	
-    		if (nombre!=null && tipo!=null)
+    		double valorTotal = Integer.parseInt(JOptionPane.showInputDialog (this, "capacidad?", "Adicionar capacidad", JOptionPane.QUESTION_MESSAGE));
+    		int pagado=0;
+    		double descuento=0;
+    		int estado=0;
+    		if (fechaIni!=null && fechafi!=null)
     		{
-        		ServicioMenaje sm = alohAndes.adicionarServicioMenaje(nombre, tipo);
-        		if (sm == null)
+        		Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal, null, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        		if (re == null)
         		{
-        			throw new Exception ("No se pudo crear un servicio/menaje con nombre: " + nombre);
+        			throw new Exception ("No se pudo crear un reserva con fecha de inicio: " + fechaIni+" y fecha fin : "+ fechafi );
         		}
-        		String resultado = "En adicionarServicioMenaje\n\n";
-        		resultado += "Servicio Menaje adicionado exitosamente: " + sm;
+        		String resultado = "En adicionarReserva\n\n";
+        		resultado += "Reserva adicionado exitosamente: " + re;
     			resultado += "\n Operación terminada";
     			panelDatos.actualizarInterfaz(resultado);
     		}
@@ -830,6 +826,79 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			panelDatos.actualizarInterfaz(resultado);
 		}
     }
+    
+    
+    	public void eliminarReservaPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar reserva por Id", JOptionPane.QUESTION_MESSAGE));
+    		long us = alohAndes.eliminarReservaporId(id);
+    		String resultado = "En buscar Reserva por Id\n\n";
+    		if(us!=-1) {
+    			resultado += "fue eliminada la reserva con id: " + us;
+    		}
+    		else {
+    			resultado += "La reserva con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    	
+    }
+    	
+    	 public void darReservaPorId() {
+    	    	try {
+    	    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar reserva por Id", JOptionPane.QUESTION_MESSAGE));
+    	    		Reserva us = alohAndes.darReservaPorId(id);
+    	    		String resultado = "En buscar reserva por Id\n\n";
+    	    		if(us!=null) {
+    	    			resultado += "La reserva es: " + us;
+    	    		}
+    	    		else {
+    	    			resultado += "la reserva con id :"+id+" no existe";
+    	    		}
+    	    		resultado += "\n Operación terminada";
+    	    		panelDatos.actualizarInterfaz(resultado);
+    			} catch (Exception e) {
+    				String resultado = generarMensajeError(e);
+    				panelDatos.actualizarInterfaz(resultado);
+    			}
+    	    }
+    	 
+    	 public void darReservas(){
+    			try {
+    				List <Reserva> lista = alohAndes.darReservas();
+
+    				String resultado = "En listaReserva";
+    				resultado +=  "\n" + listarReserva(lista);
+    				panelDatos.actualizarInterfaz(resultado);
+    				resultado += "\n Operación terminada";
+    			} catch (Exception e) {
+    				String resultado = generarMensajeError(e);
+    				panelDatos.actualizarInterfaz(resultado);
+    			}
+    		}
+    	 
+    	 public void darReservasEnFechasParaInmueble() {
+    	    	try {
+    	    		String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
+    				Date fechaInicio=Date.valueOf(fechaIni);
+    				
+    				String fechafi= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin", JOptionPane.QUESTION_MESSAGE); 
+    				Date fechaFin=Date.valueOf(fechafi);
+    				long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "inmueble?", "Adicionar id del inmueble", JOptionPane.QUESTION_MESSAGE));
+    	    		List<Reserva> lista = alohAndes.darReservasEnFechasParaInmueble(fechaInicio, fechaFin, idInmueble);
+    	    		String resultado = "En listaReserva";
+    				resultado +=  "\n" + listarReserva(lista);
+    				panelDatos.actualizarInterfaz(resultado);
+    				resultado += "\n Operación terminada";
+    			} catch (Exception e) {
+    				String resultado = generarMensajeError(e);
+    				panelDatos.actualizarInterfaz(resultado);
+    			}
+    	    }
     
     /* ****************************************************************
 	 * 			CRUD de Servicio Menaje
