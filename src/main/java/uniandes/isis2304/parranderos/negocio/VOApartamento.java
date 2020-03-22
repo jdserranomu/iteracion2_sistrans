@@ -1,6 +1,6 @@
 package uniandes.isis2304.parranderos.negocio;
 
-public interface VOApartamento {
+public interface VOApartamento{
 	
 	public long getId();
 	public int getAmoblado();

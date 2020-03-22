@@ -3,20 +3,363 @@
 	"frameH": 600,
 	"frameW": 800,
 	"bannerPath": "./src/main/resources/config/AlohAndes.png",
-	"menuBar":
-	[
-		{ "menuTitle": "Usuario",
-		  "options":
-			[
+	"menuBar": [
+		{
+			"menuTitle": "Apto",
+			"options": [
 				{
 					"label": "Adicionar",
-					"event": "adicionarUsuario"
+					"event": "adicionarApartamento"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darApartamentoPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darApartamentos"
+				},
+				{
+					"label": "Listar por Id Dueño",
+					"event": "darApartamentosPorIdPersona"
 				}
 			]
 		},
-		{ "menuTitle": "Mantenimiento",
-		  "options":
-			[
+		{
+			"menuTitle": "Habitacion",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarHabitacion"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darHabitacionPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darHabitaciones"
+				},
+				{
+					"label": "Listar por Id Dueño",
+					"event": "darHabitacionesPorIdPersona"
+				}
+			]
+		},
+		{
+			"menuTitle": "Hab. Hostal",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarHabitacionHostal"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darHabitacionHostalPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darHabitacionesHostales"
+				},
+				{
+					"label": "Listar por Id Dueño",
+					"event": "darHabitacionesHostal"
+				}
+			]
+		},
+		{
+			"menuTitle": "Hab. Hotel",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarHabitacionHotel"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darHabitacionHotelPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darHabitacionesHoteles"
+				},
+				{
+					"label": "Listar por Id Dueño",
+					"event": "darHabitacionesHotel"
+				}
+			]
+		},
+		{
+			"menuTitle": "Hab. Vivienda",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarHabitacionVivienda"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darHabitacionViviendaPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darHabitacionesViviendas"
+				},
+				{
+					"label": "Listar por Id Dueño",
+					"event": "darHabitacionesVivienda"
+				}
+			]
+		},
+		{
+			"menuTitle": "Horario",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarHorario"
+				},
+				{
+					"label": "Eiminar por Id Hostal y Dia",
+					"event": "eliminarHorarioPorIdHostalYDia"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darHorarioPorIdHostalYDia"
+				},
+				{
+					"label": "Listar",
+					"event": "darHorarios"
+				},
+				{
+					"label": "Listar por Id Hostal",
+					"event": "darHorariosPorIdHostal"
+				}
+			]
+		},
+		{
+			"menuTitle": "Inmueble",
+			"options": [
+				{
+					"label": "Eliminar",
+					"event": "eliminarInmueblePorId"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darInmueblePorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darInmuebles"
+				},
+				{
+					"label": "Listar por Mayor Capacidad",
+					"event": "darInmueblesPorMayorCapacidad"
+				},
+				{
+					"label": "Listar por Tipo",
+					"event": "darInmueblesPorTipo"
+				},
+				{
+					"label": "Listar por Disponibilidad",
+					"event": "darInmueblesPorDisponibilidad"
+				}
+			]
+		},
+		{
+			"menuTitle": "Ofrece",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarOfreceServicio"
+				},
+				{
+					"label": "Eliminar",
+					"event": "eliminarOfreceServicio"
+				},
+				{
+					"label": "Buscar por Nombre servicio y Id Inmueble",
+					"event": "darOfreceServicio"
+				},
+				{
+					"label": "Listar",
+					"event": "darOfrecenServicios"
+				},
+				{
+					"label": "Listar por Id Inmueble",
+					"event": "darOfreceServicios"
+				},
+				{
+					"label": "Listar por Nombre Servicio",
+					"event": "darOfrecenServicio"
+				}
+			]
+		},
+		{
+			"menuTitle": "Operador",
+			"options": [
+				{
+					"label": "Eliminar",
+					"event": "eliminarOperadorPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darOperadores"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darOperadorPorId"
+				}
+			]
+		},
+		{
+			"menuTitle": "Per. Juridica",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarPersonaJuridica"
+				},
+				{
+					"label": "Listar",
+					"event": "darPersonasJuridicas"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darPersonaJuridicaPorId"
+				},
+				{
+					"label": "Buscar por SuperIntendencia de Turismo",
+					"event": "darPersonaJuridicaPorIdSuperIntendenciaTurismo"
+				},
+				{
+					"label": "Buscar por Camara de Comercio",
+					"event": "darPersonaJuridicaPorIdCamaraComercio"
+				},
+				{
+					"label": "Listar por Tipo",
+					"event": "darPersonaJuridicaPorTipo"
+				}
+
+			]
+		},
+		{
+			"menuTitle": "Per. Natural",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarPersonaNatural"
+				},
+				{
+					"label": "Listar",
+					"event": "darPersonasNaturales"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darPersonaNaturalPorId"
+				},
+				{
+					"label": "Listar por Tipo",
+					"event": "darPersonaNaturalPorTipo"
+				}
+
+			]
+		},
+		{
+			"menuTitle": "Reserva",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarReserva"
+				},
+				{
+					"label": "Eliminar",
+					"event": "eliminarReservaporId"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darReservaPorId"
+				},
+				{
+					"label": "Listar",
+					"event": "darReservas"
+				},
+				{
+					"label": "Listar por Fechas e Id Inmueble",
+					"event": "darReservasEnFechasParaInmueble"
+				}
+			]
+		},
+		{
+			"menuTitle": "Servicio/Menaje",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarServicioMenaje"
+				},
+				{
+					"label": "Eliminar",
+					"event": "eliminarServicioMenajePorNombre"
+				},
+				{
+					"label": "Buscar por Nombre",
+					"event": "darServicioMenajePorNombre"
+				},
+				{
+					"label": "Listar por Tipo",
+					"event": "darServiciosMenajesPorTipo"
+				}
+			]
+		},
+		{
+			"menuTitle": "Usuario",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarUsuario"
+				},
+				{
+					"label": "Eiminar por Id",
+					"event": "eliminarUsuarioPorId"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darUsuarioPorId"
+				},
+				{
+					"label": "Buscar por Email",
+					"event": "darUsuarioPorEmail"
+				},
+				{
+					"label": "Listar",
+					"event": "darUsuarios"
+				},
+				{
+					"label": "Listar por tipo",
+					"event": "darUsuariosPorTipo"
+				}
+			]
+		},
+		{
+			"menuTitle": "Vivienda",
+			"options": [
+				{
+					"label": "Adicionar",
+					"event": "adicionarVivienda"
+				},
+				{
+					"label": "Listar",
+					"event": "darViviendas"
+				},
+				{
+					"label": "Buscar por Id",
+					"event": "darViviendaPorId"
+				},
+				{
+					"label": "Listar por Id Dueño",
+					"event": "darViviendaPorIdPersona"
+				}
+			]
+		},
+		{
+			"menuTitle": "Mantenimiento",
+			"options": [
 				{
 					"label": "Mostrar log Parranderos",
 					"event": "mostrarLogParranderos"
@@ -41,4 +384,3 @@
 		}
 	]
 }
-	

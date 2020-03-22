@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.sql.Date;
+import java.util.List;
 
 import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
@@ -31,7 +33,22 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.AlohAndes;
+import uniandes.isis2304.parranderos.negocio.Apartamento;
+import uniandes.isis2304.parranderos.negocio.Habitacion;
+import uniandes.isis2304.parranderos.negocio.HabitacionHostal;
+import uniandes.isis2304.parranderos.negocio.HabitacionHotel;
+import uniandes.isis2304.parranderos.negocio.HabitacionVivienda;
+import uniandes.isis2304.parranderos.negocio.Horario;
+import uniandes.isis2304.parranderos.negocio.Inmueble;
+import uniandes.isis2304.parranderos.negocio.OfreceServicio;
+import uniandes.isis2304.parranderos.negocio.Operador;
+import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
+import uniandes.isis2304.parranderos.negocio.PersonaNatural;
+import uniandes.isis2304.parranderos.negocio.Reserva;
+import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
+import uniandes.isis2304.parranderos.negocio.VOApartamento;
+import uniandes.isis2304.parranderos.negocio.Vivienda;
 
 @SuppressWarnings("serial")
 public class InterfazAlohAndesApp extends JFrame implements ActionListener{
@@ -71,6 +88,10 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         add (new JLabel (new ImageIcon (path)), BorderLayout.NORTH );          
         add( panelDatos, BorderLayout.CENTER );        
     }
+    
+    /* ****************************************************************
+	 * 			Métodos de configuración de la interfaz
+	 *****************************************************************/
     
     private JsonObject openConfig (String tipo, String archConfig)
     {
@@ -135,7 +156,92 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         setJMenuBar ( menuBar );	
     }
     
+    /* ****************************************************************
+	 * 			CRUD de Apartamento
+	 *****************************************************************/
     
+    public void adicionarApartamento ()
+	{
+    	//int amoblado, double precioMes, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal
+		try {
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+        
+	}
+    
+    public void darApartamentos (){
+		try {
+			List <Apartamento> lista = alohAndes.darApartamentos();
+
+			String resultado = "En listarTipoBebida";
+			resultado +=  "\n" + listarApartamento(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    
+    /* ****************************************************************
+	 * 			CRUD de Habitacion
+	 *****************************************************************/
+    
+    
+    /* ****************************************************************
+	 * 			CRUD de Habitacion Hostal
+	 *****************************************************************/
+    
+    
+    /* ****************************************************************
+	 * 			CRUD de Habitacion Hotel
+	 *****************************************************************/
+    
+    
+    /* ****************************************************************
+	 * 			CRUD de Habitacion Vivienda
+	 *****************************************************************/
+    
+    
+    /* ****************************************************************
+	 * 			CRUD de Horario
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Inmueble
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de OfreceServicio
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Operador
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Persona Juridica
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Persona Natural
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Reserva
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Servicio Menaje
+	 *****************************************************************/
+    
+    /* ****************************************************************
+	 * 			CRUD de Usuario
+	 *****************************************************************/
     
     public void adicionarUsuario( )
     {
@@ -173,15 +279,232 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     }
     
     
-    private String generarMensajeError(Exception e) 
-	{
-		String resultado = "************ Error en la ejecución\n";
-		resultado += e.getLocalizedMessage() + ", " + darDetalleException(e);
-		resultado += "\n\nRevise datanucleus.log y parranderos.log para más detalles";
-		return resultado;
+    /* ****************************************************************
+	 * 			CRUD de Vivienda
+	 *****************************************************************/
+    
+ 
+	
+    /* ****************************************************************
+	 * 			Métodos administrativos
+	 *****************************************************************/
+
+	public void mostrarLogParranderos (){
+		mostrarArchivo ("parranderos.log");
+	}
+	
+	public void mostrarLogDatanuecleus (){
+		mostrarArchivo ("datanucleus.log");
+	}
+	
+	public void limpiarLogParranderos (){
+		boolean resp = limpiarArchivo ("parranderos.log");
+		String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
+		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
+		resultado += "\nLimpieza terminada";
+
+		panelDatos.actualizarInterfaz(resultado);
+	}
+
+	public void limpiarLogDatanucleus (){
+		boolean resp = limpiarArchivo ("datanucleus.log");
+		String resultado = "\n\n************ Limpiando el log de datanucleus ************ \n";
+		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
+		resultado += "\nLimpieza terminada";
+		panelDatos.actualizarInterfaz(resultado);
+	}
+
+	public void limpiarBD (){
+		try {
+			long eliminados [] = alohAndes.limpiarAlohAndes();
+			String resultado = "\n\n************ Limpiando la base de datos ************ \n";
+			resultado += eliminados [0] + " Apartamentos eliminados\n";
+			resultado += eliminados [1] + " Habitaciones eliminados\n";
+			resultado += eliminados [2] + " Hab. Hostal eliminados\n";
+			resultado += eliminados [3] + " Hab. Hotel eliminados\n";
+			resultado += eliminados [4] + " Hab. Vivienda eliminados\n";
+			resultado += eliminados [5] + " Horario eliminados\n";
+			resultado += eliminados [6] + " Inmueble eliminados\n";
+			resultado += eliminados [7] + " Ofrece Servicio eliminados\n";
+			resultado += eliminados [8] + " Operador eliminados\n";
+			resultado += eliminados [9] + " Per. Juridica eliminados\n";
+			resultado += eliminados [10] + " Per. Natural eliminados\n";
+			resultado += eliminados [11] + " Reserva eliminados\n";
+			resultado += eliminados [12] + " Servicio/Menaje eliminados\n";
+			resultado += eliminados [13] + " Usuario eliminados\n";
+			resultado += eliminados [14] + " Vivienda eliminados\n";
+			resultado += "\nLimpieza terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} 
+		catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void mostrarPresentacionGeneral (){
+		mostrarArchivo ("data/00-ST-ParranderosJDO.pdf");
+	}
+
+	public void mostrarModeloConceptual (){
+		mostrarArchivo ("data/Modelo Conceptual Parranderos.pdf");
+	}
+
+	public void mostrarEsquemaBD (){
+		mostrarArchivo ("data/Esquema BD Parranderos.pdf");
+	}
+
+	public void mostrarScriptBD (){
+		mostrarArchivo ("data/EsquemaParranderos.sql");
+	}
+
+	public void mostrarArqRef (){
+		mostrarArchivo ("data/ArquitecturaReferencia.pdf");
+	}
+	
+	public void mostrarJavadoc (){
+		mostrarArchivo ("doc/index.html");
+	}
+    /* ****************************************************************
+	 * 			Métodos privados para la presentación de resultados y otras operaciones
+	 *****************************************************************/
+
+    private String listarApartamento(List<Apartamento> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
 	}
     
-    private String darDetalleException(Exception e) 
+    private String listarHabitacion(List<Habitacion> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarHabitacionhostal(List<HabitacionHostal> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarHbiatacionHotel(List<HabitacionHotel> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarHabitacionVivienda(List<HabitacionVivienda> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarHorario(List<Horario> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarInmueble(List<Inmueble> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarOfreceServicio(List<OfreceServicio> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+
+    private String listarOperador(List<Operador> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarPersonaJuridica(List<PersonaJuridica> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarPersonaNatural(List<PersonaNatural> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarReserva(List<Reserva> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarServicioMenaje(List<ServicioMenaje> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarUsuario(List<Usuario> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarVivenda(List<Vivienda> lista) {
+    	String resp = "Los tipos de bebida existentes son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+
+	private String darDetalleException(Exception e) 
 	{
 		String resp = "";
 		if (e.getClass().getName().equals("javax.jdo.JDODataStoreException"))
@@ -192,10 +515,16 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 		return resp;
 	}
 
-    
-    private boolean limpiarArchivo(String nombreArchivo) {
+	private String generarMensajeError(Exception e){
+		String resultado = "************ Error en la ejecución\n";
+		resultado += e.getLocalizedMessage() + ", " + darDetalleException(e);
+		resultado += "\n\nRevise datanucleus.log y parranderos.log para más detalles";
+		return resultado;
+	}
+
+	private boolean limpiarArchivo(String nombreArchivo) {
 		BufferedWriter bw;
-		try {
+		try{
 			bw = new BufferedWriter(new FileWriter(new File (nombreArchivo)));
 			bw.write ("");
 			bw.close ();
@@ -205,19 +534,22 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			return false;
 		}
 	}
-    
-    
-    private void mostrarArchivo (String nombreArchivo){
+
+	private void mostrarArchivo (String nombreArchivo){
 		try{
 			Desktop.getDesktop().open(new File(nombreArchivo));
 		}
 		catch (IOException e){
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-    
-    
-    public void actionPerformed(ActionEvent e) {
+	
+	/* ****************************************************************
+	 * 			Métodos de la Interacción
+	 *****************************************************************/
+	
+	public void actionPerformed(ActionEvent e) {
 		String evento = e.getActionCommand( );		
         try 
         {
@@ -230,6 +562,10 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 		} 
 	}
 	
+	/* ****************************************************************
+	 * 			Programa principal
+	 *****************************************************************/
+	
 	public static void main( String[] args ){
         try{
             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
@@ -240,84 +576,6 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
             e.printStackTrace( );
         }
     }
-	
-	/* ****************************************************************
-	 * 			Métodos administrativos
-	 *****************************************************************/
-	/**
-	 * Muestra el log de Parranderos
-	 */
-	public void mostrarLogParranderos ()
-	{
-		mostrarArchivo ("parranderos.log");
-	}
-	
-	/**
-	 * Muestra el log de datanucleus
-	 */
-	public void mostrarLogDatanuecleus ()
-	{
-		mostrarArchivo ("datanucleus.log");
-	}
-	
-	/**
-	 * Limpia el contenido del log de parranderos
-	 * Muestra en el panel de datos la traza de la ejecución
-	 */
-	public void limpiarLogParranderos ()
-	{
-		// Ejecución de la operación y recolección de los resultados
-		boolean resp = limpiarArchivo ("parranderos.log");
-
-		// Generación de la cadena de caracteres con la traza de la ejecución de la demo
-		String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
-		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
-		resultado += "\nLimpieza terminada";
-
-		panelDatos.actualizarInterfaz(resultado);
-	}
-	
-	/**
-	 * Limpia el contenido del log de datanucleus
-	 * Muestra en el panel de datos la traza de la ejecución
-	 */
-	public void limpiarLogDatanucleus ()
-	{
-		// Ejecución de la operación y recolección de los resultados
-		boolean resp = limpiarArchivo ("datanucleus.log");
-
-		// Generación de la cadena de caracteres con la traza de la ejecución de la demo
-		String resultado = "\n\n************ Limpiando el log de datanucleus ************ \n";
-		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
-		resultado += "\nLimpieza terminada";
-
-		panelDatos.actualizarInterfaz(resultado);
-	}
-	
-	/**
-	 * Limpia todas las tuplas de todas las tablas de la base de datos de parranderos
-	 * Muestra en el panel de datos el número de tuplas eliminadas de cada tabla
-	 */
-	public void limpiarBD ()
-	{
-		try 
-		{
-    		// Ejecución de la demo y recolección de los resultados
-			long eliminados [] = alohAndes.limpiarAlohAndes();
-			
-			// Generación de la cadena de caracteres con la traza de la ejecución de la demo
-			String resultado = "\n\n************ Limpiando la base de datos ************ \n";
-			
-   
-			panelDatos.actualizarInterfaz(resultado);
-		} 
-		catch (Exception e) 
-		{
-//			e.printStackTrace();
-			String resultado = generarMensajeError(e);
-			panelDatos.actualizarInterfaz(resultado);
-		}
-	}
 	
 
 }

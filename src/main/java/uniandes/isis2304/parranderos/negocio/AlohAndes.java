@@ -111,7 +111,7 @@ public class AlohAndes
 	}
 	
 	
-	public Apartamento darApartamentosPorId (int id)
+	public Apartamento darApartamentoPorId (int id)
 	{
 		log.info ("Consultando Apartamento");
         Apartamento apto = pp.darApartamentoPorId(id);
@@ -175,7 +175,7 @@ public class AlohAndes
         return habitacion;
 	}
 	
-	public List<HabitacionHostal> darHabitacionesHostal ()
+	public List<HabitacionHostal> darHabitacionesHostales ()
 	{
 		log.info ("Consultando Habitaciones Hostal");
         List<HabitacionHostal> hab = pp.darHabitacionesHostales();	
@@ -300,7 +300,7 @@ public class AlohAndes
         return ho;
 	}
 	
-	public List<Horario> darHorario ()
+	public List<Horario> darHorarios ()
 	{
 		log.info ("Consultando Horarios");
         List<Horario> ho = pp.darHorarios();
@@ -572,7 +572,7 @@ public class AlohAndes
 	}
 	
 	/* ****************************************************************
-	 * 			Métodos para manejar las Personas Servicio Menaje
+	 * 			Métodos para manejar las Servicio Menaje
 	 *****************************************************************/
 	public ServicioMenaje adicionarServicioMenaje (String nombre, String tipo)  {
 		
@@ -607,7 +607,7 @@ public class AlohAndes
 	
 	
 	/* ****************************************************************
-	 * 			Métodos para manejar las Personas Usuarios
+	 * 			Métodos para manejar los Usuarios
 	 *****************************************************************/
 	public  Usuario adicionarUsuario (String nombre, String email, String telefono, String tipo)  {
 		

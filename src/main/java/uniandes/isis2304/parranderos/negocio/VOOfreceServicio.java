@@ -11,6 +11,6 @@ public interface VOOfreceServicio {
 	public void setCosto(double costo);
 	public int getCantidad();
 	public void setCantidad(int cantidad);
-	
+	public String toString();
 	
 }
