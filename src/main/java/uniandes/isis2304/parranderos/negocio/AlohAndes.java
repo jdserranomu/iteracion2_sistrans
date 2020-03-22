@@ -613,7 +613,7 @@ public class AlohAndes
 		
 		log.info ("Adicionando usuario" +nombre+ ", email: "+ email+ ", telefono: " + telefono+ " y tipo: "+tipo);
         Usuario sm = pp.adicionarUsuario(nombre, email, telefono, tipo);
-        log.info ("Adicionando Servicio o Menaje: " + sm);
+        log.info ("Adicionando Usuario: " + sm);
     	
         return sm;
 	}
