@@ -248,6 +248,7 @@ public class PersistenciaAlohAndes {
             tx.begin();
             long idInmueble = nextval ();
             long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_APARTAMENTO, capacidad, disponible, fechaReservaFinal);
+           
             long tuplasInsertadas = sqlApartamento.adicionarApartamento(pm, idInmueble, amoblado,precioMes,idPersona);
             tx.commit();
             log.trace ("Inserción de Apartamento: " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas" + " tuples inmueble "+tuplaInmuble);
