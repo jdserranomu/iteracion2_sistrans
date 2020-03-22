@@ -31,6 +31,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 
 import uniandes.isis2304.parranderos.negocio.AlohAndes;
 import uniandes.isis2304.parranderos.negocio.Apartamento;
@@ -164,6 +165,24 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	{
     	//int amoblado, double precioMes, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal
 		try {
+			int amoblado = Integer.parseInt(JOptionPane.showInputDialog (this, "Amoblado?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
+			double precioMes = Double.parseDouble(JOptionPane.showInputDialog (this, "Precio mes?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
+			long idPersona = Long.parseLong(JOptionPane.showInputDialog (this, "Id Dueño?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
+			String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE);
+			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Capacidad?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
+			int disponible = Integer.parseInt(JOptionPane.showInputDialog (this, "Disponible?", "Adicionar apartamento", JOptionPane.QUESTION_MESSAGE));
+			//Date fechaDate = null;
+			Apartamento apto = alohAndes.adicionarApartamento(amoblado, precioMes, idPersona, direccion, capacidad, disponible, null);
+			if(apto == null) {
+				throw new Exception ("No se pudo crear apartamento");
+			}
+			else {
+				String resultado = "En adicionarApartamento\n\n";
+        		resultado += "Apartamento adicionado exitosamente: " + apto;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+			
 			
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
@@ -185,6 +204,42 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	}
+    
+    public void darApartamentoPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar apartamento por Id", JOptionPane.QUESTION_MESSAGE));
+    		Apartamento apto = alohAndes.darApartamentoPorId(id);
+    		String resultado = "En buscar Apartamento por Id\n\n";
+    		if(apto!=null) {
+    			resultado += "El apartamento es: " + apto;
+    		}
+    		else {
+    			resultado += "El apto con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+    
+    public void darApartamentosPorIdPersona(){
+		try {
+			int idPersona = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar apartamento por Id Persona", JOptionPane.QUESTION_MESSAGE));
+			List <Apartamento> lista = alohAndes.darApartamentosPorIdPersona(idPersona);
+
+			String resultado = "En listarTipoBebida";
+			resultado +=  "\n" + listarApartamento(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    
     
     
     /* ****************************************************************
