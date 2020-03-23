@@ -781,7 +781,92 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     /* ****************************************************************
 	 * 			CRUD de Persona Natural
 	 *****************************************************************/
+    public void adicionarPersonaNatural()
+    {
+    	try 
+    	{	String[] choices = {PersonaNatural.TIPO_MEMBROCOMUNIDAD, PersonaNatural.TIPO_VECINO};
+			String tipo= (String) JOptionPane.showInputDialog(null, "Elegir tipo","Adicionar tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
+    		String nombre = JOptionPane.showInputDialog (this, "nombre?", "Adicionar nombre", JOptionPane.QUESTION_MESSAGE);
+    		String email = JOptionPane.showInputDialog (this, "email?", "Adicionar email", JOptionPane.QUESTION_MESSAGE);
+    		String telefono = JOptionPane.showInputDialog (this, "telefono?", "Adicionar telefono", JOptionPane.QUESTION_MESSAGE);
+    		
+    		if (tipo!=null && nombre!=null && email!=null && telefono!=null)
+    		{
+        		PersonaNatural re = alohAndes.adicionarPersonaNatural(tipo, nombre, email, telefono);
+        		if (re == null)
+        		{
+        			throw new Exception ("No se pudo crear la persona natural con nombre: " + nombre );
+        		}
+        		String resultado = "En adicionarPersonaNatural\n\n";
+        		resultado += "Reserva adicionado exitosamente: " + re;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+    		}
+    		else
+    		{
+    			panelDatos.actualizarInterfaz("Operación cancelada por el usuario");
+    		}
+		} 
+    	catch (Exception e) 
+    	{
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
     
+    public void darPersonasNaturales(){
+		try {
+			List <PersonaNatural> lista = alohAndes.darPersonasNaturales();
+
+			String resultado = "En listaUsuarios";
+			resultado +=  "\n" + listarPersonaNatural(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+    
+    public void darPersonaNaturalPorId()
+    {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar persona natural por Id", JOptionPane.QUESTION_MESSAGE));
+    		PersonaNatural us = alohAndes.darPersonaNaturalPorId(id);
+    		String resultado = "En buscar persona natural por Id\n\n";
+    		if(us!=null) {
+    			resultado += "La persona natural es: " + us;
+    		}
+    		else {
+    			resultado += "la persona natural con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    
+    }
+    
+    public void darPersonaNaturalPorTipo(){
+    	
+		try {
+			
+			String[] choices = {Usuario.TIPO_EGRESADO, Usuario.TIPO_EMPLEADO, Usuario.TIPO_ESTUDIANTE, Usuario.TIPO_INVITADO, Usuario.TIPO_PADRAESTUDIANTE,
+					Usuario.TIPO_PROFESOR, Usuario.TIPO_PROFESORINVITADO};
+    		String tipo = (String) JOptionPane.showInputDialog(null, "Selecciones el tipo","Selecciones el tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
+			List <PersonaNatural> lista = alohAndes.darPersonaNaturalPorTipo(tipo);
+			
+			String resultado = "En listaPersonaNatural";
+			resultado +=  "\n" + listarPersonaNatural(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
     /* ****************************************************************
 	 * 			CRUD de Reserva
 	 *****************************************************************/
