@@ -19,6 +19,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -270,7 +272,7 @@ public class AlohAndes
         return hab;
 	}
 	
-	public List<HabitacionVivienda> darHabitacionesVivienda (int idVivienda)
+	public List<HabitacionVivienda> darHabitacionesVivienda (long idVivienda)
 	{
 		log.info ("Consultando Habitaciones Vivienda");
         List<HabitacionVivienda> habs = pp.darHabitacionesVivienda(idVivienda);
@@ -313,7 +315,7 @@ public class AlohAndes
         return ho;
 	}
 	
-	public List<Horario> darHorariosPorIdHostal(int idHostal)
+	public List<Horario> darHorariosPorIdHostal(long idHostal)
 	{
 		log.info ("Consultando Horarios");
         List<Horario> ho = pp.darHorariosPorIdHostal(idHostal);
@@ -453,7 +455,7 @@ public class AlohAndes
         return hab;
 	}
 	
-	public Operador darOperadorPorId (int id)
+	public Operador darOperadorPorId (long id)
 	{
 		log.info ("Consultando operador con id:"+ id);
         Operador op= pp.darOperadorPorId(id);
@@ -480,7 +482,7 @@ public class AlohAndes
         return pj;
 	}
 	
-	public PersonaJuridica darPersonaJuridicaPorId (int id)
+	public PersonaJuridica darPersonaJuridicaPorId (long id)
 	{
 		log.info ("Consultando Persona Juridica con id:"+ id);
         PersonaJuridica pj= pp.darPersonaJuridicaPorId(id);
@@ -531,7 +533,7 @@ public class AlohAndes
         return pn;
 	}
 	
-	public PersonaNatural darPersonaNaturalPorId (int id)
+	public PersonaNatural darPersonaNaturalPorId (long id)
 	{
 		log.info ("Consultando Persona Natural con id:"+ id);
         PersonaNatural pn= pp.darPersonaNaturalPorId(id);
@@ -581,14 +583,11 @@ public class AlohAndes
 	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
 			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) throws Exception{
 		
+		
 		log.info ("Adicionando reserva con fecha inicio" +fechaInicio+", fecha fin: "+fechaFin+", con valor de: "+valorTotal+", pagado: "+aTexto(pagado)+", con operador: "+idOperador + ", usuario:"+idUsuario+" y inmueble: "+ idInmueble );
 		Inmueble in= darInmueblePorId(idInmueble);
 		String tipo=in.getTipo();
 		long dueno= darDuenoInmueble(idInmueble, tipo);
-		
-		if (dueno!=idOperador) {
-			throw new Exception("El id del dueño del inmueble no coincide con el id del operador");
-		}
 		
 		if (in.getCapacidad()<capacidad){
 			throw new Exception("La capacidad ingresada supera la capacidad del inmueble");
@@ -597,11 +596,14 @@ public class AlohAndes
 		if (in.getDisponible()==0) {
 			throw new Exception("El inmueble no esta disponible para reservas");
 		}
-		Duration diff = Duration.between(fechaInicio.toInstant(), fechaFin.toInstant());
-		long diffDays = diff.toDays();
+	
+		long diffDays =ChronoUnit.DAYS.between(LocalDate.parse(fechaInicio.toString()),LocalDate.parse(fechaFin.toString()));
+		System.out.println(diffDays);
+		System.out.println(diffDays);
 		if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays<30 ) {
 			throw new Exception("Una habitacion tiene una reserva minima de un mes");
 		}
+		
 		Usuario us= darUsuarioPorId(idUsuario);
 		if (us.getTipo().equals(Usuario.TIPO_INVITADO) && !tipo.equals(Inmueble.TIPO_VIVIENDA)) {
 			throw new Exception("El usuario de tipo invitado solo puede arrendar vivienda");

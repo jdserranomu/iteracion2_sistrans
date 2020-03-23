@@ -1228,9 +1228,11 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			
 			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "capacidad?", "Adicionar capacidad", JOptionPane.QUESTION_MESSAGE));
     		long idUsuario = Long.parseLong(JOptionPane.showInputDialog (this, "id?", "Adicionar id del usuario", JOptionPane.QUESTION_MESSAGE));
-    		long idOperador= Long.parseLong(JOptionPane.showInputDialog (this, "id?", "Adicionar id del operador", JOptionPane.QUESTION_MESSAGE));
+    		
     		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "inmueble?", "Adicionar id del inmueble", JOptionPane.QUESTION_MESSAGE));
-    		double valorTotal = Integer.parseInt(JOptionPane.showInputDialog (this, "capacidad?", "Adicionar capacidad", JOptionPane.QUESTION_MESSAGE));
+    		Inmueble inm=alohAndes.darInmueblePorId(idInmueble);
+    		long idOperador=alohAndes.darDuenoInmueble(idInmueble, inm.getTipo());
+    		double valorTotal = Integer.parseInt(JOptionPane.showInputDialog (this, "valor Total?", "Adicionar valor total", JOptionPane.QUESTION_MESSAGE));
     		int pagado=0;
     		double descuento=0;
     		int estado=0;
@@ -1941,7 +1943,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
             InterfazAlohAndesApp interfaz = new InterfazAlohAndesApp( );
             interfaz.setVisible( true );
-            System.out.println("Llego aqui");
+         
         }
         catch( Exception e ){
             e.printStackTrace( );
