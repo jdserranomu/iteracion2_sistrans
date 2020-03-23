@@ -33,13 +33,13 @@ public class OfreceServicio implements VOOfreceServicio{
 	public void setIdInmueble(long idInmueble) {
 		this.idInmueble = idInmueble;
 	}
-	public double getCosto() {
+	public Double getCosto() {
 		return costo;
 	}
 	public void setCosto(Double costo) {
 		this.costo = costo;
 	}
-	public int getCantidad() {
+	public Integer getCantidad() {
 		return cantidad;
 	}
 	public void setCantidad(Integer cantidad) {
