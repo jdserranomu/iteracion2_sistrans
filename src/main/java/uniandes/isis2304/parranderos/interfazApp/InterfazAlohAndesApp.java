@@ -773,11 +773,199 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     /* ****************************************************************
 	 * 			CRUD de Operador
 	 *****************************************************************/
+	public void eliminarOperadorPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar id Operador", JOptionPane.QUESTION_MESSAGE));
+    		long us = alohAndes.eliminarOperadorPorId(id);
+    		String resultado = "En eliminar operador por Id\n\n";
+    		if(us!=-1) {
+    			resultado += "fue eliminada el operador con id: " + us;
+    		}
+    		else {
+    			resultado += "el operador con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    	
+    }
+	
+	public void darOperadores(){
+		try {
+			List <Operador> lista = alohAndes.darOperadores();
+
+			String resultado = "En listaOperadores";
+			resultado +=  "\n" + listarOperador(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darOperadorPorId()
+    {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar operador por Id", JOptionPane.QUESTION_MESSAGE));
+    		Operador us = alohAndes.darOperadorPorId(id);
+    		String resultado = "En buscar operador por Id\n\n";
+    		if(us!=null) {
+    			resultado += "La persona juridica es: " + us;
+    		}
+    		else {
+    			resultado += "el operador con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
     
+    }
     /* ****************************************************************
 	 * 			CRUD de Persona Juridica
 	 *****************************************************************/
+	public void adicionarPersonaJuridica()
+    {
+    	try 
+    	{	
+    		int categoria = Integer.parseInt(JOptionPane.showInputDialog (this, "categoria?", "Adicionar categoria", JOptionPane.QUESTION_MESSAGE));
+    		double precioNoche = Double.parseDouble(JOptionPane.showInputDialog (this, "precio noche?", "Adicionar precio noche", JOptionPane.QUESTION_MESSAGE));
+    		long idCamaraComercio= Long.parseLong(JOptionPane.showInputDialog (this, "id camara?", "Adicionar id del camara de comercio", JOptionPane.QUESTION_MESSAGE));
+    		long idSuperIntendenciaTurismo= Long.parseLong(JOptionPane.showInputDialog (this, "superintendencia?", "Adicionar id superintendencia", JOptionPane.QUESTION_MESSAGE));
+    		String[] choices = {PersonaNatural.TIPO_MEMBROCOMUNIDAD, PersonaNatural.TIPO_VECINO};
+			String tipo= (String) JOptionPane.showInputDialog(null, "Elegir tipo","Adicionar tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
+    		String nombre = JOptionPane.showInputDialog (this, "nombre?", "Adicionar nombre", JOptionPane.QUESTION_MESSAGE);
+    		String email = JOptionPane.showInputDialog (this, "email?", "Adicionar email", JOptionPane.QUESTION_MESSAGE);
+    		String telefono = JOptionPane.showInputDialog (this, "telefono?", "Adicionar telefono", JOptionPane.QUESTION_MESSAGE);
+    		
+    		
+    		if (tipo!=null && nombre!=null && email!=null && telefono!=null )
+    		{
+        		PersonaJuridica re = alohAndes.adicionarPersonaJuridica(idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo, nombre, email, telefono);
+        		if (re == null)
+        		{
+        			throw new Exception ("No se pudo crear la persona juridica con nombre: " + nombre );
+        		}
+        		String resultado = "En adicionarPersonaNatural\n\n";
+        		resultado += "Reserva adicionado exitosamente: " + re;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+    		}
+    		else
+    		{
+    			panelDatos.actualizarInterfaz("Operación cancelada por el usuario");
+    		}
+		} 
+    	catch (Exception e) 
+    	{
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+	
+	public void darPersonasJuridicas(){
+		try {
+			List <PersonaJuridica> lista = alohAndes.darPersonasJuridicas();
+
+			String resultado = "En listaPersonaJuridica";
+			resultado +=  "\n" + listarPersonaJuridica(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darPersonaJuridicaPorId()
+    {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar persona juridica por Id", JOptionPane.QUESTION_MESSAGE));
+    		PersonaJuridica us = alohAndes.darPersonaJuridicaPorId(id);
+    		String resultado = "En buscar persona juridica por Id\n\n";
+    		if(us!=null) {
+    			resultado += "La persona juridica es: " + us;
+    		}
+    		else {
+    			resultado += "la persona juridica con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
     
+    }
+    
+	public void darPersonaJuridicaPorIdSuperIntendenciaTurismo()
+    {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id superintendencia?", "Buscar persona juridica por Id superintendencia", JOptionPane.QUESTION_MESSAGE));
+    		PersonaJuridica us = alohAndes.darPersonaJuridicaPorIdSuperIntendenciaTurismo(id);
+    		String resultado = "En buscar persona juridica por Id superintendencia\n\n";
+    		if(us!=null) {
+    			resultado += "La persona juridica es: " + us;
+    		}
+    		else {
+    			resultado += "la persona juridica con id superintendencia :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    
+    }
+	
+	public void darPersonaJuridicaPorIdCamaraComercio()
+    {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id camara?", "Buscar persona juridica por Id camara", JOptionPane.QUESTION_MESSAGE));
+    		PersonaJuridica us = alohAndes.darPersonaJuridicaPorIdCamaraComercio(id);
+    		String resultado = "En buscar persona juridica por Id camara\n\n";
+    		if(us!=null) {
+    			resultado += "La persona juridica es: " + us;
+    		}
+    		else {
+    			resultado += "la persona juridica con id camara :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    
+    }
+	
+	
+public void darPersonaJuridicaPorTipo(){
+    	
+		try {
+			
+			String[] choices = {Usuario.TIPO_EGRESADO, Usuario.TIPO_EMPLEADO, Usuario.TIPO_ESTUDIANTE, Usuario.TIPO_INVITADO, Usuario.TIPO_PADRAESTUDIANTE,
+					Usuario.TIPO_PROFESOR, Usuario.TIPO_PROFESORINVITADO};
+    		String tipo = (String) JOptionPane.showInputDialog(null, "Selecciones el tipo","Selecciones el tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
+			List <PersonaJuridica> lista = alohAndes.darPersonaJuridicaPorTipo(tipo);
+			
+			String resultado = "En listaPersonaJuridica";
+			resultado +=  "\n" + listarPersonaJuridica(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
     /* ****************************************************************
 	 * 			CRUD de Persona Natural
 	 *****************************************************************/
