@@ -7,9 +7,9 @@ public interface VOOfreceServicio {
 	public void setIdServicioMenaje( String idServicioMenaje);
 	public long getIdInmueble();
 	public void setIdInmueble(long idInmueble);
-	public double getCosto();
+	public Double getCosto();
 	public void setCosto(Double costo);
-	public int getCantidad();
+	public Integer getCantidad();
 	public void setCantidad(Integer cantidad);
 	public String toString();
 	
