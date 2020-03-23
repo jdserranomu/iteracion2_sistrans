@@ -160,6 +160,10 @@
 				{
 					"label": "Listar por Disponibilidad",
 					"event": "darInmueblesPorDisponibilidad"
+				},
+				{
+					"label": "Retirar oferta inmueble",
+					"event": "retirarOfertaInmueblePorId"
 				}
 			]
 		},

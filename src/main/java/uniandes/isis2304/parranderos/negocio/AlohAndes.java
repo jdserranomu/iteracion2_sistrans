@@ -16,6 +16,7 @@
 package uniandes.isis2304.parranderos.negocio;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
@@ -364,6 +365,19 @@ public class AlohAndes
         List<Inmueble> inm = pp.darInmueblesPorDisponibilidad(disponibilidad);
         log.info ("Consultando Inmuebles: " + inm.size() + " existentes");
         return inm;
+	}
+	
+	public long retirarOfertaInmueblePorId(long idInmueble) throws Exception{
+		log.info("Retirando oferta inmueble: "+idInmueble);
+		List<Reserva> reservas = pp.darReservasDespuesDeFechaPorIdInmueble(new Date(new java.util.Date().getTime()), idInmueble);
+		if(reservas.isEmpty()) {
+			long inm = pp.retirarOfertaInmueblePorId(idInmueble);
+			log.info("Oferta retirada");
+			return inm;
+		}
+		else {
+			throw new Exception("El inmueble aun tiene reservas");
+		}
 	}
 	
 	/* ****************************************************************

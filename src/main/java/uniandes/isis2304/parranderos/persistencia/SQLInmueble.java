@@ -70,6 +70,18 @@ public class SQLInmueble {
 		return (List<Inmueble>) q.executeList();
 	}
 	
+	public long retirarOfertaInmueblePorId(PersistenceManager pm, long idInmueble) {
+		Query q = pm.newQuery(SQL, "UPDATE " + paa.darTablaInmueble() + " SET disponible = 0 WHERE id = ?");
+		q.setParameters(idInmueble);
+		return (long) q.executeUnique();
+	}
+	
+	public long habilitarOfertaInmueblePorId(PersistenceManager pm, long idInmueble) {
+		Query q = pm.newQuery(SQL, "UPDATE " + paa.darTablaInmueble() + " SET disponible = 1 WHERE id = ?");
+		q.setParameters(idInmueble);
+		return (long) q.executeUnique();
+	}
+	
 	
 
 }

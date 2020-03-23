@@ -531,6 +531,54 @@ public class PersistenciaAlohAndes {
         }
 	}
 	
+	
+	public long retirarOfertaInmueblePorId(long idInmueble) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlInmueble.retirarOfertaInmueblePorId(pm, idInmueble);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	
+	public long habilitarOfertaInmueblePorId (long idInmueble) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try{
+            tx.begin();
+            long resp = sqlInmueble.habilitarOfertaInmueblePorId(pm, idInmueble);
+            tx.commit();
+            return resp;
+        }
+        catch (Exception e){
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+            return -1;
+        }
+        finally{
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
 	public Inmueble darInmueblePorId (long idInmueble)
 	{
 		return sqlInmueble.darInmueblePorId(pmf.getPersistenceManager(), idInmueble);
@@ -811,6 +859,11 @@ public class PersistenciaAlohAndes {
 	public List<Reserva> darReservas ()
 	{
 		return sqlReserva.darReservas(pmf.getPersistenceManager());
+	}
+	
+	public List<Reserva> darReservasDespuesDeFechaPorIdInmueble (Date fecha, long idInmueble)
+	{
+		return sqlReserva.darReservasDespuesDeFechaPorIdInmueble(pmf.getPersistenceManager(), fecha, idInmueble);
 	}
 	
 	public List<Reserva> darReservasEnFechasParaInmueble (Date fechaStart, Date fechaEnd, long idInmueble) 

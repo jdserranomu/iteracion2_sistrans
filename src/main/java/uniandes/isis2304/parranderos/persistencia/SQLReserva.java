@@ -55,4 +55,12 @@ public class SQLReserva {
 		q.setParameters(idInmueble, fechaStart, fechaStart, fechaEnd, fechaEnd);
 		return (List<Reserva>) q.executeList();
 	}
+	
+	public List<Reserva> darReservasDespuesDeFechaPorIdInmueble (PersistenceManager pm, Date fecha, long idInmueble) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND fechaFin >= ?");
+		q.setResultClass(Reserva.class);
+		q.setParameters(idInmueble, fecha);
+		return (List<Reserva>) q.executeList();
+	}
 }
