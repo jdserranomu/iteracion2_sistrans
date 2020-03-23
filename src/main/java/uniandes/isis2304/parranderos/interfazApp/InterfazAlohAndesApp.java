@@ -789,8 +789,20 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			
 			String idServicioMenaje = JOptionPane.showInputDialog (this, "Nombre servicio?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE);
     		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "Id inmueble?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
-			double costo = Double.parseDouble(JOptionPane.showInputDialog (this, "Costo?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
-			int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
+			String costoString = JOptionPane.showInputDialog (this, "Costo?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE);
+			String cantidadString = JOptionPane.showInputDialog (this, "Cantidad?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE);
+			Double costo;
+			Integer cantidad;
+			if(costoString.isEmpty())
+				costo=null;
+			else {
+				costo=Double.parseDouble(costoString);
+			}
+			if(cantidadString.isEmpty())
+				cantidad=null;
+			else {
+				cantidad=Integer.parseInt(cantidadString);
+			}
 			OfreceServicio ofreceServicio = alohAndes.adicionarOfreceServicio(idServicioMenaje, idInmueble, costo, cantidad);
 			if(ofreceServicio == null) {
 				throw new Exception ("No se pudo crear Ofrece Servicio");

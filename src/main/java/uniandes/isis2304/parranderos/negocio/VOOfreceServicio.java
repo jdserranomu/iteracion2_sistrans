@@ -3,14 +3,14 @@ package uniandes.isis2304.parranderos.negocio;
 public interface VOOfreceServicio {
 	
 	
-	public String getNombreServicioMenaje();
-	public void setNombreServicioMenaje( String nombreServicioMenaje);
+	public String getIdServicioMenaje();
+	public void setIdServicioMenaje( String idServicioMenaje);
 	public long getIdInmueble();
 	public void setIdInmueble(long idInmueble);
 	public double getCosto();
-	public void setCosto(double costo);
+	public void setCosto(Double costo);
 	public int getCantidad();
-	public void setCantidad(int cantidad);
+	public void setCantidad(Integer cantidad);
 	public String toString();
 	
 }

@@ -556,7 +556,7 @@ public class PersistenciaAlohAndes {
 	 * 			Métodos para manejar los OfreceServicio
 	 *****************************************************************/
 	
-	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, double costo, int cantidad) {
+	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, Double costo, Integer cantidad) {
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
         try{

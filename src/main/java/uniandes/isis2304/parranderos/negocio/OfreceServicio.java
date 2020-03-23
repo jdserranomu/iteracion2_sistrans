@@ -2,30 +2,30 @@ package uniandes.isis2304.parranderos.negocio;
 
 public class OfreceServicio implements VOOfreceServicio{
 
-	private String nombreServicioMenaje;
+	private String idServicioMenaje;
 	private long idInmueble;
-	private double costo;
-	private int cantidad;
+	private Double costo;
+	private Integer cantidad;
 	
 	public OfreceServicio() {
-		this.nombreServicioMenaje="";
+		this.idServicioMenaje="";
 		this.idInmueble=0;
-		this.costo=0;
+		this.costo=0.0;
 		this.cantidad=0;
 		
 	}
-	public OfreceServicio(String nombreServicioMenaje, long idInmueble, double costo, int cantidad) {
+	public OfreceServicio(String idServicioMenaje, long idInmueble, Double costo, Integer cantidad) {
 		
-		this.nombreServicioMenaje = nombreServicioMenaje;
+		this.idServicioMenaje = idServicioMenaje;
 		this.idInmueble = idInmueble;
 		this.costo = costo;
 		this.cantidad = cantidad;
 	}
-	public String getNombreServicioMenaje() {
-		return nombreServicioMenaje;
+	public String getIdServicioMenaje() {
+		return idServicioMenaje;
 	}
-	public void setNombreServicioMenaje(String nombreServicioMenaje) {
-		this.nombreServicioMenaje = nombreServicioMenaje;
+	public void setIdServicioMenaje(String nombreServicioMenaje) {
+		this.idServicioMenaje = nombreServicioMenaje;
 	}
 	public long getIdInmueble() {
 		return idInmueble;
@@ -36,18 +36,18 @@ public class OfreceServicio implements VOOfreceServicio{
 	public double getCosto() {
 		return costo;
 	}
-	public void setCosto(double costo) {
+	public void setCosto(Double costo) {
 		this.costo = costo;
 	}
 	public int getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(int cantidad) {
+	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
 	@Override
 	public String toString() {
-		return "OfreceServicio [idServicioMenaje=" + nombreServicioMenaje + ", idInmueble=" + idInmueble + ", costo="
+		return "OfreceServicio [idServicioMenaje=" + idServicioMenaje + ", idInmueble=" + idInmueble + ", costo="
 				+ costo + ", cantidad=" + cantidad + "]";
 	}
 	

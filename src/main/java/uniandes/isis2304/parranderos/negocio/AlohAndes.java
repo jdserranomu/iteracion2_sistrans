@@ -369,7 +369,7 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar los OfreceServicio
 	 *****************************************************************/
-	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, double costo, int cantidad)
+	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, Double costo, Integer cantidad)
 	{
         log.info ("Adicionando  servicio/menaje: " + idServicioMenaje+" al inmueble: "+idInmueble + ", con costo: "+ costo+" y cantidad: "+ cantidad  );
         OfreceServicio os = pp.adicionarOfreceServicio(idServicioMenaje, idInmueble, costo, cantidad);

@@ -16,7 +16,7 @@ public class SQLOfreceServicio {
 		this.paa = paa;
 	}
 	
-	public long adicionarOfreceServicio (PersistenceManager pm, String idServicioMenaje, long idInmueble, double costo, int cantidad) 
+	public long adicionarOfreceServicio (PersistenceManager pm, String idServicioMenaje, long idInmueble, Double costo, Integer cantidad) 
 	{
         Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaOfreceServicio() + "(idServicioMenaje, idInmueble, costo, cantidad) values (?, ?, ?, ?)");
         q.setParameters(idServicioMenaje, idInmueble, costo, cantidad);

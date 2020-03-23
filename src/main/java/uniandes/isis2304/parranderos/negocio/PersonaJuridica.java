@@ -21,7 +21,7 @@ public class PersonaJuridica implements VOPersonaJuridica{
 		this.precioNoche=0.0;
 		this.tipo="";
 	}
-	public PersonaJuridica(Long id, Long idSuperintendeciaTurismo, Long idCamaraComercio, Integer categoria,
+	public PersonaJuridica(long id, long idSuperintendeciaTurismo, long idCamaraComercio, Integer categoria,
 			Double precioNoche, String tipo) {
 	
 		this.id = id;
@@ -69,7 +69,7 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	public long getIdSuperIntendenciaTurismo() {
 		return idSuperIntendenciaTurismo;
 	}
-	public void setIdSuperIntendenciaTurismo(long idSuperIntendenciaTurismo) {
+	public void setIdSuperIntendenciaTurismo(Long idSuperIntendenciaTurismo) {
 		this.idSuperIntendenciaTurismo = idSuperIntendenciaTurismo;
 	}
 	
