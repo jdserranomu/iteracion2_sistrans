@@ -358,7 +358,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List <HabitacionHostal> lista = alohAndes.darHabitacionesHostales();
 
 			String resultado = "En darHabitacionesHostales";
-			resultado +=  "\n" + listarHabitacionhostal(lista);
+			resultado +=  "\n" + listarHabitacionHostal(lista);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
@@ -392,7 +392,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List <HabitacionHostal> lista = alohAndes.darHabitacionesHostal(idHostal);
 
 			String resultado = "En darHabitacionesHostal";
-			resultado +=  "\n" + listarHabitacionhostal(lista);
+			resultado +=  "\n" + listarHabitacionHostal(lista);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
@@ -1722,7 +1722,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	 *****************************************************************/
 
     private String listarApartamento(List<Apartamento> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Apartamentos existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1731,7 +1731,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarHabitacion(List<Habitacion> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Las Habitaciones existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1739,8 +1739,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         return resp;
 	}
     
-    private String listarHabitacionhostal(List<HabitacionHostal> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    private String listarHabitacionHostal(List<HabitacionHostal> lista) {
+    	String resp = "Las Habitaciones de Hostal existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1749,7 +1749,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarHabitacionHotel(List<HabitacionHotel> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Las Habitaciones de Hotel existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1758,7 +1758,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarHabitacionVivienda(List<HabitacionVivienda> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Habitaciones de Vivienda existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1767,7 +1767,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarHorario(List<Horario> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Horarios existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1776,7 +1776,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarInmueble(List<Inmueble> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Inmuebles existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1785,7 +1785,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarOfreceServicio(List<OfreceServicio> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Servicios Ofrecidos existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1794,7 +1794,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
 
     private String listarOperador(List<Operador> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Operadores existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1803,7 +1803,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarPersonaJuridica(List<PersonaJuridica> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Las Personas Juridicas existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1812,7 +1812,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarPersonaNatural(List<PersonaNatural> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Las Personas Naturales existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1821,7 +1821,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarReserva(List<Reserva> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Las reservas existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1830,7 +1830,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarServicioMenaje(List<ServicioMenaje> lista) {
-    	String resp = "Los tipos de bebida existentes son:\n";
+    	String resp = "Los Servicios/Menajes existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
@@ -1848,7 +1848,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	}
     
     private String listarVivenda(List<Vivienda> lista) {
-    	String resp = "Los tipos de vivienda son:\n";
+    	String resp = "Las vivendas existentes son:\n";
     	int i = 1;
         for (Object tb : lista){
         	resp += i++ + ". " + tb.toString() + "\n";
