@@ -194,8 +194,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darApartamentos";
 			resultado +=  "\n" + listarApartamento(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -228,8 +228,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darApartamentosPorIdPersona";
 			resultado +=  "\n" + listarApartamento(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -278,8 +278,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitaciones";
 			resultado +=  "\n" + listarHabitacion(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -312,8 +312,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesPorIdPerson";
 			resultado +=  "\n" + listarHabitacion(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -359,8 +359,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesHostales";
 			resultado +=  "\n" + listarHabitacionhostal(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -393,8 +393,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesHostal";
 			resultado +=  "\n" + listarHabitacionhostal(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -443,15 +443,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesHoteles";
 			resultado +=  "\n" + listarHabitacionHotel(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	}
     
-    public void darHabitacionHostelPorId() {
+    public void darHabitacionHotelPorId() {
     	try {
     		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar habitacion hotel por Id", JOptionPane.QUESTION_MESSAGE));
     		HabitacionHotel habitacion = alohAndes.darHabitacionHotelPorId(id);
@@ -477,8 +477,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesHotel";
 			resultado +=  "\n" + listarHabitacionHotel(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -528,8 +528,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesViviendas";
 			resultado +=  "\n" + listarHabitacionVivienda(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -562,8 +562,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHabitacionesVivienda";
 			resultado +=  "\n" + listarHabitacionVivienda(lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -652,8 +652,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 
 			String resultado = "En darHorario";
 			resultado +=  "\n" + listarHorario (lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -667,8 +667,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List <Horario> lista = alohAndes.darHorariosPorIdHostal((int)idHostal);
 			String resultado = "En darHorario";
 			resultado +=  "\n" + listarHorario (lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -698,7 +698,17 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	public void darInmueblePorId()
 	{
 		try {
-			
+			int idInmueble = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar inmueble por id", JOptionPane.QUESTION_MESSAGE));
+    		Inmueble inmueble= alohAndes.darInmueblePorId(idInmueble);
+    		String resultado = "En darHabitacionViviendaPorId\n\n";
+    		if(inmueble!=null) {
+    			resultado += "El inmueble es: " + inmueble;
+    		}
+    		else {
+    			resultado += "El inmueble con id :"+idInmueble+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -711,8 +721,8 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List <Inmueble> lista = alohAndes.darInmuebles();
 			String resultado = "En darInmuebles";
 			resultado +=  "\n" + listarInmueble (lista);
-			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -728,6 +738,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			resultado +=  "\n" + listarInmueble (lista);
 			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -745,6 +756,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			resultado +=  "\n" + listarInmueble (lista);
 			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -760,6 +772,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			resultado +=  "\n" + listarInmueble (lista);
 			panelDatos.actualizarInterfaz(resultado);
 			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -769,6 +782,115 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     /* ****************************************************************
 	 * 			CRUD de OfreceServicio
 	 *****************************************************************/
+	
+	public void adicionarOfreceServicio(){
+        //String idServicioMenaje, long idInmueble, double costo, int cantidad
+		try {
+			
+			String idServicioMenaje = JOptionPane.showInputDialog (this, "Nombre servicio?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE);
+    		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "Id inmueble?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
+			double costo = Double.parseDouble(JOptionPane.showInputDialog (this, "Costo?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
+			int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
+			OfreceServicio ofreceServicio = alohAndes.adicionarOfreceServicio(idServicioMenaje, idInmueble, costo, cantidad);
+			if(ofreceServicio == null) {
+				throw new Exception ("No se pudo crear Ofrece Servicio");
+			}
+			else {
+				String resultado = "En adicionarOfreceServicio\n\n";
+        		resultado += "OfreceServicio adicionado exitosamente: " + ofreceServicio;
+    			resultado += "\n Operación terminada";
+    			panelDatos.actualizarInterfaz(resultado);
+			}
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void eliminarOfreceServicio() {
+		// String idServicioMenaje, long idInmueble
+		try {
+			String idServicioMenaje = JOptionPane.showInputDialog (this, "Nombre servicio?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE);
+    		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "Id inmueble?", "Adicionar ofrece servicio", JOptionPane.QUESTION_MESSAGE));
+			long tbEliminados = alohAndes.eliminarOfreceServicio(idServicioMenaje, idInmueble);
+			String resultado = "En eliminar Ofrece Servicio\n\n";
+			resultado += tbEliminados + " Ofrece Servicio eliminados\n";
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darOfreceServicio(){
+		//String idServicioMenaje, long idInmueble
+		try {
+			String idServicioMenaje = JOptionPane.showInputDialog (this, "Hora abre?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE);
+    		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "Hora cierra?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+    		OfreceServicio ofrece= alohAndes.darOfreceServicio(idServicioMenaje, idInmueble);
+    		String resultado = "En darOfreceServicio\n\n";
+    		if(ofrece!=null) {
+    			resultado += "El ofrece servicio es: " + ofrece;
+    		}
+    		else {
+    			resultado += "El ofrece con id :"+idInmueble +" "+ idServicioMenaje+" no existe";
+    		}
+    		panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darOfrecenServicios(){
+		try {
+			List <OfreceServicio> lista = alohAndes.darOfrecenServicios();
+			String resultado = "En darOfrecenServicios";
+			resultado +=  "\n" + listarOfreceServicio(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darOfreceServicios(){
+		//long idInmueble
+		try {
+			long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "Hora cierra?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE));
+			List <OfreceServicio> lista = alohAndes.darOfreceServicios(idInmueble);
+			String resultado = "En darOfreceServicios";
+			resultado +=  "\n" + listarOfreceServicio(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void darOfrecenServicio()
+	{
+		//String idServicioMenaje
+		try {
+			String idServicioMenaje = JOptionPane.showInputDialog (this, "Hora abre?", "Adicionar horario", JOptionPane.QUESTION_MESSAGE);
+			List <OfreceServicio> lista = alohAndes.darOfrecenServicio(idServicioMenaje);
+			String resultado = "En darOfrecenServicio";
+			resultado +=  "\n" + listarOfreceServicio(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
     
     /* ****************************************************************
 	 * 			CRUD de Operador
@@ -947,7 +1069,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     }
 	
 	
-public void darPersonaJuridicaPorTipo(){
+	public void darPersonaJuridicaPorTipo(){
     	
 		try {
 			
@@ -1481,16 +1603,16 @@ public void darPersonaJuridicaPorTipo(){
 	 * 			Métodos administrativos
 	 *****************************************************************/
 
-	public void mostrarLogParranderos (){
-		mostrarArchivo ("parranderos.log");
+	public void mostrarLogAlohAndes (){
+		mostrarArchivo ("alohAndes.log");
 	}
 	
 	public void mostrarLogDatanuecleus (){
 		mostrarArchivo ("datanucleus.log");
 	}
 	
-	public void limpiarLogParranderos (){
-		boolean resp = limpiarArchivo ("parranderos.log");
+	public void limpiarLogAlohAndes (){
+		boolean resp = limpiarArchivo ("alohAndes.log");
 		String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
 		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
 		resultado += "\nLimpieza terminada";
@@ -1533,7 +1655,7 @@ public void darPersonaJuridicaPorTipo(){
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	}
-	
+	/*
 	public void mostrarPresentacionGeneral (){
 		mostrarArchivo ("data/00-ST-ParranderosJDO.pdf");
 	}
@@ -1557,6 +1679,7 @@ public void darPersonaJuridicaPorTipo(){
 	public void mostrarJavadoc (){
 		mostrarArchivo ("doc/index.html");
 	}
+	*/
     /* ****************************************************************
 	 * 			Métodos privados para la presentación de resultados y otras operaciones
 	 *****************************************************************/
