@@ -28,8 +28,8 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import uniandes.isis2304.parranderos.negocio.Parranderos;
-import uniandes.isis2304.parranderos.negocio.VOTipoBebida;
+
+import uniandes.isis2304.parranderos.negocio.AlohAndes;
 
 /**
  * Clase con los métdos de prueba de funcionalidad sobre TIPOBEBIDA
@@ -62,7 +62,7 @@ public class TipoBebidaTest
 	/**
 	 * La clase que se quiere probar
 	 */
-    private Parranderos parranderos;
+    private AlohAndes parranderos;
 	
     /* ****************************************************************
 	 * 			Métodos de prueba para la tabla TipoBebida - Creación y borrado
@@ -81,7 +81,7 @@ public class TipoBebidaTest
 		try
 		{
 			log.info ("Probando las operaciones CRD sobre TipoBebida");
-			parranderos = new Parranderos (openConfig (CONFIG_TABLAS_A));
+			parranderos = new AlohAndes (openConfig (CONFIG_TABLAS_A));
 		}
 		catch (Exception e)
 		{

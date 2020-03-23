@@ -15,6 +15,7 @@ DROP TABLE "VIVIENDA" CASCADE CONSTRAINTS;
 DROP TABLE "APARTAMENTO" CASCADE CONSTRAINTS;
 DROP SEQUENCE "ALOHANDES_SEQUENCE";
 
+
 -- Eliminar el contenido de todas las tablas de la base de datos
 -- El orden es importante. Por qué?
 DELETE FROM OPERADOR;

@@ -5,6 +5,7 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	
 	public final static String TIPO_HOTEL = "Hotel";
 	public final static String TIPO_HOSTAL = "Hostal";
+	public final static String TIPO_VIVIENDAUNIVERSITARIA="Vivienda Universitaria";
 
 	private long id;
 	private long idSuperIntendenciaTurismo;

@@ -18,6 +18,7 @@ package uniandes.isis2304.parranderos.negocio;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.JsonObject;
 
 import sun.security.util.Length;
+import sun.security.x509.GeneralNameInterface;
 import uniandes.isis2304.parranderos.persistencia.PersistenciaAlohAndes;
 
 /**
@@ -112,7 +114,7 @@ public class AlohAndes
 	}
 	
 	
-	public Apartamento darApartamentoPorId (int id)
+	public Apartamento darApartamentoPorId (long id)
 	{
 		log.info ("Consultando Apartamento");
         Apartamento apto = pp.darApartamentoPorId(id);
@@ -148,7 +150,7 @@ public class AlohAndes
         return hab;
 	}
 	
-	public Habitacion darHabitacionPorId (int id)
+	public Habitacion darHabitacionPorId (long id)
 	{
 		log.info ("Consultando Habitacion");
         Habitacion hab = pp.darHabitacionPorId(id);
@@ -184,7 +186,7 @@ public class AlohAndes
         return hab;
 	}
 	
-	public HabitacionHostal darHabitacionHostalPorId (int id)
+	public HabitacionHostal darHabitacionHostalPorId (long id)
 	{
 		log.info ("Consultando Habitacion Hostal");
         HabitacionHostal hab = pp.darHabitacionHostalPorId(id);
@@ -223,7 +225,7 @@ public class AlohAndes
         return hab;
 	}
 	
-	public HabitacionHotel darHabitacionHotelPorId (int id)
+	public HabitacionHotel darHabitacionHotelPorId (long id)
 	{
 		log.info ("Consultando Habitacion Hotel");
         HabitacionHotel hab = pp.darHabitacionHotelPorId(id);
@@ -259,7 +261,7 @@ public class AlohAndes
         return hab;
 	}
 	
-	public HabitacionVivienda darHabitacionViviendaPorId (int id)
+	public HabitacionVivienda darHabitacionViviendaPorId (long id)
 	{
 		log.info ("Consultando Habitacion Vivienda");
         HabitacionVivienda hab = pp.darHabitacionViviendaPorId(id);
@@ -543,13 +545,87 @@ public class AlohAndes
 	}
 	
 	
+	
+	
 	/* ****************************************************************
-	 * 			Métodos para manejar las Personas Reserva
+	 * 			Métodos para manejar las Reserva
 	 *****************************************************************/
+	public long darDuenoInmueble( long id, String tipo){
+		
+		if (tipo.equals(Inmueble.TIPO_APARTAMENTO)) {
+			Apartamento inm= darApartamentoPorId(id);
+			return inm.getIdPersona();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACION)) {
+			Habitacion inm= darHabitacionPorId(id);
+			return inm.getIdPersona();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOSTAL)) {
+			HabitacionHostal inm= darHabitacionHostalPorId(id);
+			return inm.getIdHostal();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOTEL)) {
+			HabitacionHotel inm= darHabitacionHotelPorId(id);
+			return inm.getIdHotel();
+			
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
+			HabitacionVivienda inm= darHabitacionViviendaPorId(id);
+			return inm.getIdVivienda();
+			
+		}else if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+			Vivienda inm= darViviendaPorId(id);
+			return inm.getIdPersona();
+		}
+		return -1;
+	}
 	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
-			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
+			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) throws Exception{
 		
 		log.info ("Adicionando reserva con fecha inicio" +fechaInicio+", fecha fin: "+fechaFin+", con valor de: "+valorTotal+", pagado: "+aTexto(pagado)+", con operador: "+idOperador + ", usuario:"+idUsuario+" y inmueble: "+ idInmueble );
+		Inmueble in= darInmueblePorId(idInmueble);
+		String tipo=in.getTipo();
+		long dueno= darDuenoInmueble(idInmueble, tipo);
+		
+		if (dueno!=idOperador) {
+			throw new Exception("El id del dueño del inmueble no coincide con el id del operador");
+		}
+		
+		if (in.getCapacidad()<capacidad){
+			throw new Exception("La capacidad ingresada supera la capacidad del inmueble");
+		}
+		
+		if (in.getDisponible()==0) {
+			throw new Exception("El inmueble no esta disponible para reservas");
+		}
+		Duration diff = Duration.between(fechaInicio.toInstant(), fechaFin.toInstant());
+		long diffDays = diff.toDays();
+		if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays<30 ) {
+			throw new Exception("Una habitacion tiene una reserva minima de un mes");
+		}
+		Usuario us= darUsuarioPorId(idUsuario);
+		if (us.getTipo().equals(Usuario.TIPO_INVITADO) && !tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+			throw new Exception("El usuario de tipo invitado solo puede arrendar vivienda");
+		}
+		if (in.getTipo().equals(Inmueble.TIPO_APARTAMENTO) && diffDays<30) {
+			throw new Exception ("El apartamento tiene reserva minima de un mes");
+		}
+		if (us.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+			Vivienda viv= darViviendaPorId(idInmueble);
+			if (viv.getDiasUtilizado()+diffDays>30 ) {
+				throw new Exception("Con las fechas dadas la vivienda seria utilizada ");
+			}
+		}
+		if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA) && !(us.getTipo().equals(Usuario.TIPO_ESTUDIANTE) || us.getTipo().equals(Usuario.TIPO_PROFESOR) || us.getTipo().equals(Usuario.TIPO_EMPLEADO)  || us.getTipo().equals(Usuario.TIPO_PROFESORINVITADO) )) {
+			throw new Exception("La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
+		}
+		List<Reserva> reservasUs= darReservasDeUsuario(us.getId());
+		for (int i=0; i<reservasUs.size();i++) {
+			Reserva act= reservasUs.get(i);
+			if (fechaFin.compareTo(act.getFechaInicio())>=0 && fechaFin.compareTo(act.getFechaFin())<=0) {
+				throw new Exception ("las fechas se cruzan con otra reserva del usuario");
+			}
+			if (fechaInicio.compareTo(act.getFechaInicio())>=0 && fechaInicio.compareTo(act.getFechaFin())<=0) {
+				throw new Exception("la fechas se cruzan con otra reserva existente");
+			}
+		}
+		
         Reserva re = pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
         log.info ("Adicionando reserva: " + re);
         return re;
@@ -557,6 +633,8 @@ public class AlohAndes
 	
 	public long eliminarReservaporId (long idReserva)  {
 		log.info("Eliminando la reserva: "+idReserva);
+		
+		
 		long op=pp.eliminarReservaPorId(idReserva);
 		log.info("eliminando el reserva"+ op);
 		return op;
@@ -583,6 +661,16 @@ public class AlohAndes
         List<Reserva> pn = pp.darReservasEnFechasParaInmueble(fechaStart, fechaEnd, idInmueble);
         log.info ("Consultando Reservas: " + pn.size() + " existentes");
         return pn;
+	}
+	public List<Reserva> darReservasDeUsuario(long pId){
+		List<Reserva> li= darReservas();
+		List<Reserva> ans=darReservas();
+		for (int i=0; i<li.size();i++) {
+			if(li.get(i).getIdUsuario()==pId) {
+				ans.add(li.get(i));
+			}
+		}
+		return ans;
 	}
 	
 	/* ****************************************************************
