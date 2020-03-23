@@ -94,10 +94,11 @@ public class AlohAndes
 	 * 			Métodos para manejar los TIPOS DE BEBIDA
 	 *****************************************************************/
 	
-	public Apartamento adicionarApartamento (int amoblado, double precioMes, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal)
+	public Apartamento adicionarApartamento (int amoblado, double precioMes, long idPersona, String direccion, int capacidad, int disponible, Date fechaReservaFinal) throws Exception
 	{
 		
         log.info ("Adicionando Apartamento en: " +direccion +" con capacidad: "+ capacidad+ ", precio mes: "+ precioMes+ ", amoblado: "+aTexto(amoblado)+", disponible: "+ aTexto(disponible)+ " y dueño: "+ idPersona  );
+        verificarConsistenciaApartamento(idPersona);
         Apartamento apto = pp.adicionarApartamento(amoblado, precioMes, idPersona, direccion, capacidad, disponible, fechaReservaFinal);
         log.info ("Adicionando Apartamento: " + apto);
         return apto;
@@ -280,9 +281,10 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar los HORARIO
 	 *****************************************************************/
-	public Horario adicionarHorario(long idHostal, String dia, int horaAbre, int horaCierra)
+	public Horario adicionarHorario(long idHostal, String dia, int horaAbre, int horaCierra) throws Exception
 	{
         log.info ("Adicionando Horario en el dia: " +dia +" con hora abre: "+horaAbre + ", horaCierra: "+ horaCierra+" y del hostal: "+ idHostal  );
+        verificarHostal(idHostal);
         Horario horario = pp.adicionarHorario(idHostal, dia, horaAbre, horaCierra);
         log.info ("Adicionando Horario: " + horario);
         return horario;
@@ -385,9 +387,10 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar los OfreceServicio
 	 *****************************************************************/
-	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, Double costo, Integer cantidad)
+	public OfreceServicio adicionarOfreceServicio(String idServicioMenaje, long idInmueble, Double costo, Integer cantidad) throws Exception
 	{
         log.info ("Adicionando  servicio/menaje: " + idServicioMenaje+" al inmueble: "+idInmueble + ", con costo: "+ costo+" y cantidad: "+ cantidad  );
+        verificarConsistenciaOfreceServicio(idServicioMenaje, costo, cantidad);
         OfreceServicio os = pp.adicionarOfreceServicio(idServicioMenaje, idInmueble, costo, cantidad);
         log.info ("Adicionando ofrece servicio: " + os);
         return os;
@@ -461,10 +464,10 @@ public class AlohAndes
 	 * 			Métodos para manejar las Personas Juridicas
 	 *****************************************************************/
 	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, Integer categoria, Double precioNoche, String tipo,
-			String nombre, String email, String telefono) {
-		
+			String nombre, String email, String telefono) throws Exception{
 		log.info ("Adicionando Persona Juridica con id de superIntendencia" + idSuperIntendenciaTurismo+", id camara comercio: "+idCamaraComercio + " y tipo: "+ tipo );
-        PersonaJuridica pj = pp.adicionarPersonaJuridica(idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo, nombre, email, telefono);
+        verificarConsistenciaPersonaJuridica(tipo, categoria, precioNoche);
+		PersonaJuridica pj = pp.adicionarPersonaJuridica(idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo, nombre, email, telefono);
         log.info ("Adicionando persona juridica: " + pj);
         return pj;
 	}
@@ -679,6 +682,7 @@ public class AlohAndes
 	public ServicioMenaje adicionarServicioMenaje (String nombre, String tipo)  {
 		
 		log.info ("Adicionando Servicio o Menaje" +nombre+ " y con tipo: "+ tipo );
+		
         ServicioMenaje sm = pp.adicionarServicioMenaje(nombre, tipo);
         log.info ("Adicionando Servicio o Menaje: " + sm);
         return sm;
@@ -801,7 +805,57 @@ public class AlohAndes
         return us;
 	}
 	
+	/* ****************************************************************
+	 * 			Métodos para administración
+	 *****************************************************************/
 	
+	private void verificarHostal(long idHostal) throws Exception {
+		PersonaJuridica personaJuridica = pp.darPersonaJuridicaPorId(idHostal);
+		if(personaJuridica==null) 
+			throw new Exception("El hostal no existe");
+		if(!personaJuridica.getTipo().equals(PersonaJuridica.TIPO_HOSTAL))
+			throw new Exception("El id ingresado no hace referencia a un hostal");
+	}
+	
+	private void verificarConsistenciaPersonaJuridica(String tipo, Integer categoria, Double precioNoche) throws Exception{
+		if(tipo.equals(PersonaJuridica.TIPO_HOSTAL)) {
+			if(precioNoche!=null || categoria == null)
+				throw new Exception("No cumple requisitos de hostal");
+		}
+		else if (tipo.equals(PersonaJuridica.TIPO_HOTEL)) {
+			if(precioNoche==null || categoria != null)
+				throw new Exception("No cumple requisitos de hotel");
+		}
+		else if (tipo.equals(PersonaJuridica.TIPO_VIVIENDAUNIVERSITARIA)) {
+			if(precioNoche!=null || categoria != null)
+				throw new Exception("No cumple requisitos de vivienda universitaria");
+		}
+	}
+	
+	private void verificarConsistenciaOfreceServicio(String idServicio, Double costo, Integer cantidad) throws Exception{
+		ServicioMenaje servicioMenaje = pp.darServicioMenajePorNombre(idServicio);
+		if(servicioMenaje == null) 
+			throw new Exception("No existe servicio/menaje");
+		String tipo = servicioMenaje.getTipo();
+		
+		
+		if(tipo.equals(ServicioMenaje.TIPO_MENAJE)) {
+			if(costo!=null || cantidad == null)
+				throw new Exception("No cumple requisitos menaje");
+		}
+		else if (tipo.equals(ServicioMenaje.TIPO_SERVICIO)) {
+			if(costo == null || cantidad!= null)
+				throw new Exception("No cumple requisitos servicio");
+		}
+	}
+	
+	private void verificarConsistenciaApartamento(long idPersona) throws Exception{
+		PersonaNatural personaNatural = pp.darPersonaNaturalPorId(idPersona);
+		if(personaNatural == null)
+			throw new Exception("No existe persona natural con estas caracteristicas");
+		if(!personaNatural.getTipo().equals(PersonaNatural.TIPO_MEMBROCOMUNIDAD))
+			throw new Exception("No cumple requisitos de apartamento");
+	}
 	
 	/* ****************************************************************
 	 * 			Métodos para administración

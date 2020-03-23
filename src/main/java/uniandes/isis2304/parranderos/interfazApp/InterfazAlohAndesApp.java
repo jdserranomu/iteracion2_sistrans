@@ -985,7 +985,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		String precioNocheString = JOptionPane.showInputDialog (this, "precio noche?", "Adicionar precio noche", JOptionPane.QUESTION_MESSAGE);
     		long idCamaraComercio= Long.parseLong(JOptionPane.showInputDialog (this, "id camara?", "Adicionar id del camara de comercio", JOptionPane.QUESTION_MESSAGE));
     		long idSuperIntendenciaTurismo= Long.parseLong(JOptionPane.showInputDialog (this, "superintendencia?", "Adicionar id superintendencia", JOptionPane.QUESTION_MESSAGE));
-    		String[] choices = {PersonaJuridica.TIPO_HOSTAL, PersonaJuridica.TIPO_HOTEL};
+    		String[] choices = {PersonaJuridica.TIPO_HOSTAL, PersonaJuridica.TIPO_HOTEL, PersonaJuridica.TIPO_VIVIENDAUNIVERSITARIA};
 			String tipo= (String) JOptionPane.showInputDialog(null, "Elegir tipo","Adicionar tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
     		String nombre = JOptionPane.showInputDialog (this, "nombre?", "Adicionar nombre", JOptionPane.QUESTION_MESSAGE);
     		String email = JOptionPane.showInputDialog (this, "email?", "Adicionar email", JOptionPane.QUESTION_MESSAGE);
@@ -1910,6 +1910,10 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 		}
 	}
 	
+	public void cerrarUnidadPersistencia() {
+		alohAndes.cerrarUnidadPersistencia();
+	}
+	
 	/* ****************************************************************
 	 * 			Métodos de la Interacción
 	 *****************************************************************/
@@ -1929,13 +1933,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	
 	/* ****************************************************************
 	 * 			Programa principal
-	 *****************************************************************/
+	 *****************************************************************/	
+	
 	
 	public static void main( String[] args ){
         try{
             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
             InterfazAlohAndesApp interfaz = new InterfazAlohAndesApp( );
             interfaz.setVisible( true );
+            System.out.println("Llego aqui");
         }
         catch( Exception e ){
             e.printStackTrace( );

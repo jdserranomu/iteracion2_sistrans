@@ -387,6 +387,10 @@
 				{
 					"label": "Limpiar Base de Datos",
 					"event": "limpiarBD"
+				},
+				{
+					"label": "Cerrar bas de datos",
+					"event": "cerrarUnidadPersistencia"
 				}
 			]
 		}
