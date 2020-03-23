@@ -9,8 +9,8 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	private long id;
 	private long idSuperIntendenciaTurismo;
 	private long idCamaraComercio;
-	private int categoria;
-	private double precioNoche;
+	private Integer categoria;
+	private Double precioNoche;
 	private String tipo;
 	
 	public PersonaJuridica() {
@@ -18,14 +18,14 @@ public class PersonaJuridica implements VOPersonaJuridica{
 		this.idSuperIntendenciaTurismo=0;
 		this.idCamaraComercio=0;
 		this.categoria=0;
-		this.precioNoche=0;
+		this.precioNoche=0.0;
 		this.tipo="";
 	}
-	public PersonaJuridica(Long id, Long idSuperintendeciaTurismo, Long idCamaraComercio, int categoria,
-			double precioNoche, String tipo) {
+	public PersonaJuridica(Long id, Long idSuperintendeciaTurismo, Long idCamaraComercio, Integer categoria,
+			Double precioNoche, String tipo) {
 	
 		this.id = id;
-		this.idSuperIntendenciaTurismo = idSuperintendeciaTurismo;
+		this.idSuperIntendenciaTurismo=idSuperintendeciaTurismo;
 		this.idCamaraComercio = idCamaraComercio;
 		this.categoria = categoria;
 		this.precioNoche = precioNoche;
@@ -37,12 +37,6 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public long getIdSuperintendeciaTurismo() {
-		return idSuperIntendenciaTurismo;
-	}
-	public void setIdSuperintendeciaTurismo(Long idSuperintendeciaTurismo) {
-		this.idSuperIntendenciaTurismo = idSuperintendeciaTurismo;
-	}
 	public long getIdCamaraComercio() {
 		return idCamaraComercio;
 	}
@@ -52,13 +46,13 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	public int getCategoria() {
 		return categoria;
 	}
-	public void setCategoria(int categoria) {
+	public void setCategoria(Integer categoria) {
 		this.categoria = categoria;
 	}
 	public double getPrecioNoche() {
 		return precioNoche;
 	}
-	public void setPrecioNoche(double precioNoche) {
+	public void setPrecioNoche(Double precioNoche) {
 		this.precioNoche = precioNoche;
 	}
 	public String getTipo() {
@@ -67,13 +61,16 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	public String toString() {
+		return "PersonaJuridica [id=" + id + ", idSuperintendeciaTurismo=" + getIdSuperIntendenciaTurismo()
+				+ ", idCamaraComercio=" + idCamaraComercio + ", categoria=" + categoria + ", precioNoche=" + precioNoche
+				+ ", tipo=" + tipo + "]";
+	}
 	public long getIdSuperIntendenciaTurismo() {
 		return idSuperIntendenciaTurismo;
 	}
-	public String toString() {
-		return "PersonaJuridica [id=" + id + ", idSuperintendeciaTurismo=" + idSuperIntendenciaTurismo
-				+ ", idCamaraComercio=" + idCamaraComercio + ", categoria=" + categoria + ", precioNoche=" + precioNoche
-				+ ", tipo=" + tipo + "]";
+	public void setIdSuperIntendenciaTurismo(long idSuperIntendenciaTurismo) {
+		this.idSuperIntendenciaTurismo = idSuperIntendenciaTurismo;
 	}
 	
 	

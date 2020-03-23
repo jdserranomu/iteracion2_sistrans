@@ -956,11 +956,11 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     {
     	try 
     	{	
-    		int categoria = Integer.parseInt(JOptionPane.showInputDialog (this, "categoria?", "Adicionar categoria", JOptionPane.QUESTION_MESSAGE));
-    		double precioNoche = Double.parseDouble(JOptionPane.showInputDialog (this, "precio noche?", "Adicionar precio noche", JOptionPane.QUESTION_MESSAGE));
+    		String categoriaString = JOptionPane.showInputDialog (this, "categoria?", "Adicionar categoria", JOptionPane.QUESTION_MESSAGE);
+    		String precioNocheString = JOptionPane.showInputDialog (this, "precio noche?", "Adicionar precio noche", JOptionPane.QUESTION_MESSAGE);
     		long idCamaraComercio= Long.parseLong(JOptionPane.showInputDialog (this, "id camara?", "Adicionar id del camara de comercio", JOptionPane.QUESTION_MESSAGE));
     		long idSuperIntendenciaTurismo= Long.parseLong(JOptionPane.showInputDialog (this, "superintendencia?", "Adicionar id superintendencia", JOptionPane.QUESTION_MESSAGE));
-    		String[] choices = {PersonaNatural.TIPO_MEMBROCOMUNIDAD, PersonaNatural.TIPO_VECINO};
+    		String[] choices = {PersonaJuridica.TIPO_HOSTAL, PersonaJuridica.TIPO_HOTEL};
 			String tipo= (String) JOptionPane.showInputDialog(null, "Elegir tipo","Adicionar tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[0]);
     		String nombre = JOptionPane.showInputDialog (this, "nombre?", "Adicionar nombre", JOptionPane.QUESTION_MESSAGE);
     		String email = JOptionPane.showInputDialog (this, "email?", "Adicionar email", JOptionPane.QUESTION_MESSAGE);
@@ -969,6 +969,18 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		
     		if (tipo!=null && nombre!=null && email!=null && telefono!=null )
     		{
+    			Integer categoria = 0;
+    			Double precioNoche = 0.0;
+    			if(categoriaString.isEmpty()) 
+    				categoria = null;
+    			else {
+					categoria = Integer.parseInt(categoriaString);
+				}
+    			if(precioNocheString.isEmpty())
+    				precioNoche = null;
+    			else {
+					precioNoche = Double.parseDouble(precioNocheString);
+				}
         		PersonaJuridica re = alohAndes.adicionarPersonaJuridica(idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo, nombre, email, telefono);
         		if (re == null)
         		{
@@ -986,6 +998,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 		} 
     	catch (Exception e) 
     	{
+    		e.printStackTrace();
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
@@ -1073,8 +1086,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     	
 		try {
 			
-			String[] choices = {Usuario.TIPO_EGRESADO, Usuario.TIPO_EMPLEADO, Usuario.TIPO_ESTUDIANTE, Usuario.TIPO_INVITADO, Usuario.TIPO_PADRAESTUDIANTE,
-					Usuario.TIPO_PROFESOR, Usuario.TIPO_PROFESORINVITADO};
+			String[] choices = {PersonaJuridica.TIPO_HOSTAL, PersonaJuridica.TIPO_HOTEL};
     		String tipo = (String) JOptionPane.showInputDialog(null, "Selecciones el tipo","Selecciones el tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
 			List <PersonaJuridica> lista = alohAndes.darPersonaJuridicaPorTipo(tipo);
 			

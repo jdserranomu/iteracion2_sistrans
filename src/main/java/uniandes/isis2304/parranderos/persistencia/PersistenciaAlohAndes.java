@@ -658,7 +658,7 @@ public class PersistenciaAlohAndes {
 	 * 			Métodos para manejar las Personas Juridicas
 	 *****************************************************************/
 	
-	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, int categoria, double precioNoche, String tipo,
+	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, Integer categoria, Double precioNoche, String tipo,
 			String nombre, String email, String telefono) {
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
@@ -672,6 +672,7 @@ public class PersistenciaAlohAndes {
             return new PersonaJuridica(idOperador, idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo);
         }
         catch (Exception e){
+        	e.printStackTrace();
         	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
         	return null;
         }

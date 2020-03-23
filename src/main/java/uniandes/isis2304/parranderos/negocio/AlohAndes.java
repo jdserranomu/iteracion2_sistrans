@@ -444,7 +444,7 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar las Personas Juridicas
 	 *****************************************************************/
-	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, int categoria, double precioNoche, String tipo,
+	public PersonaJuridica adicionarPersonaJuridica(long idSuperIntendenciaTurismo, long idCamaraComercio, Integer categoria, Double precioNoche, String tipo,
 			String nombre, String email, String telefono) {
 		
 		log.info ("Adicionando Persona Juridica con id de superIntendencia" + idSuperIntendenciaTurismo+", id camara comercio: "+idCamaraComercio + " y tipo: "+ tipo );

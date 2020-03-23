@@ -17,7 +17,7 @@ public class SQLPersonaJuridica {
 	}
 	
 	public long adicionarPersonaJuridica (PersistenceManager pm, long idPersonaJuridica, 
-			long idSuperIntendenciaTurismo, long idCamaraComercio, int categoria, double precioNoche, String tipo) {
+			long idSuperIntendenciaTurismo, long idCamaraComercio, Integer categoria, Double precioNoche, String tipo) {
         Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaPersonaJuridica() + "(id, idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo) values (?, ?, ?, ?, ?, ?)");
         q.setParameters(idPersonaJuridica, idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo);
         return (long) q.executeUnique();
