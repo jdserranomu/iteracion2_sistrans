@@ -15,7 +15,7 @@ public class HabitacionHotel implements VOHabitacionHotel{
 	private double tamanho;
 	private String ubicacion;
 	
-	private HabitacionHotel() {
+	public HabitacionHotel() {
 		this.id=0;
 		this.idHotel=0;
 		this.numero=0;

@@ -304,6 +304,10 @@
 				{
 					"label": "Listar por Tipo",
 					"event": "darServiciosMenajesPorTipo"
+				},
+				{
+					"label": "Listar",
+					"event": "darServiciosMenajes"
 				}
 			]
 		},

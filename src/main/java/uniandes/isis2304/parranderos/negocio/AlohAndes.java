@@ -603,6 +603,14 @@ public class AlohAndes
         log.info ("Consultando Servicios o Menajes: " + re);
         return re;
 	}
+	
+	public List<ServicioMenaje> darServiciosMenajes () 
+	{
+		log.info ("Consultando Servicios o Menajes");
+        List<ServicioMenaje> re= pp.darServiciosMenajes();
+        log.info ("Consultando Servicios o Menajes: " + re);
+        return re;
+	}
 
 	
 	

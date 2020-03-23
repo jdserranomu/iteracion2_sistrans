@@ -13,7 +13,7 @@ public class PersonaJuridica implements VOPersonaJuridica{
 	private double precioNoche;
 	private String tipo;
 	
-	private PersonaJuridica() {
+	public PersonaJuridica() {
 		this.id=0;
 		this.idSuperIntendenciaTurismo=0;
 		this.idCamaraComercio=0;

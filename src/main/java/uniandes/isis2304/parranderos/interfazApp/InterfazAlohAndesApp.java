@@ -1163,8 +1163,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     	
 		try {
 			
-			String[] choices = {Usuario.TIPO_EGRESADO, Usuario.TIPO_EMPLEADO, Usuario.TIPO_ESTUDIANTE, Usuario.TIPO_INVITADO, Usuario.TIPO_PADRAESTUDIANTE,
-					Usuario.TIPO_PROFESOR, Usuario.TIPO_PROFESORINVITADO};
+			String[] choices = {PersonaNatural.TIPO_MEMBROCOMUNIDAD, PersonaNatural.TIPO_VECINO};
     		String tipo = (String) JOptionPane.showInputDialog(null, "Selecciones el tipo","Selecciones el tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
 			List <PersonaNatural> lista = alohAndes.darPersonaNaturalPorTipo(tipo);
 			
@@ -1376,6 +1375,20 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		String tipo = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo","Selecciones el tipo", JOptionPane.QUESTION_MESSAGE, null,choices, choices[1]);
     	
     		List <ServicioMenaje> lista = alohAndes.darServiciosMenajesPorTipo(tipo);
+			
+			String resultado = "En listaServicioMenaje";
+			resultado +=  "\n" + listarServicioMenaje(lista);
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
+    
+    public void darServiciosMenajes() {
+    	try {
+    		List <ServicioMenaje> lista = alohAndes.darServiciosMenajes();
 			
 			String resultado = "En listaServicioMenaje";
 			resultado +=  "\n" + listarServicioMenaje(lista);
