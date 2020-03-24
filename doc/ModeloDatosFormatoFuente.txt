@@ -1,0 +1,185 @@
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}\hline
+        \multicolumn{4}{|c|}{operador}\\\hline
+        id & nombre & email & telefono\\\hline
+        SA PK & NN & NN ND & NN\\\hline
+        NUMBER & VARCHAR2(40) & VARCHAR2(40) & VARCHAR2(15)\\\hline
+    \end{tabular}
+    \label{operador}
+\end{table}{}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}\hline
+        \multicolumn{5}{|c|}{usuario}\\\hline
+        id & nombre & email & telefono & tipo \\\hline
+        SA PK & NN & NN ND & NN & NN $CK_{tipo\_usuario}$\\\hline
+        NUMBER & VARCHAR2(40) & VARCHAR2(40) & VARCHAR2(15) & VARCHAR2(40)\\\hline
+    \end{tabular}
+    \label{usuario}
+\end{table}{}
+
+$tipo\_usuario = [profesor, profesor\_invitado, estudiante, egresado, empleado, padre\_estudiante, invitado] $
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4.3cm}|p{3cm}|p{2cm}|p{1.8cm}|p{3.5cm}|}\hline
+        \multicolumn{6}{|c|}{persona\_juridica}\\\hline
+        id & id\_superintendencia\_turismo & id\_camara\_comercio & categoria & precio\_noche &  tipo\\\hline
+        $FK_{operador.id}$ PK & NN ND & NN ND & NULL & NULL $CK_{\mathbb{R}\geq 0}$ & NN $CK_{[hotal, hostal, vivienda]}$\\\hline
+        NUMBER & NUMBER & NUMBER & NUMBER(1)& NUMBER & VARCHAR2(9)\\\hline
+    \end{tabular}
+    \label{hotel}
+\end{table}{}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}|p{3cm}|p{1.8cm}|p{3cm}|}\hline
+        \multicolumn{4}{|c|}{horario}\\\hline
+        id\_hostal & dia & hora\_abre & hora\_cierre \\\hline
+        PK $FK_{persiona\_juridica.id}$ & NN PK & NN & NN \\\hline
+        NUMBER & VARCHAR2(1) & DATE & DATE\\\hline
+    \end{tabular}
+    \label{horario}
+\end{table}{}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{3cm}|p{2cm}|p{2.5cm}|p{2.5cm}|p{2cm}|p{2.4cm}|}\hline
+        \multicolumn{7}{|c|}{habitacion\_hotel}\\\hline
+        id & id\_hotel & numero & tipo & precio\_noche & tamanho & ubicacion\\\hline
+        $FK_{inmueble.id}$ PK & $FK_{persona\_juridica.id}$ NN & NN & NN $CK_{tipo}$ & NN $CK_{\mathbb{R}\geq 0}$ & NN $CK_{\mathbb{R}\geq 0}$ & NN\\\hline
+        NUMBER & NUMBER & NUMBER(5) & VARCHAR2(9) & NUMBER(10) & number(5) & VARCHAR2(40)\\\hline
+    \end{tabular}
+    \label{habitacionhotel}
+\end{table}{}
+
+$tipo = [estandar, semisuite, suite]$
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{3.6cm}|p{1.7cm}|p{2.2cm}|p{1.8cm}|p{2cm}|p{1.8cm}|p{1.7cm}|}\hline
+        \multicolumn{8}{|c|}{habitacion\_vivienda}\\\hline
+        id & id\_vivienda & numero & precio\_semestre & precio\_mes & precio\_noche & ubicacion & individual\\\hline
+        $FK_{inmueble.id}$ PK & $FK_{persona\_juridica.id}$ NN & NN $CK_{\mathbb{R}\geq 0}$ & NN $CK_{\mathbb{R}\geq 0}$ & NN $CK_{\mathbb{R}\geq 0}$ & NN & NN $CK_{\mathbb{R}\geq 0}$ & NN $CK_{[Y,N]}$\\\hline
+        NUMBER & NUMBER & NUMBER (5) & NUMBER (60) & NUMBER (30) & NUMBER (10) & VARCHAR2 (40) & VARCHAR (1)\\\hline
+    \end{tabular}
+    \label{habitacionvivienda}
+\end{table}{}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}|p{3cm}|p{2cm}|}\hline
+        \multicolumn{3}{|c|}{habitacion\_hostal}\\\hline
+        id & id\_hostal & numero\\\hline
+        $FK_{inmueble.id}$ PK & $FK_{persona\_juridica.id}$ NN & NN \\\hline
+        NUMBER & NUMBER & NUMBER(5) \\\hline
+    \end{tabular}
+    \label{hostal}
+\end{table}{}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{1.6cm}|p{2.6cm}|p{2.5cm}|p{3cm}|p{1.7cm}|p{3cm}|}\hline
+        \multicolumn{6}{|c|}{inmueble}\\\hline
+        id & direccion & tipo & capacidad & disponible & fecha\_reserva\_final\\\hline
+        PK SA & NN & NN $CK_{tipo_inmueble}$ & NN  & NN  & NULL\\\hline
+        NUMBER & VARCHAR2(40) & VARCHAR(12) & NUMBER(2) & VARCHAR (1) & DATE\\\hline
+    \end{tabular}
+    \label{inmueble}
+\end{table}{}
+
+$tipo_inmueble= [vivienda, habitacion, apartamento, habitacion\_hotel, habitacion\_hostal, habitacion\_vivienda]$
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}|p{3cm}|}\hline
+        \multicolumn{2}{|c|}{servicio\_menaje}\\\hline
+        nombre & tipo \\\hline
+        PK UA & NN $CK_{[menaje, servicio]}$\\\hline
+        VARCHAR2(40) & VARCHAR2(8)\\\hline
+    \end{tabular}
+    \label{servicio}
+\end{table}{}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}\hline
+        \multicolumn{4}{|c|}{ofrece\_servicio}\\\hline
+        id\_servicio\_menaje & id\_inmueble & costo & cantidad \\\hline
+        PK $FK_{servicio\_menaje.nombre}$ & PK $FK_{inmueble.id}$ & NULL $CK_{\mathbb{R}\geq 0}$ & NULL $CK_{\mathbb{N}\geq 0}$\\\hline
+        VARCHAR2(40) & NUMBER & NUMBER(9,2) & NUMBER(2)\\\hline
+    \end{tabular}
+    \label{menaje}
+\end{table}{}
+
+
+\begin{table}[H]
+    \centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\multicolumn{6}{|c|}{reserva}                                               \\ \hline
+id    & fecha\_inicio & fecha\_fin & valor\_total & fecha\_cancelacion & pagado \\ \hline
+SA PK & NN           & NN        & NN          & NN SA             & NN     \\ \hline
+      NUMBER & DATE              &  DATE         &  NUMBER           &         DATE          &    NUMBER    \\ \hline
+\end{tabular}
+\end{table}
+Continuando la anterior tabla 
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\multicolumn{6}{|c|}{reserva}                                                            \\ \hline
+descuento & capacidad & estado & id\_operador      & id\_usuario       & id\_inmueble       \\ \hline
+NN        & NN        & NN CK$_{0,1}$    & FK$_{operador.id}$ NN & FK $_{usuario.id}$ NN & FK$_{inmueble.id}$ NN \\ \hline
+       NUMBER   & NUMBER          &     NUMBER   &   NUMBER                &        NUMBER          &      NUMBER             \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{5cm}|p{5cm}|}
+\hline
+\multicolumn{2}{|c|}{persona\_natural}                                                            \\ \hline
+ id       & tipo       \\ \hline
+PK FK$_{entidad.id}$        & NN       \\ \hline
+        NUMBER         &      VARCHAR2(40)             \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{4}{|c|}{habitacion}                                                            \\ \hline
+ id       & tamano & precioMes & id\_persona       \\ \hline
+PK FK$_{inmueble.id}$        & NN & NN & FK$_{persona\_natural.id}$       \\ \hline
+        NUMBER         &    NUMBER & NUMBER & NUMBER             \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\multicolumn{5}{|c|}{vivienda}                                                            \\ \hline
+ id       & numero\_habitaciones & costo\_noche & dias\_utilizado & id\_persona      \\ \hline
+PK FK$_{inmueble.id}$        & NN & NN & NN & FK$_{persona\_natural.id}$       \\ \hline
+        NUMBER         &    NUMBER & NUMBER & NUMBER & NUMBER            \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{4}{|c|}{apartamento}                                                            \\ \hline
+ id       & Amoblado & precioMes & id\_persona       \\ \hline
+PK FK$_{inmueble.id}$        & NN CK$_{0,1}$ & NN & FK$_{persona\_natural.id}$       \\ \hline
+        NUMBER         &    NUMBER & NUMBER & NUMBER             \\ \hline
+\end{tabular}
+\end{table}
