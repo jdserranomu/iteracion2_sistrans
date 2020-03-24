@@ -27,6 +27,8 @@ import uniandes.isis2304.parranderos.negocio.OfreceServicio;
 import uniandes.isis2304.parranderos.negocio.Operador;
 import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
 import uniandes.isis2304.parranderos.negocio.PersonaNatural;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -1014,6 +1016,7 @@ public class PersistenciaAlohAndes {
 		return sqlUsuario.darUsuariosPorTipo(pmf.getPersistenceManager(), tipo);
 	}
 	
+	
 	/* ****************************************************************
 	 * 			Métodos para manejar las Viviendas
 	 *****************************************************************/
@@ -1053,6 +1056,18 @@ public class PersistenciaAlohAndes {
 	
 	public List<Vivienda> darViviendasPorIdPersona (long idPersona){
 		return sqlVivienda.darViviendasPorIdPersona (pmf.getPersistenceManager(), idPersona);
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos para requerimientos de consulta
+	 *****************************************************************/
+	
+	public List<ReqConsulta1> RFC1(){
+		return sqlUtil.RFC1(pmf.getPersistenceManager());
+	}
+	
+	public List<ReqConsulta2> RFC2(){
+		return sqlUtil.RFC2(pmf.getPersistenceManager());
 	}
 	
 	

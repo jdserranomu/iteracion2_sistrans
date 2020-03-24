@@ -389,8 +389,21 @@
 					"event": "limpiarBD"
 				},
 				{
-					"label": "Cerrar bas de datos",
+					"label": "Cerrar base de datos",
 					"event": "cerrarUnidadPersistencia"
+				}
+			]
+		},
+		{
+			"menuTitle": "Req. Consulta",
+			"options": [
+				{
+					"label": "RFC1",
+					"event": "RFC1"
+				},
+				{
+					"label": "RFC2",
+					"event": "RFC2"
 				}
 			]
 		}

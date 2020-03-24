@@ -44,6 +44,8 @@ import uniandes.isis2304.parranderos.negocio.OfreceServicio;
 import uniandes.isis2304.parranderos.negocio.Operador;
 import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
 import uniandes.isis2304.parranderos.negocio.PersonaNatural;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -1870,6 +1872,24 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         }
         return resp;
 	}
+    
+    private String listarRFC1(List<ReqConsulta1> lista) {
+    	String resp = "Los datos del RFC1 son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
+    private String listarRFC2(List<ReqConsulta2> lista) {
+    	String resp = "Los datos del RFC2 son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
 
 	private String darDetalleException(Exception e) 
 	{
@@ -1914,6 +1934,38 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 	
 	public void cerrarUnidadPersistencia() {
 		alohAndes.cerrarUnidadPersistencia();
+	}
+	
+	/* ****************************************************************
+	 * 			Métodos de requerimientos de consulta
+	 *****************************************************************/
+	
+	public void RFC1() {
+		
+		try {
+			List<ReqConsulta1>listaConsulta = alohAndes.RFC1();
+			String resultado = "En RFC1";
+			resultado +=  "\n" + listarRFC1(listaConsulta);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void RFC2() {
+		
+		try {
+			List<ReqConsulta2>listaConsulta = alohAndes.RFC2();
+			String resultado = "En RFC2";
+			resultado +=  "\n" + listarRFC2(listaConsulta);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
 	}
 	
 	/* ****************************************************************

@@ -808,6 +808,27 @@ public class AlohAndes
 	}
 	
 	/* ****************************************************************
+	 * 			Métodos para requerimientos de consulta
+	 *****************************************************************/
+	
+	public List<ReqConsulta1> RFC1() 
+	{
+		log.info ("Consultado requerimiento de consulta 1");
+        List<ReqConsulta1> listaConsulta = pp.RFC1() ;
+        log.info ("Consultando RFC1: " + listaConsulta);
+        return listaConsulta;
+	}
+	
+	public List<ReqConsulta2> RFC2() 
+	{
+		log.info ("Consultado requerimiento de consulta 2");
+        List<ReqConsulta2> listaConsulta = pp.RFC2() ;
+        log.info ("Consultando RFC2: " + listaConsulta);
+        return listaConsulta;
+	}
+	
+	
+	/* ****************************************************************
 	 * 			Métodos para administración
 	 *****************************************************************/
 	

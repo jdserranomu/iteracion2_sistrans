@@ -1344,23 +1344,48 @@ VALUES
 INSERT INTO
 reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
 VALUES 
-(1003, '01/05/21', '01/06/21', 700000, '20/04/21', 0, 9, 0, 25, 8, 9, 700000);
+(1003, '01/05/21', '01/06/21', 700000, '20/04/21', 0, 9, 0, 5, 8, 9, 700000);
 INSERT INTO
 reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
 VALUES 
-(1004, '01/01/21', '01/02/21', 200000, '29/12/20', 0, 2, 0, 79, 5, 41, 200000);
+(1004, '01/01/21', '01/02/21', 200000, '29/12/20', 0, 2, 0, 89, 5, 88, 200000);
 INSERT INTO
 reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
 VALUES 
-(1005, '01/02/21', '01/03/21', 200000, '20/01/21', 0, 3, 0, 79, 6, 41, 200000);
+(1005, '01/02/21', '01/03/21', 200000, '20/01/21', 0, 3, 0, 89, 6, 88, 200000);
 INSERT INTO
 reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
 VALUES 
-(1006, '01/04/21', '01/05/21', 200000, '20/03/21', 0, 4, 0, 79, 7, 41, 200000);
+(1006, '01/04/21', '01/05/21', 200000, '20/03/21', 0, 4, 0, 89, 7, 88, 200000);
 INSERT INTO
 reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
 VALUES 
-(1007, '01/05/21', '01/06/21', 200000, '20/04/21', 0, 2, 0, 79, 8, 41, 200000);
+(1007, '01/05/21', '01/06/21', 200000, '20/04/21', 0, 2, 0, 89, 5, 88, 200000);
+
+INSERT INTO
+reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+VALUES 
+(1010, '01/01/19', '01/02/19', 200000, '29/12/19', 0, 2, 0, 89, 5, 88, 200000);
+INSERT INTO
+reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+VALUES 
+(1011, '01/02/19', '01/03/19', 200000, '20/01/19', 0, 3, 0, 89, 6, 88, 200000);
+INSERT INTO
+reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+VALUES 
+(1012, '01/04/19', '01/05/19', 200000, '20/03/10', 0, 4, 0, 89, 7, 88, 200000);
+INSERT INTO
+reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+VALUES 
+(1013, '01/05/19', '01/06/19', 200000, '20/04/19', 0, 2, 0, 89, 5, 88, 200000);
+INSERT INTO
+reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+VALUES 
+(1014, '01/02/19', '01/03/20', 200000, '20/01/20', 0, 2, 0, 89, 5, 88, 200000);
+INSERT INTO
+reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+VALUES 
+(1015, '01/02/20', '01/03/20', 200000, '20/01/20', 0, 2, 0, 89, 5, 88, 200000);
 
 
 

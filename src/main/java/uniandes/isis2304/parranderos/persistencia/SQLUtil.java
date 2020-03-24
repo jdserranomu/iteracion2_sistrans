@@ -1,7 +1,15 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.awt.print.Printable;
+import java.sql.Date;
+import java.util.List;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
+import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
+import uniandes.isis2304.parranderos.negocio.Usuario;
 
 public class SQLUtil {
 	
@@ -11,6 +19,48 @@ public class SQLUtil {
 	
 	public SQLUtil(PersistenciaAlohAndes paa){
 		this.paa = paa;
+	}
+	
+	
+	public List<ReqConsulta1> RFC1(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "SELECT IC, DC, DA " + 
+				"FROM " + 
+				"(SELECT OP.ID AS IC, SUM(COALESCE(PAGADO,0)) AS DC " + 
+				"FROM OPERADOR OP " + 
+				"LEFT OUTER JOIN " + 
+				"    (SELECT * " + 
+				"    FROM RESERVA RES " + 
+				"    WHERE RES.FECHAINICIO>= ? AND RES.FECHAFIN<= ?) ON OP.ID = IDOPERADOR " + 
+				"GROUP BY OP.ID) " + 
+				"INNER JOIN " + 
+				"(SELECT OP.ID AS IA, SUM(COALESCE(PAGADO,0)) AS DA " + 
+				"FROM OPERADOR OP " + 
+				"LEFT OUTER JOIN " + 
+				"    (SELECT * " + 
+				"    FROM RESERVA RES " + 
+				"    WHERE RES.FECHAINICIO>= ? AND RES.FECHAFIN<= ?) ON OP.ID = IDOPERADOR " + 
+				"GROUP BY OP.ID) ON IA=IC");
+		q.setResultClass(ReqConsulta1.class);
+		Date actualDate = new Date(new java.util.Date().getTime());
+		@SuppressWarnings("deprecation")
+		Date anoCorridoDate = new Date(actualDate.getYear()-1, actualDate.getMonth(), actualDate.getDate());
+		@SuppressWarnings("deprecation")
+		Date anoActualDate = new Date(actualDate.getYear(), 0, 1);
+		q.setParameters(anoCorridoDate,actualDate, anoActualDate, actualDate);
+		return (List<ReqConsulta1>) q.executeList();
+	}
+	
+	public List<ReqConsulta2> RFC2(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "SELECT IDINMUEBLE, CNT " + 
+				"FROM " + 
+				"(SELECT INM.ID AS IDINMUEBLE, COUNT(*) AS CNT " + 
+				"FROM INMUEBLE INM " + 
+				"INNER JOIN RESERVA RES ON INM.ID=RES.IDINMUEBLE " + 
+				"GROUP BY INM.ID " + 
+				"ORDER BY COUNT(*) DESC) " + 
+				"WHERE ROWNUM  <= 20");
+		q.setResultClass(ReqConsulta2.class);
+		return (List<ReqConsulta2>) q.executeList();
 	}
 	
 	public long nextval (PersistenceManager pm){

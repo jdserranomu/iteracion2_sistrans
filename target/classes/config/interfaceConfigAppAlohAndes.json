@@ -393,6 +393,19 @@
 					"event": "cerrarUnidadPersistencia"
 				}
 			]
+		},
+		{
+			"menuTitle": "Requerimientos Consulta",
+			"options": [
+				{
+					"label": "RFC1",
+					"event": "RFC1"
+				},
+				{
+					"label": "RFC2",
+					"event": "RFC2"
+				}
+			]
 		}
 	]
 }
