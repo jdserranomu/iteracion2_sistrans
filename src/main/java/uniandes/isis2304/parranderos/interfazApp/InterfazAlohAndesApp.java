@@ -1912,6 +1912,13 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         return resp;
 	}
     
+    private boolean repetido(List<String> listaServicios, String servicio) {
+    	boolean repetido = false;
+    	for(int i = 0; i<listaServicios.size() && !repetido; i++) {
+    		repetido = listaServicios.get(i).equals(servicio);
+    	} return repetido;
+    }
+    
 	private String darDetalleException(Exception e) 
 	{
 		String resp = "";
@@ -2010,7 +2017,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List<String> servicios= new ArrayList<String>();
 			for (int i=0; i<serv;i++) {
 				String servi= JOptionPane.showInputDialog (this, "ingrese el servicio?", "ingrese el servicio?", JOptionPane.QUESTION_MESSAGE);
-				servicios.add(servi);
+				boolean repetido = repetido(servicios, servi);
+				if(repetido) {
+					JOptionPane.showMessageDialog(this, "No repita servicio vuelva a intentar");
+					i--;
+				}
+				else {
+					servicios.add(servi);
+				}
+				
 			}
 			String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
 			Date fechaInicio=Date.valueOf(fechaIni);

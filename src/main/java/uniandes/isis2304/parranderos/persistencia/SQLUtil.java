@@ -76,20 +76,28 @@ public class SQLUtil {
 	public List<ReqConsulta4> RFC4(PersistenceManager pm, Date X, Date Y, List<String> servicios){
 		String a="";
 		for (int i=0;i<servicios.size();i++) {
-			a=a+"IDSERVICIOMENAJE= '"+ servicios.get(i) +"' ";
+			a=a+"OFR.IDSERVICIOMENAJE= '"+ servicios.get(i) +"' ";
 			if (i!= servicios.size()-1) {
-				a=a+" AND ";
+				a=a+"OR ";
 			}
 		}
-		
-		Query q=pm.newQuery(SQL, "SELECT INMUEBLE.ID\r\n" + 
-				"FROM INMUEBLE\r\n" + 
-				"INNER JOIN OFRECESERVICIO ON IDINMUEBLE=INMUEBLE.ID\r\n" + 
-				"INNER JOIN RESERVA ON INMUEBLE.ID=RESERVA.IDINMUEBLE\r\n"+
-				"WHERE "
-				+ a+ " AND INMUEBLE.DISPONIBLE=1 AND (RESERVA.FECHAINICIO<="+X+ " AND RESERVA.FECHAFIN<="+Y+" ) OR (RESERVA.FECHAINICIO>="+X+" AND RESERVA.FECHAFIN>="+Y+")");
-		
+		String queryString = "SELECT IDINMUEBLE " + 
+				"FROM (SELECT INM.ID AS IDINMUEBLE, COUNT(*) AS CNT " + 
+				"	FROM INMUEBLE INM " + 
+				"	INNER JOIN OFRECESERVICIO OFR ON INM.ID=OFR.IDINMUEBLE " + 
+				"	WHERE INM.DISPONIBLE = 1 " + 
+				"		AND ("+a+") " + 
+				"		AND NOT EXISTS (SELECT * " + 
+				"				FROM RESERVA RES " + 
+				"				WHERE RES.IDINMUEBLE = INM.ID " + 
+				"				AND (RES.FECHAINICIO BETWEEN ? AND ? OR RES.FECHAFIN BETWEEN ? AND ? )) " + 
+				"	GROUP BY INM.ID) " + 
+				"WHERE CNT =  ? ";
+		Query q=pm.newQuery(SQL, queryString);
+		q.setParameters(X, Y, X, Y, servicios.size());
 		q.setResultClass(ReqConsulta4.class);
+		
+		
 
 		return (List<ReqConsulta4>)q.executeList();
 	}

@@ -50,9 +50,9 @@ public class SQLReserva {
 	
 	public List<Reserva> darReservasEnFechasParaInmueble (PersistenceManager pm, Date fechaStart, Date fechaEnd, long idInmueble) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND ((? >= fechaInicio AND ? <= fechaFin) OR (? >= fechaInicio AND ? <= fechaFin))");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND (fechaInicio BETWEEN ? AND ? OR fechaFin BETWEEN ? AND ?)");
 		q.setResultClass(Reserva.class);
-		q.setParameters(idInmueble, fechaStart, fechaStart, fechaEnd, fechaEnd);
+		q.setParameters(idInmueble, fechaStart, fechaEnd, fechaStart, fechaEnd);
 		return (List<Reserva>) q.executeList();
 	}
 	
