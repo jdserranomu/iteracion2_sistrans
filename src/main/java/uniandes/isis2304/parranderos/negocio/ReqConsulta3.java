@@ -15,6 +15,7 @@ public class ReqConsulta3 {
 		this.idInmueble=idInmueble;
 		this.tasaOcupacion=tasaOcupacion;
 	}
+	
 
 	public long getIdInmueble() {
 		return idInmueble;

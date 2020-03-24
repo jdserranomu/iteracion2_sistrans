@@ -835,6 +835,14 @@ public class AlohAndes
         return listaConsulta;
 	}
 	
+	public List<ReqConsulta4> RFC4(Date X, Date Y, List<String> servicios) 
+	{
+		log.info ("Consultado requerimiento de consulta 4");
+        List<ReqConsulta4> listaConsulta = pp.RFC4(X,Y,servicios) ;
+        log.info ("Consultando RFC4: " + listaConsulta);
+        return listaConsulta;
+	}
+	
 	
 	/* ****************************************************************
 	 * 			Métodos para administración

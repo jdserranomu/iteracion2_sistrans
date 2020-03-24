@@ -10,6 +10,7 @@ import javax.jdo.Query;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
 import uniandes.isis2304.parranderos.negocio.Usuario;
 
 public class SQLUtil {
@@ -70,6 +71,27 @@ public class SQLUtil {
 				+ "GROUP BY INMUEBLE.ID");
 		q.setResultClass(ReqConsulta3.class);
 		return (List<ReqConsulta3>) q.executeList();
+	}
+	
+	public List<ReqConsulta4> RFC4(PersistenceManager pm, Date X, Date Y, List<String> servicios){
+		String a="";
+		for (int i=0;i<servicios.size();i++) {
+			a=a+"IDSERVICIOMENAJE= '"+ servicios.get(i) +"' ";
+			if (i!= servicios.size()-1) {
+				a=a+" AND ";
+			}
+		}
+		
+		Query q=pm.newQuery(SQL, "SELECT INMUEBLE.ID\r\n" + 
+				"FROM INMUEBLE\r\n" + 
+				"INNER JOIN OFRECESERVICIO ON IDINMUEBLE=INMUEBLE.ID\r\n" + 
+				"INNER JOIN RESERVA ON INMUEBLE.ID=RESERVA.IDINMUEBLE\r\n"+
+				"WHERE "
+				+ a+ " AND INMUEBLE.DISPONIBLE=1 AND (RESERVA.FECHAINICIO<="+X+ " AND RESERVA.FECHAFIN<="+Y+" ) OR (RESERVA.FECHAINICIO>="+X+" AND RESERVA.FECHAFIN>="+Y+")");
+		
+		q.setResultClass(ReqConsulta4.class);
+
+		return (List<ReqConsulta4>)q.executeList();
 	}
 	
 	public long nextval (PersistenceManager pm){

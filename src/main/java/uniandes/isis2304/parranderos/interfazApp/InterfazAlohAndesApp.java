@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.JDODataStoreException;
@@ -47,6 +48,7 @@ import uniandes.isis2304.parranderos.negocio.PersonaNatural;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -1901,6 +1903,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         return resp;
 	}
 
+    private String listarRFC4(List<ReqConsulta4> lista) {
+    	String resp = "Los datos del RFC4 son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
+    
 	private String darDetalleException(Exception e) 
 	{
 		String resp = "";
@@ -1984,6 +1995,32 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List<ReqConsulta3>listaConsulta = alohAndes.RFC3();
 			String resultado = "En RFC3";
 			resultado +=  "\n" + listarRFC3(listaConsulta);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void RFC4() {
+		
+		try {
+			int serv = Integer.parseInt(JOptionPane.showInputDialog (this, "Por cuantos servicios quiere buscar?", "Por cuantos servicios quiere buscar?", JOptionPane.QUESTION_MESSAGE));
+			List<String> servicios= new ArrayList<String>();
+			for (int i=0; i<serv;i++) {
+				String servi= JOptionPane.showInputDialog (this, "ingrese el servicio?", "ingrese el servicio?", JOptionPane.QUESTION_MESSAGE);
+				servicios.add(servi);
+			}
+			String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
+			Date fechaInicio=Date.valueOf(fechaIni);
+			
+			String fechafi= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin", JOptionPane.QUESTION_MESSAGE); 
+			Date fechaFin=Date.valueOf(fechafi);
+			
+			List<ReqConsulta4>listaConsulta = alohAndes.RFC4(fechaInicio,fechaFin, servicios);
+			String resultado = "En RFC4";
+			resultado +=  "\n" + listarRFC4(listaConsulta);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
