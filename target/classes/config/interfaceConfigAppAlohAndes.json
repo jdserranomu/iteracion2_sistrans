@@ -389,13 +389,13 @@
 					"event": "limpiarBD"
 				},
 				{
-					"label": "Cerrar bas de datos",
+					"label": "Cerrar base de datos",
 					"event": "cerrarUnidadPersistencia"
 				}
 			]
 		},
 		{
-			"menuTitle": "Requerimientos Consulta",
+			"menuTitle": "Req. Consulta",
 			"options": [
 				{
 					"label": "RFC1",
