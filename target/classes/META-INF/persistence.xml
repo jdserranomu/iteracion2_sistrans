@@ -20,7 +20,7 @@
     </persistence-unit>
 
     <!-- ParranderosError "unit" Definición de una base de datos que no existe, para verificar el comportamiento en caso de error o caida de la BD-->
-    <persistence-unit name="ParranderosErrorDS">
+    <persistence-unit name="AlohAndesErrorDS">
         <exclude-unlisted-classes/>
         <properties>
             <!-- ENABLE THESE FOR Oracle -->
@@ -36,7 +36,7 @@
     </persistence-unit>
 
     <!-- ParranderosErrorUser "unit" Definición de una base de datos que no existe, para verificar el comportamiento en caso de error en las credenciales del usuario -->
-    <persistence-unit name="ParranderosErrorUser">
+    <persistence-unit name="AlohAndesErrorUser">
         <exclude-unlisted-classes/>
         <properties>
             <!-- ENABLE THESE FOR Oracle -->

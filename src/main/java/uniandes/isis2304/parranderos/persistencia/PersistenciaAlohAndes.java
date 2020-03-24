@@ -139,7 +139,6 @@ public class PersistenciaAlohAndes {
 	}
 	
 	public void cerrarUnidadPersistencia (){
-		System.out.println("LLEGA A CERARSE");
 		pmf.close ();
 		instance = null;
 	}
