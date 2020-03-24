@@ -404,6 +404,10 @@
 				{
 					"label": "RFC2",
 					"event": "RFC2"
+				},
+				{
+					"label": "RFC3",
+					"event": "RFC3"
 				}
 			]
 		}

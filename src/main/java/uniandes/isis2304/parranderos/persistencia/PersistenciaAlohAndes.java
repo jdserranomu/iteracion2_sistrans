@@ -29,6 +29,7 @@ import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
 import uniandes.isis2304.parranderos.negocio.PersonaNatural;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -1068,6 +1069,10 @@ public class PersistenciaAlohAndes {
 	
 	public List<ReqConsulta2> RFC2(){
 		return sqlUtil.RFC2(pmf.getPersistenceManager());
+	}
+	
+	public List<ReqConsulta3> RFC3(){
+		return sqlUtil.RFC3(pmf.getPersistenceManager());
 	}
 	
 	

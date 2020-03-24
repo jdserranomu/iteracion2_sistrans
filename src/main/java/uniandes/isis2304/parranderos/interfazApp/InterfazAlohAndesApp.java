@@ -46,6 +46,7 @@ import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
 import uniandes.isis2304.parranderos.negocio.PersonaNatural;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -1890,6 +1891,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         }
         return resp;
 	}
+    
+    private String listarRFC3(List<ReqConsulta3> lista) {
+    	String resp = "Los datos del RFC3 son:\n";
+    	int i = 1;
+        for (Object tb : lista){
+        	resp += i++ + ". " + tb.toString() + "\n";
+        }
+        return resp;
+	}
 
 	private String darDetalleException(Exception e) 
 	{
@@ -1960,6 +1970,20 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 			List<ReqConsulta2>listaConsulta = alohAndes.RFC2();
 			String resultado = "En RFC2";
 			resultado +=  "\n" + listarRFC2(listaConsulta);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void RFC3() {
+		
+		try {
+			List<ReqConsulta3>listaConsulta = alohAndes.RFC3();
+			String resultado = "En RFC3";
+			resultado +=  "\n" + listarRFC3(listaConsulta);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {

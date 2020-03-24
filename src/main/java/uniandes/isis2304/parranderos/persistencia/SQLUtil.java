@@ -9,6 +9,7 @@ import javax.jdo.Query;
 
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.Usuario;
 
 public class SQLUtil {
@@ -61,6 +62,14 @@ public class SQLUtil {
 				"WHERE ROWNUM  <= 20");
 		q.setResultClass(ReqConsulta2.class);
 		return (List<ReqConsulta2>) q.executeList();
+	}
+	
+	public List<ReqConsulta3> RFC3(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "SELECT INMUEBLE.ID AS IDINMUEBLE, AVG(RESERVA.CAPACIDAD/INMUEBLE.CAPACIDAD) AS TASAOCUPACION "
+				+ "FROM INMUEBLE LEFT OUTER JOIN RESERVA ON RESERVA.IDINMUEBLE=INMUEBLE.ID "
+				+ "GROUP BY INMUEBLE.ID");
+		q.setResultClass(ReqConsulta3.class);
+		return (List<ReqConsulta3>) q.executeList();
 	}
 	
 	public long nextval (PersistenceManager pm){

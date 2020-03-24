@@ -827,6 +827,14 @@ public class AlohAndes
         return listaConsulta;
 	}
 	
+	public List<ReqConsulta3> RFC3() 
+	{
+		log.info ("Consultado requerimiento de consulta 3");
+        List<ReqConsulta3> listaConsulta = pp.RFC3() ;
+        log.info ("Consultando RFC3: " + listaConsulta);
+        return listaConsulta;
+	}
+	
 	
 	/* ****************************************************************
 	 * 			Métodos para administración
