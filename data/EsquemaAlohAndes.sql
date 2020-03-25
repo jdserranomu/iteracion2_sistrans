@@ -1356,59 +1356,59 @@ INSERT INTO APARTAMENTO (ID, AMOBLADO, PRECIOMES, IDPERSONA) VALUES (3, 0, 1105,
 
 -- POBLAR RESERVA
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (1, '01/01/21', '01/02/21', 700000, '29/12/20', 0, 9, 0, 25, 2, 9, 700000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (2, '01/02/21', '01/03/21', 700000, '20/01/21', 0, 7, 0, 25, 3, 9, 700000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (3, '01/04/21', '01/05/21', 700000, '20/03/21', 0, 8, 0, 25, 6, 9, 700000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (4, '01/05/21', '01/06/21', 700000, '20/04/21', 0, 9, 0, 5, 8, 9, 700000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (5, '01/01/21', '01/02/21', 200000, '29/12/20', 0, 2, 0, 89, 5, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (6, '01/02/21', '01/03/21', 200000, '20/01/21', 0, 3, 0, 89, 6, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (7, '01/04/21', '01/05/21', 200000, '20/03/21', 0, 4, 0, 89, 7, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (8, '01/05/21', '01/06/21', 200000, '20/04/21', 0, 2, 0, 89, 5, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (9, '01/01/19', '01/02/19', 200000, '29/12/19', 0, 2, 0, 89, 5, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (10, '01/02/19', '01/03/19', 200000, '20/01/19', 0, 3, 0, 89, 6, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (11, '01/04/19', '01/05/19', 200000, '20/03/10', 0, 4, 0, 89, 7, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (12, '01/05/19', '01/06/19', 200000, '20/04/19', 0, 2, 0, 89, 5, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (13, '01/02/19', '01/03/20', 200000, '20/01/20', 0, 2, 0, 89, 5, 88, 200000);
 INSERT INTO
-reserva(id, fechainicio, fechafin, valortotal, fechacancelacion, descuento, capacidad, estado, idoperador, idusuario, idinmueble, pagado)
+RESERVA(ID, FECHAINICIO, FECHAFIN, VALORTOTAL, FECHACANCELACION, DESCUENTO, CAPACIDAD, ESTADO, IDOPERADOR, IDUSUARIO, IDINMUEBLE, PAGADO)
 VALUES 
 (14, '01/02/20', '01/03/20', 200000, '20/01/20', 0, 2, 0, 89, 5, 88, 200000);
 
