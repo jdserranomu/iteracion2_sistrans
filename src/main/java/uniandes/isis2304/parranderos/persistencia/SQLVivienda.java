@@ -52,6 +52,12 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
 		q.setParameters(idPersona);
 		return (List<Vivienda>) q.executeList();
 	}
+	
+	public long actualizarViviendaDiasUtilizado (PersistenceManager pm, long idVivienda,int  diasUtilizado) {
+		Query q= pm.newQuery(SQL, "UPDATE "+ paa.darTablaVivienda()+ " SET DIASUTILIZADO= ? WHERE ID= ?");
+		q.setParameters(diasUtilizado,idVivienda);
+		return (long) q.executeUnique();
+	}
 	/**
 	public List<Vivienda> darViviendasConCostoNocheMenorIgual (PersistenceManager pm, double costoUmbral) 
 	{

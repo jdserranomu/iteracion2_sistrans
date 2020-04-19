@@ -598,8 +598,7 @@ public class AlohAndes
 		}
 	
 		long diffDays =ChronoUnit.DAYS.between(LocalDate.parse(fechaInicio.toString()),LocalDate.parse(fechaFin.toString()));
-		System.out.println(diffDays);
-		System.out.println(diffDays);
+		
 		if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays<30 ) {
 			throw new Exception("Una habitacion tiene una reserva minima de un mes");
 		}
@@ -611,7 +610,7 @@ public class AlohAndes
 		if (in.getTipo().equals(Inmueble.TIPO_APARTAMENTO) && diffDays<30) {
 			throw new Exception ("El apartamento tiene reserva minima de un mes");
 		}
-		if (us.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+		if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
 			Vivienda viv= darViviendaPorId(idInmueble);
 			if (viv.getDiasUtilizado()+diffDays>30 ) {
 				throw new Exception("Con las fechas dadas la vivienda seria utilizada ");
@@ -630,9 +629,11 @@ public class AlohAndes
 				throw new Exception("la fechas se cruzan con otra reserva existente");
 			}
 		}
-		
+		System.out.println(pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble));
         Reserva re = pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        System.out.println("llego");
         log.info ("Adicionando reserva: " + re);
+        
         return re;
 	}
 	
@@ -805,6 +806,13 @@ public class AlohAndes
         List<Vivienda> us= pp.darViviendasPorIdPersona(idPersona);
         log.info ("Consultando Viviendas: " + us);
         return us;
+	}
+	
+	public long actualizarViviendaDiasUtilizado(int diasUtilizado, long idVivienda ) {
+		log.info("Actualizando dias utilizado de vivienda a: "+ diasUtilizado);
+		long ans= pp.actualizarViviendaDiasUtilizado(diasUtilizado, idVivienda);
+		log.info("actualizando vivienda");
+		return ans;
 	}
 	
 	/* ****************************************************************

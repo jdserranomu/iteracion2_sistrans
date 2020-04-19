@@ -808,6 +808,7 @@ public class PersistenciaAlohAndes {
 	
 	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
 			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
+		
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
         try{
@@ -817,6 +818,7 @@ public class PersistenciaAlohAndes {
             		fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
             tx.commit();
             log.trace ("Inserción de Reserva: " + idReserva + ": " + tuplasInsertadas + " tuplas insertadas" );
+           
             return new Reserva(idReserva, fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, 
             		descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
         }
@@ -1058,6 +1060,12 @@ public class PersistenciaAlohAndes {
 	public List<Vivienda> darViviendasPorIdPersona (long idPersona){
 		return sqlVivienda.darViviendasPorIdPersona (pmf.getPersistenceManager(), idPersona);
 	}
+	
+	public long actualizarViviendaDiasUtilizado(int diasUtilizado, long idVivienda) {
+		return sqlVivienda.actualizarViviendaDiasUtilizado(pmf.getPersistenceManager(), idVivienda, diasUtilizado);
+	}
+	
+	
 	
 	/* ****************************************************************
 	 * 			Métodos para requerimientos de consulta

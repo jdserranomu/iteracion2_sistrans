@@ -12,6 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1244,6 +1246,13 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		if (fechaIni!=null && fechafi!=null)
     		{
         		Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal, null, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        		Inmueble in= alohAndes.darInmueblePorId(re.getIdInmueble());
+        		if (in.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+    				Vivienda viv= alohAndes.darViviendaPorId(in.getId());
+    				long diffDays =ChronoUnit.DAYS.between(LocalDate.parse(fechaInicio.toString()),LocalDate.parse(fechaFin.toString()));
+    				int diasNuevo= viv.getDiasUtilizado()+ (int)diffDays;
+    				alohAndes.actualizarViviendaDiasUtilizado(diasNuevo,in.getId());
+    			}
         		if (re == null)
         		{
         			throw new Exception ("No se pudo crear un reserva con fecha de inicio: " + fechaIni+" y fecha fin : "+ fechafi );
@@ -1251,6 +1260,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
         		String resultado = "En adicionarReserva\n\n";
         		resultado += "Reserva adicionado exitosamente: " + re;
     			resultado += "\n Operación terminada";
+    			
     			panelDatos.actualizarInterfaz(resultado);
     		}
     		else

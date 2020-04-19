@@ -18,7 +18,7 @@ public class Reserva implements VOReserva {
 	
 	public Reserva() {
 		this.id=0;
-		this.fechaInicio=new Date(2020, 1, 1);
+		this.fechaInicio=new Date(2020,1,1);
 		this.fechaFin=new Date(2020, 1, 1);
 		this.valorTotal=0;
 		this.fechaCancelacion=new Date(2020, 1, 1);
@@ -32,7 +32,6 @@ public class Reserva implements VOReserva {
 	}
 	public Reserva(long id, Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado,
 			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
-	
 		this.id = id;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
