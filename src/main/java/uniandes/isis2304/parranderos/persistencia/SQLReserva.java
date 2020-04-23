@@ -1,6 +1,7 @@
 package uniandes.isis2304.parranderos.persistencia;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -20,9 +21,14 @@ public class SQLReserva {
 	public long adicionarReserva (PersistenceManager pm, long idReserva, Date fechaInicio, Date fechaFin,
 			double valorTotal, Date fechaCancelacion, int pagado, double descuento, int capacidad, 
 			int estado, long idOperador, long idUsuario, long idInmueble) {
+		Timestamp iniTimestamp = new Timestamp(fechaInicio.getTime());
+		Timestamp finTimestamp = new Timestamp(fechaFin.getTime());
+		Timestamp cancelacionTimestamp = null;
+		if(fechaCancelacion!=null)
+			cancelacionTimestamp = new Timestamp(fechaCancelacion.getTime());
         Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaReserva() + "(id, fechaInicio, fechaFin, valorTotal,"
         		+ "fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        q.setParameters(idReserva, fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        q.setParameters(idReserva, iniTimestamp, finTimestamp, valorTotal, cancelacionTimestamp, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
         return (long) q.executeUnique();
 	}
 	
@@ -41,6 +47,14 @@ public class SQLReserva {
 		return (Reserva) q.executeUnique();
 	}
 	
+	public List<Reserva> darReservaPorIdUsuario (PersistenceManager pm, long idUsuario) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idusuario = ?");
+		q.setResultClass(Reserva.class);
+		q.setParameters(idUsuario);
+		return (List<Reserva>) q.executeList();
+	}
+	
 	public List<Reserva> darReservas (PersistenceManager pm)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva());
@@ -52,7 +66,9 @@ public class SQLReserva {
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND (fechaInicio BETWEEN ? AND ? OR fechaFin BETWEEN ? AND ?)");
 		q.setResultClass(Reserva.class);
-		q.setParameters(idInmueble, fechaStart, fechaEnd, fechaStart, fechaEnd);
+		Timestamp fechaStarTimestamp = new Timestamp(fechaStart.getTime());
+		Timestamp fechaEndTimestamp = new Timestamp(fechaEnd.getTime());
+		q.setParameters(idInmueble, fechaStarTimestamp, fechaEndTimestamp, fechaStarTimestamp, fechaEndTimestamp);
 		return (List<Reserva>) q.executeList();
 	}
 	
@@ -60,7 +76,8 @@ public class SQLReserva {
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND fechaFin >= ?");
 		q.setResultClass(Reserva.class);
-		q.setParameters(idInmueble, fecha);
+		Timestamp fechaTimestamp = new Timestamp(fecha.getTime());
+		q.setParameters(idInmueble, fechaTimestamp);
 		return (List<Reserva>) q.executeList();
 	}
 }

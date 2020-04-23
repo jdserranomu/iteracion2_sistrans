@@ -15,20 +15,13 @@
 
 package uniandes.isis2304.parranderos.negocio;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDate;
+import java.util.Date;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import com.google.gson.JsonObject;
+import com.sun.org.apache.bcel.internal.classfile.PMGClass;
 
-import sun.security.util.Length;
-import sun.security.x509.GeneralNameInterface;
 import uniandes.isis2304.parranderos.persistencia.PersistenciaAlohAndes;
 
 /**
@@ -583,7 +576,6 @@ public class AlohAndes
 	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
 			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) throws Exception{
 		
-		
 		log.info ("Adicionando reserva con fecha inicio" +fechaInicio+", fecha fin: "+fechaFin+", con valor de: "+valorTotal+", pagado: "+aTexto(pagado)+", con operador: "+idOperador + ", usuario:"+idUsuario+" y inmueble: "+ idInmueble );
 		Inmueble in= darInmueblePorId(idInmueble);
 		String tipo=in.getTipo();
@@ -596,9 +588,7 @@ public class AlohAndes
 		if (in.getDisponible()==0) {
 			throw new Exception("El inmueble no esta disponible para reservas");
 		}
-	
-		long diffDays =ChronoUnit.DAYS.between(LocalDate.parse(fechaInicio.toString()),LocalDate.parse(fechaFin.toString()));
-		
+		long diffDays =ChronoUnit.DAYS.between(fechaInicio.toInstant(),fechaFin.toInstant());
 		if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays<30 ) {
 			throw new Exception("Una habitacion tiene una reserva minima de un mes");
 		}
@@ -619,7 +609,7 @@ public class AlohAndes
 		if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA) && !(us.getTipo().equals(Usuario.TIPO_ESTUDIANTE) || us.getTipo().equals(Usuario.TIPO_PROFESOR) || us.getTipo().equals(Usuario.TIPO_EMPLEADO)  || us.getTipo().equals(Usuario.TIPO_PROFESORINVITADO) )) {
 			throw new Exception("La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
 		}
-		List<Reserva> reservasUs= darReservasDeUsuario(us.getId());
+		List<Reserva> reservasUs= pp.darReservasPorIdUsuario(us.getId());
 		for (int i=0; i<reservasUs.size();i++) {
 			Reserva act= reservasUs.get(i);
 			if (fechaFin.compareTo(act.getFechaInicio())>=0 && fechaFin.compareTo(act.getFechaFin())<=0) {
@@ -629,11 +619,8 @@ public class AlohAndes
 				throw new Exception("la fechas se cruzan con otra reserva existente");
 			}
 		}
-		System.out.println(pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble));
         Reserva re = pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
-        System.out.println("llego");
         log.info ("Adicionando reserva: " + re);
-        
         return re;
 	}
 	
@@ -677,6 +664,13 @@ public class AlohAndes
 			}
 		}
 		return ans;
+	}
+	
+	public List<Reserva> darReservasporIdUsuario(long idUsuario){
+		log.info ("Consultando Reservas de usuario "+idUsuario );
+        List<Reserva> pn = pp.darReservasPorIdUsuario(idUsuario);
+        log.info ("Consultando Reservas por id usuario: " + pn.size() + " existentes");
+        return pn;
 	}
 	
 	/* ****************************************************************

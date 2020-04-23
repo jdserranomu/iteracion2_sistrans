@@ -1,7 +1,7 @@
 package uniandes.isis2304.parranderos.persistencia;
 
-import java.awt.print.Printable;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -11,7 +11,6 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
-import uniandes.isis2304.parranderos.negocio.Usuario;
 
 public class SQLUtil {
 	
@@ -43,12 +42,15 @@ public class SQLUtil {
 				"    WHERE RES.FECHAINICIO>= ? AND RES.FECHAFIN<= ?) ON OP.ID = IDOPERADOR " + 
 				"GROUP BY OP.ID) ON IA=IC");
 		q.setResultClass(ReqConsulta1.class);
-		Date actualDate = new Date(new java.util.Date().getTime());
+		Date actualDate = new Date();
 		@SuppressWarnings("deprecation")
 		Date anoCorridoDate = new Date(actualDate.getYear()-1, actualDate.getMonth(), actualDate.getDate());
 		@SuppressWarnings("deprecation")
 		Date anoActualDate = new Date(actualDate.getYear(), 0, 1);
-		q.setParameters(anoCorridoDate,actualDate, anoActualDate, actualDate);
+		Timestamp actualTimestamp = new Timestamp(actualDate.getTime());
+		Timestamp anoCorridoTimestamp = new Timestamp(anoCorridoDate.getTime());
+		Timestamp anoActualTimestamp = new Timestamp(anoActualDate.getTime());
+		q.setParameters(anoCorridoTimestamp,actualTimestamp, anoActualTimestamp, actualTimestamp);
 		return (List<ReqConsulta1>) q.executeList();
 	}
 	
@@ -94,7 +96,9 @@ public class SQLUtil {
 				"	GROUP BY INM.ID) " + 
 				"WHERE CNT =  ? ";
 		Query q=pm.newQuery(SQL, queryString);
-		q.setParameters(X, Y, X, Y, servicios.size());
+		Timestamp xTimestamp = new Timestamp(X.getTime());
+		Timestamp yTimestamp = new Timestamp(Y.getTime());
+		q.setParameters(xTimestamp, yTimestamp, xTimestamp, yTimestamp, servicios.size());
 		q.setResultClass(ReqConsulta4.class);
 		
 		

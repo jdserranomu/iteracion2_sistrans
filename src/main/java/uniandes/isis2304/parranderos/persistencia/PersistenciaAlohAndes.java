@@ -1,6 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -251,8 +251,11 @@ public class PersistenciaAlohAndes {
         try{
             tx.begin();
             long idInmueble = nextval ();
+            System.out.println("Creando inmueble");
             long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_APARTAMENTO, capacidad, disponible, fechaReservaFinal);
+            System.out.println("Se creo inmueble");
             long tuplasInsertadas = sqlApartamento.adicionarApartamento(pm, idInmueble, amoblado,precioMes,idPersona);
+            System.out.println("Se creo apartamento");
             tx.commit();
             log.trace ("Inserción de Apartamento: " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas" + " tuples inmueble "+tuplaInmuble);
             return new Apartamento(idInmueble, amoblado, precioMes, idPersona);
@@ -823,7 +826,7 @@ public class PersistenciaAlohAndes {
             		descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
         }
         catch (Exception e){
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	log.error ("Exception esta aqui : " + e.getMessage() + "\n" + darDetalleException(e));
         	return null;
         }
         finally{
@@ -865,6 +868,10 @@ public class PersistenciaAlohAndes {
 	public List<Reserva> darReservas ()
 	{
 		return sqlReserva.darReservas(pmf.getPersistenceManager());
+	}
+	
+	public List<Reserva> darReservasPorIdUsuario(long idUsuario){
+		return sqlReserva.darReservaPorIdUsuario(pmf.getPersistenceManager(), idUsuario);
 	}
 	
 	public List<Reserva> darReservasDespuesDeFechaPorIdInmueble (Date fecha, long idInmueble)

@@ -3,8 +3,8 @@ package uniandes.isis2304.parranderos.persistencia;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import uniandes.isis2304.parranderos.negocio.Inmueble;
-
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class SQLInmueble {
@@ -20,7 +20,10 @@ public class SQLInmueble {
 	public long adicionarInmueble (PersistenceManager pm, long idInmueble, String direccion, String tipo, int capacidad, int disponible, Date fechaReservaFinal) 
 	{
         Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaInmueble() + "(id, direccion, tipo, capacidad, disponible, fechaReservaFinal) values (?, ?,  ?, ?, ?, ?)");
-        q.setParameters(idInmueble, direccion, tipo, capacidad, disponible, fechaReservaFinal);
+        Timestamp fechaReservaFinalTimestamp= null;
+        if (fechaReservaFinal!=null)
+        	fechaReservaFinalTimestamp = new Timestamp(fechaReservaFinal.getTime());
+        q.setParameters(idInmueble, direccion, tipo, capacidad, disponible, fechaReservaFinalTimestamp);
         return (long) q.executeUnique();
 	}
 	

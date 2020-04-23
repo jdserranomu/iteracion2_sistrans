@@ -11,7 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -1223,15 +1224,16 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     /* ****************************************************************
 	 * 			CRUD de Reserva
 	 *****************************************************************/
-    public void adicionarReserva()
+    @SuppressWarnings("unused")
+	public void adicionarReserva()
     {
     	try 
     	{	
-			String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
-			Date fechaInicio=Date.valueOf(fechaIni);
-			
+    		SimpleDateFormat formatDates = new SimpleDateFormat("yyyy-MM-dd");
+			String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE);   
+			Date fechaInicio=formatDates.parse(fechaIni);
 			String fechafi= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin", JOptionPane.QUESTION_MESSAGE); 
-			Date fechaFin=Date.valueOf(fechafi);
+			Date fechaFin=formatDates.parse(fechafi);
 			
 			int capacidad = Integer.parseInt(JOptionPane.showInputDialog (this, "capacidad?", "Adicionar capacidad", JOptionPane.QUESTION_MESSAGE));
     		long idUsuario = Long.parseLong(JOptionPane.showInputDialog (this, "id?", "Adicionar id del usuario", JOptionPane.QUESTION_MESSAGE));
@@ -1315,6 +1317,21 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     			}
     	    }
     	 
+    	 public void darReservasPorIdUsuario(){
+ 			try {
+ 				int idUsuario = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar reservas por Id usuario", JOptionPane.QUESTION_MESSAGE));
+ 				List <Reserva> lista = alohAndes.darReservasporIdUsuario(idUsuario);
+ 				String resultado = "En listaReserva";
+ 				resultado +=  "\n" + listarReserva(lista);
+ 				panelDatos.actualizarInterfaz(resultado);
+ 				resultado += "\n Operación terminada";
+ 			} catch (Exception e) {
+ 				String resultado = generarMensajeError(e);
+ 				panelDatos.actualizarInterfaz(resultado);
+ 			}
+ 		}
+    	 
+    	 
     	 public void darReservas(){
     			try {
     				List <Reserva> lista = alohAndes.darReservas();
@@ -1331,11 +1348,12 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     	 
     	 public void darReservasEnFechasParaInmueble() {
     	    	try {
+    	    		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	    		String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
-    				Date fechaInicio=Date.valueOf(fechaIni);
+    				Date fechaInicio=dateFormat.parse(fechaIni);
     				
     				String fechafi= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin", JOptionPane.QUESTION_MESSAGE); 
-    				Date fechaFin=Date.valueOf(fechafi);
+    				Date fechaFin=dateFormat.parse(fechafi);
     				long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "inmueble?", "Adicionar id del inmueble", JOptionPane.QUESTION_MESSAGE));
     	    		List<Reserva> lista = alohAndes.darReservasEnFechasParaInmueble(fechaInicio, fechaFin, idInmueble);
     	    		String resultado = "En listaReserva";
@@ -2037,11 +2055,12 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 				}
 				
 			}
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String fechaIni= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio", JOptionPane.QUESTION_MESSAGE); 
-			Date fechaInicio=Date.valueOf(fechaIni);
+			Date fechaInicio=dateFormat.parse(fechaIni);
 			
 			String fechafi= JOptionPane.showInputDialog (this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin", JOptionPane.QUESTION_MESSAGE); 
-			Date fechaFin=Date.valueOf(fechafi);
+			Date fechaFin=dateFormat.parse(fechafi);
 			
 			List<ReqConsulta4>listaConsulta = alohAndes.RFC4(fechaInicio,fechaFin, servicios);
 			String resultado = "En RFC4";
