@@ -597,9 +597,11 @@ public class AlohAndes
 		if (us.getTipo().equals(Usuario.TIPO_INVITADO) && !tipo.equals(Inmueble.TIPO_VIVIENDA)) {
 			throw new Exception("El usuario de tipo invitado solo puede arrendar vivienda");
 		}
+		
 		if (in.getTipo().equals(Inmueble.TIPO_APARTAMENTO) && diffDays<30) {
 			throw new Exception ("El apartamento tiene reserva minima de un mes");
 		}
+		
 		if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
 			Vivienda viv= darViviendaPorId(idInmueble);
 			if (viv.getDiasUtilizado()+diffDays>30 ) {
@@ -609,9 +611,11 @@ public class AlohAndes
 		if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA) && !(us.getTipo().equals(Usuario.TIPO_ESTUDIANTE) || us.getTipo().equals(Usuario.TIPO_PROFESOR) || us.getTipo().equals(Usuario.TIPO_EMPLEADO)  || us.getTipo().equals(Usuario.TIPO_PROFESORINVITADO) )) {
 			throw new Exception("La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
 		}
-		List<Reserva> reservasUs= pp.darReservasPorIdUsuario(us.getId());
+		
+		List<Reserva> reservasUs= darReservasDeUsuario(us.getId());
 		for (int i=0; i<reservasUs.size();i++) {
 			Reserva act= reservasUs.get(i);
+			System.out.println(act.getFechaFin());
 			if (fechaFin.compareTo(act.getFechaInicio())>=0 && fechaFin.compareTo(act.getFechaFin())<=0) {
 				throw new Exception ("las fechas se cruzan con otra reserva del usuario");
 			}
@@ -619,7 +623,10 @@ public class AlohAndes
 				throw new Exception("la fechas se cruzan con otra reserva existente");
 			}
 		}
+		
         Reserva re = pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+      
+       
         log.info ("Adicionando reserva: " + re);
         return re;
 	}
