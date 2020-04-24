@@ -55,6 +55,17 @@ public class SQLReserva {
 		return (List<Reserva>) q.executeList();
 	}
 	
+	public List<Reserva> darReservasNoCanceladasEnFechasPorIdUsuario (PersistenceManager pm, long idUsuario, Date fechaStart, Date fechaEnd) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idUsuario = ? AND "
+				+ "(fechaInicio BETWEEN ? AND ? OR fechaFin BETWEEN ? AND ?) AND estado <> ? ");
+		q.setResultClass(Reserva.class);
+		Timestamp fechaStarTimestamp = new Timestamp(fechaStart.getTime());
+		Timestamp fechaEndTimestamp = new Timestamp(fechaEnd.getTime());
+		q.setParameters(idUsuario, fechaStarTimestamp, fechaEndTimestamp, fechaStarTimestamp, fechaEndTimestamp, Reserva.ESTADO_CANCELADO);
+		return (List<Reserva>) q.executeList();
+	}
+	
 	public List<Reserva> darReservas (PersistenceManager pm)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva());
@@ -64,11 +75,23 @@ public class SQLReserva {
 	
 	public List<Reserva> darReservasEnFechasParaInmueble (PersistenceManager pm, Date fechaStart, Date fechaEnd, long idInmueble) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND (fechaInicio BETWEEN ? AND ? OR fechaFin BETWEEN ? AND ?)");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND "
+				+ "(fechaInicio BETWEEN ? AND ? OR fechaFin BETWEEN ? AND ?) ");
 		q.setResultClass(Reserva.class);
 		Timestamp fechaStarTimestamp = new Timestamp(fechaStart.getTime());
 		Timestamp fechaEndTimestamp = new Timestamp(fechaEnd.getTime());
 		q.setParameters(idInmueble, fechaStarTimestamp, fechaEndTimestamp, fechaStarTimestamp, fechaEndTimestamp);
+		return (List<Reserva>) q.executeList();
+	}
+	
+	public List<Reserva> darReservasNoCanceladasEnFechasParaInmueble (PersistenceManager pm, Date fechaStart, Date fechaEnd, long idInmueble) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND "
+				+ "(fechaInicio BETWEEN ? AND ? OR fechaFin BETWEEN ? AND ?) AND estado <> ? ");
+		q.setResultClass(Reserva.class);
+		Timestamp fechaStarTimestamp = new Timestamp(fechaStart.getTime());
+		Timestamp fechaEndTimestamp = new Timestamp(fechaEnd.getTime());
+		q.setParameters(idInmueble, fechaStarTimestamp, fechaEndTimestamp, fechaStarTimestamp, fechaEndTimestamp, Reserva.ESTADO_CANCELADO);
 		return (List<Reserva>) q.executeList();
 	}
 	
@@ -80,11 +103,13 @@ public class SQLReserva {
 		q.setParameters(idInmueble, fechaTimestamp);
 		return (List<Reserva>) q.executeList();
 	}
-
 	
-	public long actualizarReservaPorId(PersistenceManager pm, long id,Reserva re) {
-		Query q= pm.newQuery(SQL, "UPDATE "+ paa.darTablaReserva()+ " SET FECHAINICIO= ?, FECHAFIN=?, VALORTOTAL=?, FECHACANCELACION=?, PAGADO=?, DESCUENTO=? , CAPACIDAD=?, ESTADO=?, IDOPERADOR=?, IDUSUARIO=?, IDINMUEBLE=? WHERE ID= ?");
-		q.setParameters(re.getFechaInicio(),re.getFechaFin(), re.getValorTotal(), re.getFechaCancelacion(), re.getPagado(), re.getDescuento(), re.getCapacidad(), re.getEstado(), re.getIdOperador(), re.getIdUsuario(), re.getIdInmueble(), re.getId());
+	public long actualizarReservaPorId(PersistenceManager pm, long id, Reserva re) {
+		Query q= pm.newQuery(SQL, "UPDATE "+ paa.darTablaReserva()+ " SET FECHAINICIO= ?, FECHAFIN=?, VALORTOTAL=?, "
+				+ "FECHACANCELACION=?, PAGADO=?, DESCUENTO=? , CAPACIDAD=?, ESTADO=?, IDOPERADOR=?, IDUSUARIO=?, IDINMUEBLE=? WHERE ID= ?");
+		q.setParameters(re.getFechaInicio(),re.getFechaFin(), re.getValorTotal(), re.getFechaCancelacion(), re.getPagado(), 
+				re.getDescuento(), re.getCapacidad(), re.getEstado(), re.getIdOperador(), re.getIdUsuario(), re.getIdInmueble(), re.getId());
 		return (long) q.executeUnique();
 	}
+	
 }
