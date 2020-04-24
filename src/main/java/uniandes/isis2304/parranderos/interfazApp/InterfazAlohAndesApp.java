@@ -1248,7 +1248,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		int estado=0;
     		if (fechaIni!=null && fechafi!=null)
     		{
-        		Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal, null, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        		Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal, alohAndes.darFechaDeCancelacion(fechaFin, diffDays), pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
         		
         		if (re == null)
         		{

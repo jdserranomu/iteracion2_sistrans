@@ -17,6 +17,8 @@ package uniandes.isis2304.parranderos.negocio;
 
 import java.util.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -166,8 +168,13 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar los HABITACIONES HOSTAL
 	 *****************************************************************/	
-	public HabitacionHostal adicionarHabitacionHostal(int numero, long idHostal, String direccion, int capacidad, int disponible, Date fechaReservaFinal)
+	public HabitacionHostal adicionarHabitacionHostal(int numero, long idHostal, String direccion, int capacidad, int disponible, Date fechaReservaFinal)throws Exception
 	{
+		PersonaJuridica hot= darPersonaJuridicaPorId(idHostal);
+		
+		if (hot.getTipo().equals(PersonaJuridica.TIPO_HOSTAL)) {
+			throw new Exception ("El id del dueño debe pertenecer a un Hostal");
+		}
 		
         log.info ("Adicionando Habitacion Hostal en: " +direccion +" con capacidad: "+ capacidad+ ", numero: "+ numero+ ", disponible: "+ aTexto(disponible)+ " y del hostal: "+ idHostal  );
         HabitacionHostal habitacion = pp.adicionarHabitacionHostal(numero, idHostal, direccion, capacidad, disponible, fechaReservaFinal);
@@ -205,8 +212,13 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar los HABITACION HOTEL
 	 *****************************************************************/
-	public HabitacionHotel adicionarHabitacionHotel(long idHotel, int numero, String tipo, double precioNoche, double tamanho, String ubicacion, String direccion, int capacidad, int disponible, Date fechaReservaFinal)
+	public HabitacionHotel adicionarHabitacionHotel(long idHotel, int numero, String tipo, double precioNoche, double tamanho, String ubicacion, String direccion, int capacidad, int disponible, Date fechaReservaFinal)throws Exception
 	{
+		PersonaJuridica hot= darPersonaJuridicaPorId(idHotel);
+		
+		if (hot.getTipo().equals(PersonaJuridica.TIPO_HOTEL)) {
+			throw new Exception ("El id del dueño debe pertenecer a un Hotel");
+		}
 		
         log.info ("Adicionando Habitacion Hotel en: " +direccion +" con capacidad: "+ capacidad+ ", numero: "+ numero+ ", disponible: "+ aTexto(disponible)+", tipo: "+tipo+", tamanho: "+tamanho +" y del hotel: "+ idHotel  );
         HabitacionHotel habitacion = pp.adicionarHabitacionHotel(idHotel, numero, tipo, precioNoche, tamanho, ubicacion, direccion, capacidad, disponible, fechaReservaFinal);
@@ -241,9 +253,13 @@ public class AlohAndes
 	 * 			Métodos para manejar los HABITACION VIVIENDA
 	 *****************************************************************/
 	public HabitacionVivienda adicionarHabitacionVivienda(long idVivienda, int numero, double precioSemestre, double precioMes,
-			double precioNoche, String ubicacion, int individual, String direccion, int capacidad, int disponible, Date fechaReservaFinal)
+			double precioNoche, String ubicacion, int individual, String direccion, int capacidad, int disponible, Date fechaReservaFinal)throws Exception
 	{
+		PersonaJuridica viv= darPersonaJuridicaPorId(idVivienda);
 		
+		if (viv.getTipo().equals(PersonaJuridica.TIPO_VIVIENDAUNIVERSITARIA)) {
+			throw new Exception ("El id del dueño debe pertenecer a una Vivienda");
+		}
         log.info ("Adicionando Habitacion Vivienda en: " +direccion +" con capacidad: "+ capacidad+ ", numero: "+ numero+ ", disponible: "+ aTexto(disponible)+", precio Mes: "+precioMes+", precio semestre: "+precioSemestre+", precio noche: "+precioNoche+", individual: "+aTexto(individual) +" y de la vivienda: "+ idVivienda  );
         HabitacionVivienda habitacion = pp.adicionarHabitacionVivienda(idVivienda, numero, precioSemestre, precioMes, precioNoche, ubicacion, individual, direccion, capacidad, disponible, fechaReservaFinal);
         log.info ("Adicionando Habitacion Vivienda: " + habitacion);
@@ -549,31 +565,7 @@ public class AlohAndes
 	/* ****************************************************************
 	 * 			Métodos para manejar las Reserva
 	 *****************************************************************/
-	public long darDuenoInmueble( long id, String tipo){
-		
-		if (tipo.equals(Inmueble.TIPO_APARTAMENTO)) {
-			Apartamento inm= darApartamentoPorId(id);
-			return inm.getIdPersona();
-		}else if (tipo.equals(Inmueble.TIPO_HABITACION)) {
-			Habitacion inm= darHabitacionPorId(id);
-			return inm.getIdPersona();
-		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOSTAL)) {
-			HabitacionHostal inm= darHabitacionHostalPorId(id);
-			return inm.getIdHostal();
-		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOTEL)) {
-			HabitacionHotel inm= darHabitacionHotelPorId(id);
-			return inm.getIdHotel();
-			
-		}else if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
-			HabitacionVivienda inm= darHabitacionViviendaPorId(id);
-			return inm.getIdVivienda();
-			
-		}else if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
-			Vivienda inm= darViviendaPorId(id);
-			return inm.getIdPersona();
-		}
-		return -1;
-	}
+	
 	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
 			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) throws Exception{
 		
@@ -954,9 +946,58 @@ public class AlohAndes
 	}
 	
 	/* ****************************************************************
-	 * 			Métodos para administración
+	 * 			Metodos para cosas varias
 	 *****************************************************************/
 
+	
+	public long darDuenoInmueble( long id, String tipo){
+		
+		if (tipo.equals(Inmueble.TIPO_APARTAMENTO)) {
+			Apartamento inm= darApartamentoPorId(id);
+			return inm.getIdPersona();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACION)) {
+			Habitacion inm= darHabitacionPorId(id);
+			return inm.getIdPersona();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOSTAL)) {
+			HabitacionHostal inm= darHabitacionHostalPorId(id);
+			return inm.getIdHostal();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOTEL)) {
+			HabitacionHotel inm= darHabitacionHotelPorId(id);
+			return inm.getIdHotel();
+			
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
+			HabitacionVivienda inm= darHabitacionViviendaPorId(id);
+			return inm.getIdVivienda();
+			
+		}else if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+			Vivienda inm= darViviendaPorId(id);
+			return inm.getIdPersona();
+		}
+		return -1;
+	}
+	
+	
+	public Date darFechaDeCancelacion(Date fechaFin, long diffDays) {
+		if (diffDays<=3) {
+			return null;
+		}
+		else {
+			
+			LocalDate ldt = LocalDateTime.ofInstant(fechaFin.toInstant(), ZoneId.systemDefault()).toLocalDate();
+			LocalDate date = ldt.minusDays(3);
+			
+			Date out = Date.from(date.atStartOfDay( ZoneId.of( "America/Montreal" )).toInstant());
+			return out;
+		}
+	}
+	
+	
+	
+/* ****************************************************************
+ * 			Métodos para administración
+ *****************************************************************/
+
+	
 	/**
 	 * Elimina todas las tuplas de todas las tablas de la base de datos de Parranderos
 	 * @return Un arreglo con 7 números que indican el número de tuplas borradas en las tablas GUSTAN, SIRVEN, VISITAN, BEBIDA,
