@@ -672,9 +672,8 @@ public class AlohAndes
 	}
 	
 	public long eliminarReservaporId (long idReserva)  {
+		
 		log.info("Eliminando la reserva: "+idReserva);
-		
-		
 		long op=pp.eliminarReservaPorId(idReserva);
 		log.info("eliminando el reserva"+ op);
 		return op;
@@ -977,18 +976,53 @@ public class AlohAndes
 	}
 	
 	
-	public Date darFechaDeCancelacion(Date fechaFin, long diffDays) {
+	public Date darFechaDeCancelacion(String tipo, Date fechaFin, long diffDays) {
 		if (diffDays<=3) {
 			return null;
 		}
-		else {
-			
+		else if (tipo.equals(Inmueble.TIPO_VIVIENDA) || tipo.equals(Inmueble.TIPO_HABITACIONHOTEL) || tipo.equals(Inmueble.TIPO_HABITACIONHOSTAL )){
 			LocalDate ldt = LocalDateTime.ofInstant(fechaFin.toInstant(), ZoneId.systemDefault()).toLocalDate();
 			LocalDate date = ldt.minusDays(3);
 			
 			Date out = Date.from(date.atStartOfDay( ZoneId.of( "America/Montreal" )).toInstant());
 			return out;
+		}else if (tipo.equals(Inmueble.TIPO_HABITACION) || tipo.equals(Inmueble.TIPO_APARTAMENTO) ) {
+			LocalDate ldt = LocalDateTime.ofInstant(fechaFin.toInstant(), ZoneId.systemDefault()).toLocalDate();
+			LocalDate date = ldt.minusDays(7);
+			
+			Date out = Date.from(date.atStartOfDay( ZoneId.of( "America/Montreal" )).toInstant());
+			return out;
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
+			if (diffDays<30) {
+				LocalDate ldt = LocalDateTime.ofInstant(fechaFin.toInstant(), ZoneId.systemDefault()).toLocalDate();
+				LocalDate date = ldt.minusDays(3);
+				Date out = Date.from(date.atStartOfDay( ZoneId.of( "America/Montreal" )).toInstant());
+				return out;
+			}else {
+				LocalDate ldt = LocalDateTime.ofInstant(fechaFin.toInstant(), ZoneId.systemDefault()).toLocalDate();
+				LocalDate date = ldt.minusDays(7);
+				
+				Date out = Date.from(date.atStartOfDay( ZoneId.of( "America/Montreal" )).toInstant());
+				return out;
+			}
+		}else {
+			return null;
 		}
+		
+	}
+	
+	public double calcularCostoCancelacion(double totalOriginal, Date fechaCancelacion, Date fechaFin ) {
+		Date date = new Date();  
+		long diffDays =ChronoUnit.DAYS.between(date.toInstant(),fechaCancelacion.toInstant());
+		long diffDays2 =ChronoUnit.DAYS.between(date.toInstant(),fechaFin.toInstant());
+		if (diffDays>0) {
+			return totalOriginal*0.1;
+		}else if (diffDays<=0 && diffDays2>0 ) {
+			return totalOriginal*0.3;
+		}else {
+			return totalOriginal*0.5;
+		}
+		
 	}
 	
 	
