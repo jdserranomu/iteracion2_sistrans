@@ -1241,24 +1241,20 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		long idInmueble = Long.parseLong(JOptionPane.showInputDialog (this, "inmueble?", "Adicionar id del inmueble", JOptionPane.QUESTION_MESSAGE));
     		Inmueble inm=alohAndes.darInmueblePorId(idInmueble);
     		long idOperador=alohAndes.darDuenoInmueble(idInmueble, inm.getTipo());
-    		double valorTotal = Integer.parseInt(JOptionPane.showInputDialog (this, "valor Total?", "Adicionar valor total", JOptionPane.QUESTION_MESSAGE));
+    		long diffDays =ChronoUnit.DAYS.between(fechaInicio.toInstant(),fechaFin.toInstant());
+    		double valorTotal = alohAndes.calcularCostoReserva(diffDays, inm.getTipo(), inm);
     		int pagado=0;
     		double descuento=0;
     		int estado=0;
     		if (fechaIni!=null && fechafi!=null)
     		{
         		Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal, null, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
-        		Inmueble in= alohAndes.darInmueblePorId(re.getIdInmueble());
-        		if (in.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
-    				Vivienda viv= alohAndes.darViviendaPorId(in.getId());
-    				long diffDays =ChronoUnit.DAYS.between(LocalDate.parse(fechaInicio.toString()),LocalDate.parse(fechaFin.toString()));
-    				int diasNuevo= viv.getDiasUtilizado()+ (int)diffDays;
-    				alohAndes.actualizarViviendaDiasUtilizado(diasNuevo,in.getId());
-    			}
+        		
         		if (re == null)
         		{
         			throw new Exception ("No se pudo crear un reserva con fecha de inicio: " + fechaIni+" y fecha fin : "+ fechafi );
         		}
+        		
         		String resultado = "En adicionarReserva\n\n";
         		resultado += "Reserva adicionado exitosamente: " + re;
     			resultado += "\n Operación terminada";

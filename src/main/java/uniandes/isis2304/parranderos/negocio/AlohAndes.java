@@ -16,6 +16,7 @@
 package uniandes.isis2304.parranderos.negocio;
 
 import java.util.Date;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -612,10 +613,10 @@ public class AlohAndes
 			throw new Exception("La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
 		}
 		
-		List<Reserva> reservasUs= darReservasDeUsuario(us.getId());
+		List<Reserva> reservasUs= darReservasporIdUsuario(us.getId());
 		for (int i=0; i<reservasUs.size();i++) {
 			Reserva act= reservasUs.get(i);
-			System.out.println(act.getFechaFin());
+		
 			if (fechaFin.compareTo(act.getFechaInicio())>=0 && fechaFin.compareTo(act.getFechaFin())<=0) {
 				throw new Exception ("las fechas se cruzan con otra reserva del usuario");
 			}
@@ -625,10 +626,57 @@ public class AlohAndes
 		}
 		
         Reserva re = pp.adicionarReserva(fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
-      
+        if (re!=null) {
+    		if (in.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+				Vivienda viv= darViviendaPorId(in.getId());
+				int diasNuevo= viv.getDiasUtilizado()+ (int)diffDays;
+				actualizarViviendaDiasUtilizado(diasNuevo,in.getId());
+			}
+        }
        
         log.info ("Adicionando reserva: " + re);
         return re;
+	}
+	
+	public double calcularCostoReserva(long diffDays, String tipoIn, Inmueble in) {
+		double precio=-1;
+		if (tipoIn.equals(Inmueble.TIPO_HABITACION)) {
+			//Habitacion tiene reserva minima de un mes
+			double tiempo= Math.ceil(diffDays/30);
+			Habitacion hab= darHabitacionPorId(in.getId());
+			precio= hab.getPrecioMes()*tiempo;
+		}else if (tipoIn.equals(Inmueble.TIPO_VIVIENDA)) {
+			Vivienda viv= darViviendaPorId(in.getId());
+			precio= viv.getCostoNoche()*diffDays;
+	
+		}else if(tipoIn.equals(in.TIPO_APARTAMENTO)) {
+			Apartamento apto=darApartamentoPorId(in.getId());
+			double tiempo= Math.ceil(diffDays/30);
+			precio= apto.getPrecioMes()*tiempo;
+	
+		}else if (tipoIn.equals(in.TIPO_HABITACIONHOTEL)) {
+			HabitacionHotel hab= darHabitacionHotelPorId(in.getId());
+			precio=hab.getPrecioNoche()*diffDays;
+
+		}else if(tipoIn.equals(in.TIPO_HABITACIONVIVIENDA)) {
+			HabitacionVivienda hab= darHabitacionViviendaPorId(in.getId());
+			
+			if (diffDays<=30) {
+				precio= hab.getPrecioNoche()*diffDays;
+			}else if (diffDays<182.5) {
+				double tiempo= Math.ceil(diffDays/30);
+				precio=hab.getPrecioMes()*tiempo;
+			}else {
+				double tiempo= Math.ceil(diffDays/182.5);
+				precio= hab.getPrecioSemestre()*tiempo;
+			}
+		}else if (tipoIn.equals(in.TIPO_HABITACIONHOSTAL)) {
+			long dueno=darDuenoInmueble(in.getId(), tipoIn);
+			PersonaJuridica per=darPersonaJuridicaPorId(dueno);
+			precio=per.getPrecioNoche()*diffDays;
+		}
+		return precio;
+		
 	}
 	
 	public long eliminarReservaporId (long idReserva)  {
