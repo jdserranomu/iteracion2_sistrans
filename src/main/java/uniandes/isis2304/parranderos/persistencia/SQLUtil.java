@@ -106,8 +106,29 @@ public class SQLUtil {
 		return (List<ReqConsulta4>)q.executeList();
 	}
 	
-	public long nextval (PersistenceManager pm){
-        Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqAlohAndes () + ".nextval FROM DUAL");
+	public long nextvalInmueble (PersistenceManager pm){
+        Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqInmueble () + ".nextval FROM DUAL");
+        q.setResultClass(Long.class);
+        long resp = (long) q.executeUnique();
+        return resp;
+	}
+	
+	public long nextvalOperador (PersistenceManager pm){
+        Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqOperador () + ".nextval FROM DUAL");
+        q.setResultClass(Long.class);
+        long resp = (long) q.executeUnique();
+        return resp;
+	}
+	
+	public long nextvalReserva (PersistenceManager pm){
+        Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqReserva () + ".nextval FROM DUAL");
+        q.setResultClass(Long.class);
+        long resp = (long) q.executeUnique();
+        return resp;
+	}
+	
+	public long nextvalUsuario (PersistenceManager pm){
+        Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqUsuario () + ".nextval FROM DUAL");
         q.setResultClass(Long.class);
         long resp = (long) q.executeUnique();
         return resp;

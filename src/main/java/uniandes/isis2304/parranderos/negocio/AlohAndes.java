@@ -173,7 +173,7 @@ public class AlohAndes
 	{
 		PersonaJuridica hot= darPersonaJuridicaPorId(idHostal);
 		
-		if (hot.getTipo().equals(PersonaJuridica.TIPO_HOSTAL)) {
+		if (!hot.getTipo().equals(PersonaJuridica.TIPO_HOSTAL)) {
 			throw new Exception ("El id del dueño debe pertenecer a un Hostal");
 		}
 		
@@ -217,7 +217,7 @@ public class AlohAndes
 	{
 		PersonaJuridica hot= darPersonaJuridicaPorId(idHotel);
 		
-		if (hot.getTipo().equals(PersonaJuridica.TIPO_HOTEL)) {
+		if (!hot.getTipo().equals(PersonaJuridica.TIPO_HOTEL)) {
 			throw new Exception ("El id del dueño debe pertenecer a un Hotel");
 		}
 		
@@ -258,7 +258,7 @@ public class AlohAndes
 	{
 		PersonaJuridica viv= darPersonaJuridicaPorId(idVivienda);
 		
-		if (viv.getTipo().equals(PersonaJuridica.TIPO_VIVIENDAUNIVERSITARIA)) {
+		if (!viv.getTipo().equals(PersonaJuridica.TIPO_VIVIENDAUNIVERSITARIA)) {
 			throw new Exception ("El id del dueño debe pertenecer a una Vivienda");
 		}
         log.info ("Adicionando Habitacion Vivienda en: " +direccion +" con capacidad: "+ capacidad+ ", numero: "+ numero+ ", disponible: "+ aTexto(disponible)+", precio Mes: "+precioMes+", precio semestre: "+precioSemestre+", precio noche: "+precioNoche+", individual: "+aTexto(individual) +" y de la vivienda: "+ idVivienda  );

@@ -84,7 +84,10 @@ public class PersistenciaAlohAndes {
 		pmf = JDOHelper.getPersistenceManagerFactory("AlohAndes");
 		crearClasesSQL();
 		tablas = new LinkedList<String>();
-		tablas.add("ALOHANDES_SEQUENCE");
+		tablas.add("INMUEBLE_SEQUENCE");
+		tablas.add("OPERADOR_SEQUENCE");
+		tablas.add("RESERVA_SEQUENCE");
+		tablas.add("USUARIO_SEQUENCE");
 		tablas.add("APARTAMENTO");
 		tablas.add("HABITACION");
 		tablas.add("HABITACIONHOSTAL");
@@ -161,75 +164,108 @@ public class PersistenciaAlohAndes {
 		sqlUtil = new SQLUtil(this);
 	}
 
-	public String darSeqAlohAndes() {
+	public String darSeqInmueble() {
 		return tablas.get(0);
 	}
-
-	public String darTablaApartamento() {
+	
+	public String darSeqOperador() {
 		return tablas.get(1);
 	}
-
-	public String darTablaHabitacion() {
+	
+	public String darSeqReserva() {
 		return tablas.get(2);
 	}
-
-	public String darTablaHabitacionHostal() {
+	
+	public String darSeqUsuario() {
 		return tablas.get(3);
 	}
+	
 
-	public String darTablaHabitacionHotel() {
+	public String darTablaApartamento() {
 		return tablas.get(4);
 	}
 
-	public String darTablaHabitacionVivienda() {
+	public String darTablaHabitacion() {
 		return tablas.get(5);
 	}
 
-	public String darTablaHorario() {
+	public String darTablaHabitacionHostal() {
 		return tablas.get(6);
 	}
 
-	public String darTablaInmueble() {
+	public String darTablaHabitacionHotel() {
 		return tablas.get(7);
 	}
 
-	public String darTablaOfreceServicio() {
+	public String darTablaHabitacionVivienda() {
 		return tablas.get(8);
 	}
 
-	public String darTablaOperador() {
+	public String darTablaHorario() {
 		return tablas.get(9);
 	}
 
-	public String darTablaPersonaJuridica() {
+	public String darTablaInmueble() {
 		return tablas.get(10);
 	}
 
-	public String darTablaPersonaNatural() {
+	public String darTablaOfreceServicio() {
 		return tablas.get(11);
 	}
 
-	public String darTablaReserva() {
+	public String darTablaOperador() {
 		return tablas.get(12);
 	}
 
-	public String darTablaServicioMenaje() {
+	public String darTablaPersonaJuridica() {
 		return tablas.get(13);
 	}
 
-	public String darTablaUsuario() {
+	public String darTablaPersonaNatural() {
 		return tablas.get(14);
 	}
 
-	public String darTablaVivienda() {
+	public String darTablaReserva() {
 		return tablas.get(15);
 	}
 
-	private long nextval() {
-		long resp = sqlUtil.nextval(pmf.getPersistenceManager());
+	public String darTablaServicioMenaje() {
+		return tablas.get(16);
+	}
+
+	public String darTablaUsuario() {
+		return tablas.get(17);
+	}
+
+	public String darTablaVivienda() {
+		return tablas.get(18);
+	}
+
+	private long nextvalInmueble() {
+		long resp = sqlUtil.nextvalInmueble(pmf.getPersistenceManager());
 		log.trace("Generando secuencia: " + resp);
 		return resp;
 	}
+	
+	private long nextvalOperador() {
+		long resp = sqlUtil.nextvalOperador(pmf.getPersistenceManager());
+		log.trace("Generando secuencia: " + resp);
+		return resp;
+	}
+	
+	private long nextvalReserva() {
+		long resp = sqlUtil.nextvalReserva(pmf.getPersistenceManager());
+		log.trace("Generando secuencia: " + resp);
+		return resp;
+	}
+	
+	private long nextvalUsuario() {
+		long resp = sqlUtil.nextvalUsuario(pmf.getPersistenceManager());
+		log.trace("Generando secuencia: " + resp);
+		return resp;
+	}
+	
+	
 
 	private String darDetalleException(Exception e) {
 		String resp = "";
@@ -251,13 +287,10 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idInmueble = nextval();
-			System.out.println("Creando inmueble");
+			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_APARTAMENTO,
 					capacidad, disponible, fechaReservaFinal);
-			System.out.println("Se creo inmueble");
 			long tuplasInsertadas = sqlApartamento.adicionarApartamento(pm, idInmueble, amoblado, precioMes, idPersona);
-			System.out.println("Se creo apartamento");
 			tx.commit();
 			log.trace("Inserción de Apartamento: " + idInmueble + ": " + tuplasInsertadas + " tuplas insertadas"
 					+ " tuples inmueble " + tuplaInmuble);
@@ -296,7 +329,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idInmueble = nextval();
+			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_HABITACION,
 					capacidad, disponible, fechaReservaFinal);
 			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, idInmueble, tamanho, precioMes, idPersona);
@@ -338,7 +371,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idInmueble = nextval();
+			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_HABITACIONHOSTAL,
 					capacidad, disponible, fechaReservaFinal);
 			long tuplasInsertadas = sqlHabitacionHostal.adicionarHabitacionHostal(pm, idInmueble, numero, idHostal);
@@ -380,7 +413,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idInmueble = nextval();
+			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_HABITACIONHOTEL,
 					capacidad, disponible, fechaReservaFinal);
 			long tuplasInsertadas = sqlHabitacionHotel.adicionarHabitacionHotel(pm, idInmueble, idHotel, numero, tipo,
@@ -424,7 +457,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idInmueble = nextval();
+			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion,
 					Inmueble.TIPO_HABITACIONVIVIENDA, capacidad, disponible, fechaReservaFinal);
 			long tuplasInsertadas = sqlHabitacionVivienda.adicionarHabitacionVivienda(pm, idInmueble, idVivienda,
@@ -700,7 +733,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idOperador = nextval();
+			long idOperador = nextvalOperador();
 			long tuplaOperador = sqlOperador.adicionarOperador(pm, idOperador, nombre, email, telefono);
 			long tuplasInsertadas = sqlPersonaJuridica.adicionarPersonaJuridica(pm, idOperador,
 					idSuperIntendenciaTurismo, idCamaraComercio, categoria, precioNoche, tipo);
@@ -752,7 +785,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idOperador = nextval();
+			long idOperador = nextvalOperador();
 			long tuplaOperador = sqlOperador.adicionarOperador(pm, idOperador, nombre, email, telefono);
 			long tuplasInsertadas = sqlPersonaNatural.adicionarPersonaNatural(pm, idOperador, tipo);
 			tx.commit();
@@ -794,7 +827,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idReserva = nextval();
+			long idReserva = nextvalReserva();
 			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idReserva, fechaInicio, fechaFin, valorTotal,
 					fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
 			tx.commit();
@@ -950,7 +983,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idUsuario = nextval();
+			long idUsuario = nextvalUsuario();
 			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, idUsuario, nombre, email, telefono, tipo);
 			tx.commit();
 			log.trace("Inserción de Usuario: " + idUsuario + ": " + tuplasInsertadas + " tuplas insertadas");
@@ -1012,7 +1045,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idInmueble = nextval();
+			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_VIVIENDA,
 					capacidad, disponible, fechaReservaFinal);
 			long tuplasInsertadas = sqlVivienda.adicionarVivienda(pm, idInmueble, numeroHabitaciones, costoNoche,
