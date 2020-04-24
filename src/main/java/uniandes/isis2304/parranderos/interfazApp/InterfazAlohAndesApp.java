@@ -1245,7 +1245,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
     		double valorTotal = alohAndes.calcularCostoReserva(diffDays, inm.getTipo(), inm);
     		int pagado=0;
     		double descuento=0;
-    		int estado=0;
+    		int estado=Reserva.ESTADO_SOLICITADO;
     		if (fechaIni!=null && fechafi!=null)
     		{
         		Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal, alohAndes.darFechaDeCancelacion(inm.getTipo(),fechaFin, diffDays), pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
@@ -1273,6 +1273,30 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener{
 		}
     }
     
+    public void cancelarReservaPorId() {
+    	try {
+    		int id = Integer.parseInt(JOptionPane.showInputDialog (this, "Id?", "Buscar reserva por Id", JOptionPane.QUESTION_MESSAGE));
+    		Reserva re= alohAndes.darReservaPorId(id);
+    		double valor=alohAndes.calcularCostoCancelacion(re.getValorTotal(), re.getFechaCancelacion(), re.getFechaFin());
+    		Reserva nueva=re;
+    		nueva.setValorTotal(valor);
+    		nueva.setEstado(Reserva.ESTADO_CANCELADO);
+    		Long num= alohAndes.actualizarReservaPorId(id, nueva);
+    		String resultado = "En actualizar Reserva por Id\n\n";
+    		if(num!=-1) {
+    			resultado += "fue actualizada la reserva con id: " + num;
+    		}
+    		else {
+    			resultado += "La reserva con id :"+id+" no existe";
+    		}
+    		resultado += "\n Operación terminada";
+    		panelDatos.actualizarInterfaz(resultado);
+    	}catch(Exception e){
+    		String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+    	
+    }
+    }
     
     	public void eliminarReservaPorId() {
     	try {

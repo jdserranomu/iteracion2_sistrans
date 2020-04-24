@@ -806,7 +806,7 @@ public class PersistenciaAlohAndes {
 	
 	
 	/* ****************************************************************
-	 * 			Métodos para manejar las Personas Reserva
+	 * 			Métodos para manejar las Reserva
 	 *****************************************************************/
 	
 	public Reserva adicionarReserva (Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado, 
@@ -882,6 +882,10 @@ public class PersistenciaAlohAndes {
 	public List<Reserva> darReservasEnFechasParaInmueble (Date fechaStart, Date fechaEnd, long idInmueble) 
 	{
 		return sqlReserva.darReservasEnFechasParaInmueble(pmf.getPersistenceManager(), fechaStart, fechaEnd, idInmueble);
+	}
+	
+	public long actualizarReservaPorId(long id, Reserva re) {
+		return sqlReserva.actualizarReservaPorId(pmf.getPersistenceManager(), id, re);
 	}
 	
 	/* ****************************************************************

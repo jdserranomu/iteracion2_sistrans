@@ -2,7 +2,14 @@ package uniandes.isis2304.parranderos.negocio;
 
 import java.util.Date;
 
+
+
 public class Reserva implements VOReserva {
+	public final static int ESTADO_SOLICITADO=0;
+	public final static int ESTADO_CONFIRMADO=1;
+	public final static int ESTADO_CANCELADO=2;
+	
+	
 	private long id;
 	private Date fechaInicio;
 	private Date fechaFin;

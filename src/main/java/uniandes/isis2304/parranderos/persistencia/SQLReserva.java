@@ -80,4 +80,11 @@ public class SQLReserva {
 		q.setParameters(idInmueble, fechaTimestamp);
 		return (List<Reserva>) q.executeList();
 	}
+
+	
+	public long actualizarReservaPorId(PersistenceManager pm, long id,Reserva re) {
+		Query q= pm.newQuery(SQL, "UPDATE "+ paa.darTablaReserva()+ " SET FECHAINICIO= ?, FECHAFIN=?, VALORTOTAL=?, FECHACANCELACION=?, PAGADO=?, DESCUENTO=? , CAPACIDAD=?, ESTADO=?, IDOPERADOR=?, IDUSUARIO=?, IDINMUEBLE=? WHERE ID= ?");
+		q.setParameters(re.getFechaInicio(),re.getFechaFin(), re.getValorTotal(), re.getFechaCancelacion(), re.getPagado(), re.getDescuento(), re.getCapacidad(), re.getEstado(), re.getIdOperador(), re.getIdUsuario(), re.getIdInmueble(), re.getId());
+		return (long) q.executeUnique();
+	}
 }

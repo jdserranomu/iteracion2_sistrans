@@ -719,6 +719,13 @@ public class AlohAndes
         return pn;
 	}
 	
+	public long actualizarReservaPorId(long id, Reserva re) {
+		log.info("Actualizando reserva con id "+ id);
+		long reserva= pp.actualizarReservaPorId(id, re);
+		log.info("Actualizando reserva ");
+		return reserva;
+	}
+	
 	/* ****************************************************************
 	 * 			Métodos para manejar las Servicio Menaje
 	 *****************************************************************/
