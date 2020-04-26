@@ -1289,16 +1289,12 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 
 			long idInmueble = Long.parseLong(JOptionPane.showInputDialog(this, "inmueble?", "Adicionar id del inmueble",
 					JOptionPane.QUESTION_MESSAGE));
-			Inmueble inm = alohAndes.darInmueblePorId(idInmueble);
-			long diffDays = ChronoUnit.DAYS.between(fechaInicio.toInstant(), fechaFin.toInstant());
-			double valorTotal = alohAndes.calcularCostoReserva(diffDays, inm.getTipo(), inm);
-			int pagado = 0;
-			double descuento = 0;
-			int estado = Reserva.ESTADO_SOLICITADO;
+		
+			
+	
+		
 			if (fechaIni != null && fechafi != null) {
-				Reserva re = alohAndes.adicionarReserva(fechaInicio, fechaFin, valorTotal,
-						alohAndes.darFechaDeCancelacion(inm.getTipo(), fechaInicio, diffDays), pagado, descuento,
-						capacidad, estado, idUsuario, idInmueble);
+				Reserva re = alohAndes.adicionarReserva(fechaInicio,fechaFin, capacidad, idUsuario,idInmueble);
 
 				if (re == null) {
 					throw new Exception("No se pudo crear un reserva con fecha de inicio: " + fechaIni

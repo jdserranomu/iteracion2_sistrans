@@ -291,6 +291,10 @@
 				{
 					"label": "Listar por id usuario",
 					"event": "darReservasPorIdUsuario"
+				},
+				{
+					"label": "Cancelar Reserva",
+					"event": "cancelarReservaPorId"
 				}
 			]
 		},

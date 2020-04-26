@@ -1,5 +1,8 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -167,19 +170,19 @@ public class PersistenciaAlohAndes {
 	public String darSeqInmueble() {
 		return tablas.get(0);
 	}
-	
+
 	public String darSeqOperador() {
 		return tablas.get(1);
 	}
-	
+
 	public String darSeqReserva() {
 		return tablas.get(2);
 	}
-	
+
 	public String darSeqUsuario() {
 		return tablas.get(3);
 	}
-	
+
 
 	public String darTablaApartamento() {
 		return tablas.get(4);
@@ -246,26 +249,26 @@ public class PersistenciaAlohAndes {
 		log.trace("Generando secuencia: " + resp);
 		return resp;
 	}
-	
+
 	private long nextvalOperador() {
 		long resp = sqlUtil.nextvalOperador(pmf.getPersistenceManager());
 		log.trace("Generando secuencia: " + resp);
 		return resp;
 	}
-	
+
 	private long nextvalReserva() {
 		long resp = sqlUtil.nextvalReserva(pmf.getPersistenceManager());
 		log.trace("Generando secuencia: " + resp);
 		return resp;
 	}
-	
+
 	private long nextvalUsuario() {
 		long resp = sqlUtil.nextvalUsuario(pmf.getPersistenceManager());
 		log.trace("Generando secuencia: " + resp);
 		return resp;
 	}
-	
-	
+
+
 
 	private String darDetalleException(Exception e) {
 		String resp = "";
@@ -820,24 +823,89 @@ public class PersistenciaAlohAndes {
 	 * manejar las Reserva
 	 *****************************************************************/
 
-	public Reserva adicionarReserva(Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion,
-			int pagado, double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
+	public Reserva adicionarReserva(Date fechaInicio, Date fechaFin, int capacidad, long idUsuario, long idInmueble) throws Exception  {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
 			long idReserva = nextvalReserva();
-			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idReserva, fechaInicio, fechaFin, valorTotal,
-					fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+			long diffDays = ChronoUnit.DAYS.between(fechaInicio.toInstant(), fechaFin.toInstant());
+			Inmueble inm = darInmueblePorId(idInmueble);
+			double costo=calcularCostoReserva(diffDays, inm.getTipo(), inm);
+			Date fechaCancelar=darFechaDeCancelacion(inm.getTipo(), fechaInicio, diffDays);
+			int pagado=0;
+			double descuento=0;
+			long idDueno= darDuenoInmueble(inm.getId(), inm.getTipo());
+			int estado = Reserva.ESTADO_SOLICITADO;
+			
+
+			
+			
+			if (inm.getCapacidad()<capacidad){
+				throw new Exception("La capacidad ingresada supera la capacidad del inmueble");
+			}
+			
+			if (inm.getDisponible()==0) {
+				throw new Exception("El inmueble no esta disponible para reservas");
+			}
+			String tipo= inm.getTipo();
+			if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays<30 ) {
+				throw new Exception("Una habitacion tiene una reserva minima de un mes");
+			}
+			
+			Usuario us= darUsuarioPorId(idUsuario);
+			if (us.getTipo().equals(Usuario.TIPO_INVITADO) && !tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+				throw new Exception("El usuario de tipo invitado solo puede arrendar vivienda");
+			}
+			
+			if (inm.getTipo().equals(Inmueble.TIPO_APARTAMENTO) && diffDays<30) {
+				throw new Exception ("El apartamento tiene reserva minima de un mes");
+			}
+			
+			if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+				Vivienda viv= darViviendaPorId(idInmueble);
+				if (viv.getDiasUtilizado()+diffDays>30 ) {
+					throw new Exception("Con las fechas dadas la vivienda seria utilizada mas de 30 dias en el año");
+				}
+			}
+			if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA) && !(us.getTipo().equals(Usuario.TIPO_ESTUDIANTE) || us.getTipo().equals(Usuario.TIPO_PROFESOR) || us.getTipo().equals(Usuario.TIPO_EMPLEADO)  || us.getTipo().equals(Usuario.TIPO_PROFESORINVITADO) )) {
+				throw new Exception("La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
+			}
+			
+			List<Reserva> reservasUs= darReservasNoCanceladasEnFechasPorIdUsuario(us.getId(), fechaInicio, fechaFin);
+			
+			if (reservasUs != null && reservasUs.size() != 0 ) {
+				throw new Exception("El usuario ya tiene reservas para esas fechas");
+			}
+			
+			List<Reserva> reservasIn = darReservasNoCanceladasEnFechasParaInmueble(fechaInicio, fechaFin, idInmueble);
+			
+			if (reservasIn != null && reservasIn.size() != 0 ) {
+				throw new Exception("El inmueble ya se encuentra reservado en esas fechas");
+			}
+			
+			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idReserva, fechaInicio, fechaFin, costo,
+					fechaCancelar, pagado, descuento, capacidad, estado, idDueno, idUsuario, idInmueble);
+			
+			Reserva re= new Reserva(idReserva,fechaInicio, fechaFin, costo,
+					fechaCancelar, pagado, descuento, capacidad, estado, idDueno, idUsuario, idInmueble);
+			if (re!=null) {
+		    	if (inm.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+						Vivienda viv= darViviendaPorId(inm.getId());
+						int diasNuevo= viv.getDiasUtilizado()+ (int)diffDays;
+						actualizarViviendaDiasUtilizado(diasNuevo,inm.getId());
+					}
+		        }
 			tx.commit();
 			log.trace("Inserción de Reserva: " + idReserva + ": " + tuplasInsertadas + " tuplas insertadas");
-
-			return new Reserva(idReserva, fechaInicio, fechaFin, valorTotal, fechaCancelacion, pagado, descuento,
-					capacidad, estado, idOperador, idUsuario, idInmueble);
+			
+			
+			return re;
 		} catch (Exception e) {
 			log.error("Exception esta aqui : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
+			throw e;
+			//return null;
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -846,20 +914,34 @@ public class PersistenciaAlohAndes {
 		}
 	}
 
-	public long actualizarReservaPorId(long id, Reserva reserva) {
+	public long cancelarReservaPorId(long id) throws Exception {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
-		if (id != reserva.getId())
-			return -1;
+		
 		try {
 			tx.begin();
+			
+			Reserva reserva = darReservaPorId(id);
+			Date hoyDate = new Date();
+			if( reserva == null) // Verifica que existe la reserva
+				throw new Exception("No existe reserva");
+			else if (reserva.getEstado()==Reserva.ESTADO_CANCELADO) // Verifica si ya fue cancelada
+				throw new Exception("La reserva ya fue cancelada");
+			else if (reserva.getFechaFin().compareTo(hoyDate)<0) // Verifica si ya finalizo la reserva
+				throw new Exception("La reserva ya finalizo");
+			double nuevoPrecio = calcularCostoCancelacion(reserva.getValorTotal(), reserva.getFechaCancelacion(), reserva.getFechaInicio());
+			reserva.setEstado(Reserva.ESTADO_CANCELADO);
+			reserva.setValorTotal(nuevoPrecio);
+			
+			
 			long resp = sqlReserva.actualizarReservaPorId(pm, id, reserva);;
 			tx.commit();
 			log.trace("Actualizacion de reserva: "+id);
 			return resp;
 		} catch (Exception e) {
 			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return -1;
+			throw e;
+			//return -1;
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -895,6 +977,7 @@ public class PersistenciaAlohAndes {
 		return sqlReserva.darReservas(pmf.getPersistenceManager());
 	}
 
+
 	public List<Reserva> darReservasPorIdUsuario(long idUsuario) {
 		return sqlReserva.darReservaPorIdUsuario(pmf.getPersistenceManager(), idUsuario);
 	}
@@ -916,6 +999,47 @@ public class PersistenciaAlohAndes {
 	public List<Reserva> darReservasNoCanceladasEnFechasParaInmueble(Date fechaStart, Date fechaEnd, long idInmueble) {
 		return sqlReserva.darReservasNoCanceladasEnFechasParaInmueble(pmf.getPersistenceManager(), fechaStart, fechaEnd,
 				idInmueble);
+	}
+
+	public double calcularCostoReserva(long diffDays, String tipoIn, Inmueble in) {
+		double precio=-1;
+		if (tipoIn.equals(Inmueble.TIPO_HABITACION)) {
+			//Habitacion tiene reserva minima de un mes
+			double tiempo= Math.ceil(diffDays/30);
+			Habitacion hab= darHabitacionPorId(in.getId());
+			precio= hab.getPrecioMes()*tiempo;
+		}else if (tipoIn.equals(Inmueble.TIPO_VIVIENDA)) {
+			Vivienda viv= darViviendaPorId(in.getId());
+			precio= viv.getCostoNoche()*diffDays;
+
+		}else if(tipoIn.equals(Inmueble.TIPO_APARTAMENTO)) {
+			Apartamento apto=darApartamentoPorId(in.getId());
+			double tiempo= Math.ceil(diffDays/30);
+			precio= apto.getPrecioMes()*tiempo;
+
+		}else if (tipoIn.equals(Inmueble.TIPO_HABITACIONHOTEL)) {
+			HabitacionHotel hab= darHabitacionHotelPorId(in.getId());
+			precio=hab.getPrecioNoche()*diffDays;
+
+		}else if(tipoIn.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
+			HabitacionVivienda hab= darHabitacionViviendaPorId(in.getId());
+
+			if (diffDays<=30) {
+				precio= hab.getPrecioNoche()*diffDays;
+			}else if (diffDays<182.5) {
+				double tiempo= Math.ceil(diffDays/30);
+				precio=hab.getPrecioMes()*tiempo;
+			}else {
+				double tiempo= Math.ceil(diffDays/182.5);
+				precio= hab.getPrecioSemestre()*tiempo;
+			}
+		}else if (tipoIn.equals(Inmueble.TIPO_HABITACIONHOSTAL)) {
+			long dueno=darDuenoInmueble(in.getId(), tipoIn);
+			PersonaJuridica per=darPersonaJuridicaPorId(dueno);
+			precio=per.getPrecioNoche()*diffDays;
+		}
+		return precio;
+
 	}
 
 	/*
@@ -1101,6 +1225,124 @@ public class PersistenciaAlohAndes {
 	public List<ReqConsulta4> RFC4(Date X, Date Y, List<String> servicios) {
 		return sqlUtil.RFC4(pmf.getPersistenceManager(), X, Y, servicios);
 	}
+
+	
+	public List<Inmueble> RF7(Date X, Date Y, List<String> servicios, String tipoInmueble, int cantidad, int capacidadPor,long  idUsuario) throws Exception {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try {
+			tx.begin();
+
+			List<ReqConsulta4> lista=sqlUtil.RFC4(pmf.getPersistenceManager(), X, Y, servicios);
+			List<Inmueble> tipoCorrecto= new ArrayList<Inmueble>();
+			for (int i=0; i<lista.size();i++) {
+				long idActual= lista.get(i).getIdInmueble();
+				Inmueble in= darInmueblePorId(idActual);
+				if (in.getTipo().equals(tipoInmueble) && in.getCapacidad()>=capacidadPor) {
+					tipoCorrecto.add(in);
+				}
+			}
+			List<Inmueble> reservadas= new ArrayList<Inmueble>();
+			if (tipoCorrecto.size()<cantidad) {
+				throw new Exception ("No hay suficientes "+ tipoInmueble+" para cubrir la demanda");
+			}else {
+				
+				for (int i=0; i<cantidad;i++) {
+					Inmueble actual= tipoCorrecto.get(i);
+					adicionarReserva(X, Y, capacidadPor, idUsuario, actual.getId());
+					reservadas.add(actual);
+				}
+
+			}
+			tx.commit();
+			
+			log.trace("Creacion de "+cantidad+" reservas " );
+			return reservadas;
+		}catch(Exception e) {
+			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
+			//return null;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+
+
+
+
+	public long darDuenoInmueble( long id, String tipo){
+
+		if (tipo.equals(Inmueble.TIPO_APARTAMENTO)) {
+			Apartamento inm= darApartamentoPorId(id);
+			return inm.getIdPersona();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACION)) {
+			Habitacion inm= darHabitacionPorId(id);
+			return inm.getIdPersona();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOSTAL)) {
+			HabitacionHostal inm= darHabitacionHostalPorId(id);
+			return inm.getIdHostal();
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONHOTEL)) {
+			HabitacionHotel inm= darHabitacionHotelPorId(id);
+			return inm.getIdHotel();
+
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
+			HabitacionVivienda inm= darHabitacionViviendaPorId(id);
+			return inm.getIdVivienda();
+
+		}else if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+			Vivienda inm= darViviendaPorId(id);
+			return inm.getIdPersona();
+		}
+		return -1;
+	}
+
+
+	public Date darFechaDeCancelacion(String tipo, Date fechaIni, long diffDays) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fechaIni);
+		if (diffDays<=0) {
+			return null;
+		}
+		else if (tipo.equals(Inmueble.TIPO_VIVIENDA) || tipo.equals(Inmueble.TIPO_HABITACIONHOTEL) || tipo.equals(Inmueble.TIPO_HABITACIONHOSTAL )){
+			calendar.add(Calendar.DATE, -3);
+			Date out = calendar.getTime();
+			return out;
+		}else if (tipo.equals(Inmueble.TIPO_HABITACION) || tipo.equals(Inmueble.TIPO_APARTAMENTO) ) {
+			calendar.add(Calendar.DATE, -7);
+			Date out = calendar.getTime();
+			return out;
+		}else if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA)) {
+			if (diffDays<30) {
+				calendar.add(Calendar.DATE, -3);
+				Date out = calendar.getTime();
+				return out;
+			}else {
+				calendar.add(Calendar.DATE, -7);
+				Date out = calendar.getTime();
+				return out;
+			}
+		}else {
+			return null;
+		}
+
+	}
+
+	public double calcularCostoCancelacion(double totalOriginal, Date fechaCancelacion, Date fechaInicio) {
+		Date date = new Date();  
+		if (date.compareTo(fechaCancelacion)<0) {
+			return totalOriginal*0.1;
+		}else if (date.compareTo(fechaInicio)<0 ) {
+			return totalOriginal*0.3;
+		}else {
+			return totalOriginal*0.5;
+		}
+
+	}
+
 
 	public long[] limpiarAlohAndes() {
 		PersistenceManager pm = pmf.getPersistenceManager();
