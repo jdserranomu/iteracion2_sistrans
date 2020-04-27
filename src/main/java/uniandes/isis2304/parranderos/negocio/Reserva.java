@@ -22,6 +22,7 @@ public class Reserva implements VOReserva {
 	private long idOperador;
 	private long idUsuario;
 	private long idInmueble;
+	private Long idReservaColectiva;
 	
 	public Reserva() {
 		this.id=0;
@@ -36,9 +37,10 @@ public class Reserva implements VOReserva {
 		this.idOperador=0;
 		this.idUsuario=0;
 		this.idInmueble=0;
+		this.idReservaColectiva=null;
 	}
 	public Reserva(long id, Date fechaInicio, Date fechaFin, double valorTotal, Date fechaCancelacion, int pagado,
-			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble) {
+			double descuento, int capacidad, int estado, long idOperador, long idUsuario, long idInmueble, Long idReservaColectiva) {
 		
 		this.id = id;
 		this.fechaInicio = fechaInicio;
@@ -52,6 +54,7 @@ public class Reserva implements VOReserva {
 		this.idOperador = idOperador;
 		this.idUsuario = idUsuario;
 		this.idInmueble = idInmueble;
+		this.idReservaColectiva = idReservaColectiva;
 	}
 	public long getId() {
 		return id;
@@ -125,12 +128,21 @@ public class Reserva implements VOReserva {
 	public void setIdInmueble(long idInmueble) {
 		this.idInmueble = idInmueble;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "Reserva [id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", valorTotal="
 				+ valorTotal + ", fechaCancelacion=" + fechaCancelacion + ", pagado=" + pagado + ", descuento="
 				+ descuento + ", capacidad=" + capacidad + ", estado=" + estado + ", idOperador=" + idOperador
-				+ ", idUsuario=" + idUsuario + ", idInmueble=" + idInmueble + "]";
+				+ ", idUsuario=" + idUsuario + ", idInmueble=" + idInmueble + ", idReservaColectiva="+idReservaColectiva+
+				"]";
+	}
+	public Long getIdReservaColectiva() {
+		return idReservaColectiva;
+	}
+	public void setIdReservaColectiva(Long idReservaColectiva) {
+		this.idReservaColectiva = idReservaColectiva;
 	}
 
 }

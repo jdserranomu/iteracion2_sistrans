@@ -295,7 +295,12 @@
 				{
 					"label": "Cancelar Reserva",
 					"event": "cancelarReservaPorId"
+				},
+				{
+					"label": "Adicionar reserva colectiva",
+					"event": "adicionarReservaColectiva"
 				}
+				
 			]
 		},
 		{

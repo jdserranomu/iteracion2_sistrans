@@ -1,5 +1,7 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -22,14 +24,7 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
         q.setParameters(idVivienda, numeroHabitaciones, costoNoche, diasUtilizado, idPersona);
         return (long) q.executeUnique();
 	}
-	/**
-	public long eliminarViviendaPorId (PersistenceManager pm, long idVivienda)
-	{
-        Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaVivienda() + " WHERE id = ?");
-        q.setParameters(idVivienda);
-        return (long) q.executeUnique();
-	}
-	*/
+	
 	public Vivienda darViviendaPorId (PersistenceManager pm, long idVivienda) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaVivienda() + " WHERE id = ?");
@@ -58,6 +53,51 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
 		q.setParameters(diasUtilizado,idVivienda);
 		return (long) q.executeUnique();
 	}
+	
+	public List<Long> darViviendasDisponiblesReservaColectiva(PersistenceManager pm, Date X, Date Y, List<String> servicios, int capacidad, long days){
+		String a="";
+		if( servicios.size() > 0)
+			a += "AND (";
+		for (int i=0;i<servicios.size();i++) {
+			a=a+"OFR.IDSERVICIOMENAJE= '"+ servicios.get(i) +"' ";
+			if (i!= servicios.size()-1) {
+				a=a+"OR ";
+			}
+		}
+		if(!a.isEmpty())
+			a+=") ";
+		String queryString = "SELECT IDINMUEBLE " + 
+				"FROM (SELECT INM.ID AS IDINMUEBLE, COUNT(*) AS CNT " + 
+				"	FROM VIVIENDA VIV" + 
+				"	INNER JOIN INMUEBLE INM ON INM.ID=VIV.ID" + 
+				"	INNER JOIN OFRECESERVICIO OFR ON INM.ID=OFR.IDINMUEBLE " + 
+				"	WHERE INM.DISPONIBLE = 1 " + a + 
+				"		AND NOT EXISTS (SELECT * " + 
+				"				FROM RESERVA RES " + 
+				"				WHERE RES.IDINMUEBLE = INM.ID " + 
+				"				AND (RES.FECHAINICIO BETWEEN ? AND ? OR RES.FECHAFIN BETWEEN ? AND ? )) " + 
+				"		AND INM.CAPACIDAD >= ? " +
+				"		AND VIV.DIASUTILIZADO+?<=30"+
+				"	GROUP BY INM.ID) " + 
+				"WHERE CNT =  ? ";
+		Query q=pm.newQuery(SQL, queryString);
+		Timestamp xTimestamp = new Timestamp(X.getTime());
+		Timestamp yTimestamp = new Timestamp(Y.getTime());
+		q.setParameters(xTimestamp, yTimestamp, xTimestamp, yTimestamp, capacidad, days, servicios.size());
+		q.setResultClass(Long.class);
+		return (List<Long>)q.executeList();
+	}
+	
+	
+	/**
+	public long eliminarViviendaPorId (PersistenceManager pm, long idVivienda)
+	{
+        Query q = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaVivienda() + " WHERE id = ?");
+        q.setParameters(idVivienda);
+        return (long) q.executeUnique();
+	}
+	*/
+	
 	/**
 	public List<Vivienda> darViviendasConCostoNocheMenorIgual (PersistenceManager pm, double costoUmbral) 
 	{

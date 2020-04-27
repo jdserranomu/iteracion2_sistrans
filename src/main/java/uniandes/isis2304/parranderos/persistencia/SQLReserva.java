@@ -20,15 +20,15 @@ public class SQLReserva {
 	
 	public long adicionarReserva (PersistenceManager pm, long idReserva, Date fechaInicio, Date fechaFin,
 			double valorTotal, Date fechaCancelacion, int pagado, double descuento, int capacidad, 
-			int estado, long idOperador, long idUsuario, long idInmueble) {
+			int estado, long idOperador, long idUsuario, long idInmueble, Long idReservaColectiva) {
 		Timestamp iniTimestamp = new Timestamp(fechaInicio.getTime());
 		Timestamp finTimestamp = new Timestamp(fechaFin.getTime());
 		Timestamp cancelacionTimestamp = null;
 		if(fechaCancelacion!=null)
 			cancelacionTimestamp = new Timestamp(fechaCancelacion.getTime());
         Query q = pm.newQuery(SQL, "INSERT INTO " + paa.darTablaReserva() + "(id, fechaInicio, fechaFin, valorTotal,"
-        		+ "fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        q.setParameters(idReserva, iniTimestamp, finTimestamp, valorTotal, cancelacionTimestamp, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble);
+        		+ "fechaCancelacion, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble, idReservaColectiva) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        q.setParameters(idReserva, iniTimestamp, finTimestamp, valorTotal, cancelacionTimestamp, pagado, descuento, capacidad, estado, idOperador, idUsuario, idInmueble, idReservaColectiva);
         return (long) q.executeUnique();
 	}
 	

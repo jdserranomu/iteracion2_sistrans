@@ -3,6 +3,7 @@ package uniandes.isis2304.parranderos.persistencia;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import uniandes.isis2304.parranderos.negocio.Inmueble;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -83,6 +84,39 @@ public class SQLInmueble {
 		Query q = pm.newQuery(SQL, "UPDATE " + paa.darTablaInmueble() + " SET disponible = 1 WHERE id = ?");
 		q.setParameters(idInmueble);
 		return (long) q.executeUnique();
+	}
+	
+	public List<Long> darInmueblesDisponiblesReservaColectiva(PersistenceManager pm, Date X, Date Y, List<String> servicios, String tipoInmueble, int capacidad){
+		String a="";
+		if( servicios.size() > 0)
+			a += "AND (";
+		for (int i=0;i<servicios.size();i++) {
+			a=a+"OFR.IDSERVICIOMENAJE= '"+ servicios.get(i) +"' ";
+			if (i!= servicios.size()-1) {
+				a=a+"OR ";
+			}
+		}
+		if(!a.isEmpty())
+			a+=") ";
+		String queryString = "SELECT IDINMUEBLE " + 
+				"FROM (SELECT INM.ID AS IDINMUEBLE, COUNT(*) AS CNT " + 
+				"	FROM INMUEBLE INM " + 
+				"	INNER JOIN OFRECESERVICIO OFR ON INM.ID=OFR.IDINMUEBLE " + 
+				"	WHERE INM.DISPONIBLE = 1 " + 
+				a + 
+				"		AND NOT EXISTS (SELECT * " + 
+				"				FROM RESERVA RES " + 
+				"				WHERE RES.IDINMUEBLE = INM.ID " + 
+				"				AND (RES.FECHAINICIO BETWEEN ? AND ? OR RES.FECHAFIN BETWEEN ? AND ? )) " + 
+				"		AND INM.CAPACIDAD >= ? AND INM.TIPO = ? " +
+				"	GROUP BY INM.ID) " + 
+				"WHERE CNT =  ? ";
+		Query q=pm.newQuery(SQL, queryString);
+		Timestamp xTimestamp = new Timestamp(X.getTime());
+		Timestamp yTimestamp = new Timestamp(Y.getTime());
+		q.setParameters(xTimestamp, yTimestamp, xTimestamp, yTimestamp, capacidad, tipoInmueble, servicios.size());
+		q.setResultClass(Long.class);
+		return (List<Long>)q.executeList();
 	}
 	
 	

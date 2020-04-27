@@ -35,6 +35,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.sun.org.apache.xpath.internal.operations.And;
 
 import uniandes.isis2304.parranderos.negocio.AlohAndes;
 import uniandes.isis2304.parranderos.negocio.Apartamento;
@@ -1271,6 +1272,61 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 	 * **************************************************************** CRUD de
 	 * Reserva
 	 *****************************************************************/
+	
+	public void adicionarReservaColectiva() {
+		try {
+			int serv = Integer.parseInt(JOptionPane.showInputDialog(this, "Por cuantos servicios quiere buscar?",
+					"Por cuantos servicios quiere buscar?", JOptionPane.QUESTION_MESSAGE));
+			List<String> servicios = new ArrayList<String>();
+			for (int i = 0; i < serv; i++) {
+				String servi = JOptionPane.showInputDialog(this, "ingrese el servicio?", "ingrese el servicio?",
+						JOptionPane.QUESTION_MESSAGE);
+				boolean repetido = repetido(servicios, servi);
+				if (repetido) {
+					JOptionPane.showMessageDialog(this, "No repita servicio vuelva a intentar");
+					i--;
+				} else {
+					servicios.add(servi);
+				}
+
+			}
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String fechaIni = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio",
+					JOptionPane.QUESTION_MESSAGE);
+			Date fechaInicio = dateFormat.parse(fechaIni);
+
+			String fechafi = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin",
+					JOptionPane.QUESTION_MESSAGE);
+			Date fechaFin = dateFormat.parse(fechafi);
+			if(fechaFin!=null && fechaInicio!=null) {
+				long idUsuario = Long.parseLong(
+						JOptionPane.showInputDialog(this, "id?", "Adicionar id del usuario", JOptionPane.QUESTION_MESSAGE));
+				int cantidad = Integer.parseInt(
+						JOptionPane.showInputDialog(this, "cantidad?", "Adicionar cantidad inmuebles", JOptionPane.QUESTION_MESSAGE));
+				int capacidad = Integer.parseInt(JOptionPane.showInputDialog(this, "capacidad?", "Adicionar capacidad",
+						JOptionPane.QUESTION_MESSAGE));
+				String[] choices = { Inmueble.TIPO_APARTAMENTO, Inmueble.TIPO_HABITACION, Inmueble.TIPO_HABITACIONHOSTAL, Inmueble.TIPO_HABITACIONHOTEL, Inmueble.TIPO_HABITACIONVIVIENDA,
+						Inmueble.TIPO_VIVIENDA};
+				String tipo = (String) JOptionPane.showInputDialog(null, "Choose now...", "The Choice of a Lifetime",
+						JOptionPane.QUESTION_MESSAGE, null, choices, choices[1]);
+				List<Reserva> reservas = alohAndes.adicionarReservaColectiva(fechaInicio, fechaFin, servicios, tipo, cantidad, capacidad, idUsuario);
+				String resultado = "En adicionarReserva\n\n";
+				resultado += "Reserva adicionado exitosamente: ";
+				resultado += "\n" + listarReserva(reservas);
+				resultado += "\n Operación terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else {
+				panelDatos.actualizarInterfaz("Operación cancelada por el usuario");
+			}
+			
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	
 	@SuppressWarnings("unused")
 	public void adicionarReserva() {
 		try {
