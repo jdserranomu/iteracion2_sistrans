@@ -1390,6 +1390,25 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 
 		}
 	}
+	
+	public void cancelarReservaColectivaPorId() {
+		try {
+			long idReservaColectiva = Long.parseLong(
+					JOptionPane.showInputDialog(this, "Id Reserva Colectiva?", "Buscar reserva por Id", JOptionPane.QUESTION_MESSAGE));
+			List<Long> resp = alohAndes.cancelarReservaColectivaPorId(idReservaColectiva);
+			String resultado = "En cancelar Reserva Colectiva por Id\n\n";
+			resultado += "fue cancelada la reserva colectiva con id: " + idReservaColectiva;
+			resultado += " y tamaño: " + resp.size();
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+
+		}
+	}
+	
+	
 
 	public void eliminarReservaPorId() {
 		try {

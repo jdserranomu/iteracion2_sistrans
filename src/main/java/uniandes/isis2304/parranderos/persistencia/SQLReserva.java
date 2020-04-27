@@ -112,4 +112,12 @@ public class SQLReserva {
 		return (long) q.executeUnique();
 	}
 	
+	public List<Reserva> darReservasVigentesNoCanceladasPorReservaColectiva(PersistenceManager pm, long idReservaColectiva){
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE estado <> 2 AND idReservaColectiva = ? AND fechaFin >= ?");
+		q.setResultClass(Reserva.class);
+		Timestamp hoy = new Timestamp(new Date().getTime());
+		q.setParameters(idReservaColectiva, hoy);
+		return (List<Reserva>) q.executeList();
+	}
+	
 }

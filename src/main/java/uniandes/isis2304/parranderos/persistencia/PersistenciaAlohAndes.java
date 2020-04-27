@@ -878,7 +878,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			long idReservaColectiva = nextvalReservaColectiva();
+			
 			long diffDays = ChronoUnit.DAYS.between(fechaInicio.toInstant(), fechaFin.toInstant());
 			Date fechaCancelar = darFechaDeCancelacion(tipo, fechaInicio, diffDays);
 			int pagado = 0;
@@ -919,6 +919,7 @@ public class PersistenciaAlohAndes {
 			if(listaInmuebles.size()<cantidad)
 				throw new Exception("No hay suficientes inmuebles para oferta");
 			List<Reserva> reservas = new ArrayList<Reserva>();
+			long idReservaColectiva = nextvalReservaColectiva();
 			for(int i = 0; i<cantidad; i++) {
 				long idReserva = nextvalReserva();
 				Inmueble inm = sqlInmueble.darInmueblePorId(pm, listaInmuebles.get(i));
@@ -1072,6 +1073,40 @@ public class PersistenciaAlohAndes {
 			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
 			throw e;
 			// return -1;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
+	
+	public List<Long> cancelarReservaColectivaPorId(long idReservaColectiva) throws Exception {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			List<Reserva> reservas = sqlReserva.darReservasVigentesNoCanceladasPorReservaColectiva(pm, idReservaColectiva);
+			if (reservas == null || reservas.size() == 0) // Verifica que existe la reserva
+				throw new Exception("No hay reservas vigentes con ese codigo para cancelar");
+			List<Long> resps = new ArrayList<Long>(); 
+			for(Reserva reserva: reservas) {
+				double nuevoPrecio = calcularCostoCancelacion(reserva.getValorTotal(), reserva.getFechaCancelacion(),
+						reserva.getFechaInicio());
+				reserva.setEstado(Reserva.ESTADO_CANCELADO);
+				reserva.setValorTotal(nuevoPrecio);
+				long resp = sqlReserva.actualizarReservaPorId(pm,reserva.getId(), reserva);
+				resps.add(resp);
+			}
+			
+			tx.commit();
+			log.trace("Cancelacion de numero de reservas: " + reservas.size());
+			return resps;
+		} catch (Exception e) {
+			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();

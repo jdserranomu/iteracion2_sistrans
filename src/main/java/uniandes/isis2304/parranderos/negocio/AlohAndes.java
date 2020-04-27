@@ -590,6 +590,13 @@ public class AlohAndes {
 		return resp;
 
 	}
+	
+	public List<Long> cancelarReservaColectivaPorId(long idReservaColectiva) throws Exception{
+		log.info("Cancelando reserva colectiva con id:" + idReservaColectiva);
+		List<Long> resp = pp.cancelarReservaColectivaPorId(idReservaColectiva);
+		log.info("Reserva colectiva cancelada:" + resp.size());
+		return resp;
+	}
 
 	/*
 	 * **************************************************************** Métodos para

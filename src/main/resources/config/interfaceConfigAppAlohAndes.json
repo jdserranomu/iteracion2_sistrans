@@ -299,7 +299,12 @@
 				{
 					"label": "Adicionar reserva colectiva",
 					"event": "adicionarReservaColectiva"
+				},
+				{
+					"label": "cancelar reserva colectiva por id",
+					"event": "cancelarReservaColectivaPorId"
 				}
+				
 				
 			]
 		},
