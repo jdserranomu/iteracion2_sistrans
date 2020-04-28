@@ -363,6 +363,12 @@ public class AlohAndes {
 		log.info("Oferta deshabilitada");
 		return inm;
 	}
+	public long habilitadrOfertaDeInmueble(long idInmueble) {
+		log.info("habilitando inmueble: " + idInmueble);
+		long inm = pp.habilitarOfertaInmueblePorId(idInmueble);
+		log.info("Oferta habilitada");
+		return inm;
+	}
 
 	
 	/****************************************************************** 

@@ -162,8 +162,8 @@
 					"event": "darInmueblesPorDisponibilidad"
 				},
 				{
-					"label": "Retirar oferta inmueble",
-					"event": "retirarOfertaInmueblePorId"
+					"label": "Habilitar oferta inmueble",
+					"event": "habilitarOfertaInmueblePorId"
 				},
 				{
 					"label": "Deshabilitar oferta inmueble",

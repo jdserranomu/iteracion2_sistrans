@@ -840,7 +840,23 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	}
+	
 
+	public void habilitarOfertaInmueblePorId() {
+		try {
+			long idInmueble = Long.parseLong(JOptionPane.showInputDialog(this, "Id Inmueble?", "Inmueble para habilitar",
+					JOptionPane.QUESTION_MESSAGE));
+			long resp = alohAndes.habilitadrOfertaDeInmueble(idInmueble);
+			String resultado = "En habilitarOfertaInmueble: " + idInmueble;
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
 	public void retirarOfertaInmueblePorId() {
 		try {
 			long idInmueble = Long.parseLong(JOptionPane.showInputDialog(this, "Id Inmueble?", "Inmueble para retirar",
