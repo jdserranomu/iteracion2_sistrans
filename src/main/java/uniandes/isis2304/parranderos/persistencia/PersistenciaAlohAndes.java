@@ -20,6 +20,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import uniandes.isis2304.parranderos.negocio.Apartamento;
+import uniandes.isis2304.parranderos.negocio.ReqFun9;
 import uniandes.isis2304.parranderos.negocio.Habitacion;
 import uniandes.isis2304.parranderos.negocio.HabitacionHostal;
 import uniandes.isis2304.parranderos.negocio.HabitacionHotel;
@@ -586,6 +587,59 @@ public class PersistenciaAlohAndes {
 	 * **************************************************************** Métodos para
 	 * manejar los Inmueble
 	 *****************************************************************/
+	
+	public List<ReqFun9> deshabilitarOfertaAlojamiento(long idInmueble) throws Exception{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		List<ReqFun9> cambios= new ArrayList();
+		try {
+			tx.begin();
+			Inmueble in= darInmueblePorId(idInmueble);
+			if (in==null) {
+				throw new Exception ("el inmueble no existe");
+			}
+			Date actual= new Date();
+			List<Reserva> reservas= darReservasVigentesParaInmueble(idInmueble,actual);
+			
+			for (int i=0;i<reservas.size();i++) {
+				Reserva aCambiar= reservas.get(i);
+				System.out.println(aCambiar.getId());
+				List<Inmueble> opciones=darInmueblesDisponiblesEnFechasPorMayorCapacidad(actual, aCambiar.getFechaFin(),aCambiar.getCapacidad());
+				boolean cambiado=false;
+				for (int j= 0;j<opciones.size();j++) {
+					try {
+						System.out.println("opcion 1"+ opciones.get(j).getId());
+						Reserva a= adicionarReserva(aCambiar.getFechaInicio(), aCambiar.getFechaFin(), aCambiar.getCapacidad(), aCambiar.getIdOperador(), opciones.get(j).getId());
+						long cancel= cancelarReservaPorEventualidad(aCambiar.getId());
+						log.trace("Reserva con id: "+ aCambiar.getId() +"fue cambiada por la reserva con id: "+a.getId()+ "en el inmueble"+ opciones.get(j).getId());
+						cambiado=true;
+						ReqFun9 cambioRealizado= new ReqFun9(aCambiar, a);
+						cambios.add(cambioRealizado);
+						break;
+					}catch (Exception e) {
+						log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+					}
+				}
+				if (cambiado=false) {
+					ReqFun9 cambioRealizado= new ReqFun9(aCambiar, null);
+					cambios.add(cambioRealizado);
+				}
+					
+			}
+			actualizarDisponibilidadInmueble(in.getId());
+			tx.commit();
+			return cambios;
+		} catch (Exception e) {
+			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
 	public long eliminarInmueblePorId(long idInmueble) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
@@ -666,6 +720,31 @@ public class PersistenciaAlohAndes {
 	public List<Inmueble> darInmueblesPorDisponibilidad(int disponibilidad) {
 		return sqlInmueble.darInmueblesPorDisponibilidad(pmf.getPersistenceManager(), disponibilidad);
 	}
+	
+	public List<Inmueble> darInmueblesDisponiblesEnFechasPorMayorCapacidad(Date fechaInicio, Date fechaFin,int capacidad){
+		return sqlInmueble.darInmueblesDisponiblesEnFechasPorMayorCapacidad(pmf.getPersistenceManager(), fechaInicio, fechaFin, capacidad);
+		
+	}
+	
+	public long actualizarDisponibilidadInmueble(long idInmueble) throws Exception {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try {
+			tx.begin();
+			long resp = sqlInmueble.retirarOfertaInmueblePorId(pm, idInmueble);
+			tx.commit();
+			return resp;
+		} catch (Exception e) {
+			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
 
 	/*
 	 * **************************************************************** Métodos para
@@ -1114,6 +1193,38 @@ public class PersistenciaAlohAndes {
 			pm.close();
 		}
 	}
+	
+	
+	public long cancelarReservaPorEventualidad(long id) throws Exception {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+
+			Reserva reserva = darReservaPorId(id);
+			Date hoyDate = new Date();
+		
+			double nuevoPrecio = 0;
+			reserva.setEstado(Reserva.ESTADO_CANCELADO);
+			reserva.setValorTotal(nuevoPrecio);
+
+			long resp = sqlReserva.actualizarReservaPorId(pm, id, reserva);
+			
+			tx.commit();
+			log.trace("Actualizacion de reserva: " + id);
+			return resp;
+		} catch (Exception e) {
+			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
+			// return -1;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 
 	public long eliminarReservaPorId(long idReserva) {
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -1145,6 +1256,8 @@ public class PersistenciaAlohAndes {
 	public List<Reserva> darReservasPorIdUsuario(long idUsuario) {
 		return sqlReserva.darReservaPorIdUsuario(pmf.getPersistenceManager(), idUsuario);
 	}
+	
+	
 
 	public List<Reserva> darReservasNoCanceladasEnFechasPorIdUsuario(long idUsuario, Date fechaStart, Date fechaEnd) {
 		return sqlReserva.darReservasNoCanceladasEnFechasPorIdUsuario(pmf.getPersistenceManager(), idUsuario,
@@ -1158,6 +1271,10 @@ public class PersistenciaAlohAndes {
 	public List<Reserva> darReservasEnFechasParaInmueble(Date fechaStart, Date fechaEnd, long idInmueble) {
 		return sqlReserva.darReservasEnFechasParaInmueble(pmf.getPersistenceManager(), fechaStart, fechaEnd,
 				idInmueble);
+	}
+	
+	public List<Reserva> darReservasVigentesParaInmueble(long idInmueble, Date fechaInicio) {
+		return sqlReserva.darReservasParaInmueble(pmf.getPersistenceManager(),idInmueble, fechaInicio);
 	}
 
 	public List<Reserva> darReservasNoCanceladasEnFechasParaInmueble(Date fechaStart, Date fechaEnd, long idInmueble) {
@@ -1390,50 +1507,7 @@ public class PersistenciaAlohAndes {
 		return sqlUtil.RFC4(pmf.getPersistenceManager(), X, Y, servicios);
 	}
 
-	public List<Inmueble> RF7(Date X, Date Y, List<String> servicios, String tipoInmueble, int cantidad,
-			int capacidadPor, long idUsuario) throws Exception {
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		try {
-			tx.begin();
-
-			List<ReqConsulta4> lista = sqlUtil.RFC4(pmf.getPersistenceManager(), X, Y, servicios);
-			List<Inmueble> tipoCorrecto = new ArrayList<Inmueble>();
-			for (int i = 0; i < lista.size(); i++) {
-				long idActual = lista.get(i).getIdInmueble();
-				Inmueble in = darInmueblePorId(idActual);
-				if (in.getTipo().equals(tipoInmueble) && in.getCapacidad() >= capacidadPor) {
-					tipoCorrecto.add(in);
-				}
-			}
-			List<Inmueble> reservadas = new ArrayList<Inmueble>();
-			if (tipoCorrecto.size() < cantidad) {
-				throw new Exception("No hay suficientes " + tipoInmueble + " para cubrir la demanda");
-			} else {
-
-				for (int i = 0; i < cantidad; i++) {
-					Inmueble actual = tipoCorrecto.get(i);
-					adicionarReserva(X, Y, capacidadPor, idUsuario, actual.getId());
-					reservadas.add(actual);
-				}
-
-			}
-			tx.commit();
-
-			log.trace("Creacion de " + cantidad + " reservas ");
-			return reservadas;
-		} catch (Exception e) {
-			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			throw e;
-			// return null;
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
+	
 	public long darDuenoInmueble(PersistenceManager pm, long id, String tipo) {
 
 		if (tipo.equals(Inmueble.TIPO_APARTAMENTO)) {

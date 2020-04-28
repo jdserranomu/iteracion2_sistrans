@@ -357,6 +357,12 @@ public class AlohAndes {
 		log.info("Oferta retirada");
 		return inm;
 	}
+	public List<ReqFun9> deshabilitarOfertaAlojamiento(long idInmueble) throws Exception{
+		log.info("deshabilitando inmueble: " + idInmueble);
+		List<ReqFun9> inm = pp.deshabilitarOfertaAlojamiento(idInmueble);
+		log.info("Oferta deshabilitada");
+		return inm;
+	}
 
 	
 	/****************************************************************** 
@@ -761,13 +767,7 @@ public class AlohAndes {
 		return listaConsulta;
 	}
 
-	public List<Inmueble> RF7(Date X, Date Y, List<String> servicios, String tipoInmueble, int cantidad,
-			int capacidadPor, long idUsuario) throws Exception {
-		log.info("Consultado requerimiento funcional 7");
-		List<Inmueble> listaConsulta = pp.RF7(X, Y, servicios, tipoInmueble, cantidad, capacidadPor, idUsuario);
-		log.info("Consultando RFC4: " + listaConsulta);
-		return listaConsulta;
-	}
+	
 
 	
 	/****************************************************************** 

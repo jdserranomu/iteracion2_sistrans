@@ -115,8 +115,24 @@ public class SQLInmueble {
 		Timestamp xTimestamp = new Timestamp(X.getTime());
 		Timestamp yTimestamp = new Timestamp(Y.getTime());
 		q.setParameters(xTimestamp, yTimestamp, xTimestamp, yTimestamp, capacidad, tipoInmueble, servicios.size());
+		
 		q.setResultClass(Long.class);
 		return (List<Long>)q.executeList();
+	}
+	
+	public List<Inmueble> darInmueblesDisponiblesEnFechasPorMayorCapacidad(PersistenceManager pm,Date fechaInicio1, Date fechaFin1,int capacidad){
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaInmueble() + " WHERE id NOT IN (" + 
+				"SELECT IDINMUEBLE " + 
+				"FROM RESERVA " + 
+				"WHERE (RESERVA.FECHAINICIO< ? AND RESERVA.FECHAFIN> ?) OR (RESERVA.FECHAINICIO< ? AND RESERVA.FECHAFIN> ?) OR (RESERVA.FECHAINICIO BETWEEN ? AND ? AND RESERVA.FECHAFIN BETWEEN ? AND ?)" + 
+				"GROUP BY RESERVA.IDINMUEBLE" + 
+				") AND DISPONIBLE=1 AND CAPACIDAD>= ?");
+		q.setResultClass(Inmueble.class);
+		Timestamp fechaInicio = new Timestamp(fechaInicio1.getTime());
+		Timestamp fechaFin = new Timestamp(fechaFin1.getTime());
+		q.setParameters(fechaInicio, fechaInicio, fechaFin, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin, capacidad);
+		
+		return (List<Inmueble>) q.executeList();
 	}
 	
 	

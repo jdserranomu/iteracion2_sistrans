@@ -53,6 +53,7 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqFun9;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -818,6 +819,20 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			List<Inmueble> lista = alohAndes.darInmueblesPorDisponibilidad(disponibilidad);
 			String resultado = "En darInmueblesPorMayorCapacidad";
 			resultado += "\n" + listarInmueble(lista);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	public void deshabilitarOfertaAlojamiento() {
+		try {
+			int idInmueble = Integer.parseInt(JOptionPane.showInputDialog(this, "id inmueble?",
+					JOptionPane.QUESTION_MESSAGE));
+			List<ReqFun9> lista = alohAndes.deshabilitarOfertaAlojamiento(idInmueble);
+			String resultado = "En deshabilitar Alojamiento";
+			resultado += "\n" + listarReqFun9(lista);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
@@ -1955,6 +1970,25 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		int i = 1;
 		for (Object tb : lista) {
 			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
+	
+	private String listarReqFun9(List<ReqFun9> lista) {
+		String resp="Deshabilitando...";
+		if (lista.size()==0) {
+			resp+="no hay reservas para relocalizar";
+		}
+		for (int i=0;i<lista.size();i++) {
+			resp=resp+ "La reserva con id: "+ lista.get(i).getaCambiar().getId();
+			Reserva nueva= lista.get(i).getNueva();
+			if (nueva==null) {
+				resp=resp+" No se pudo cambiar";
+			}else {
+				resp=resp+"se cambio por la reserva con id: "+ lista.get(i).getNueva().getId();
+				resp+="en el inmueble:"+ nueva.getIdInmueble();
+			}
+			
 		}
 		return resp;
 	}
