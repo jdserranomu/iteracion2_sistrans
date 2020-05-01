@@ -1993,16 +1993,16 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 	private String listarReqFun9(List<ReqFun9> lista) {
 		String resp="Deshabilitando...";
 		if (lista.size()==0) {
-			resp+="no hay reservas para relocalizar";
+			resp+=" no hay reservas para relocalizar";
 		}
 		for (int i=0;i<lista.size();i++) {
 			resp=resp+ "La reserva con id: "+ lista.get(i).getaCambiar().getId();
 			Reserva nueva= lista.get(i).getNueva();
 			if (nueva==null) {
-				resp=resp+" No se pudo cambiar";
+				resp=resp+" No se pudo cambiar \n";
 			}else {
-				resp=resp+"se cambio por la reserva con id: "+ lista.get(i).getNueva().getId();
-				resp+="en el inmueble:"+ nueva.getIdInmueble();
+				resp=resp+" se cambio por la reserva con id: "+ lista.get(i).getNueva().getId();
+				resp+=" en el inmueble:"+ nueva.getIdInmueble()+"\n";
 			}
 			
 		}

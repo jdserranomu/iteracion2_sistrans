@@ -603,24 +603,28 @@ public class PersistenciaAlohAndes {
 			
 			for (int i=0;i<reservas.size();i++) {
 				Reserva aCambiar= reservas.get(i);
-				System.out.println(aCambiar.getId());
+			
+			
 				List<Inmueble> opciones=darInmueblesDisponiblesEnFechasPorMayorCapacidad(actual, aCambiar.getFechaFin(),aCambiar.getCapacidad());
 				boolean cambiado=false;
 				for (int j= 0;j<opciones.size();j++) {
 					try {
-						System.out.println("opcion 1"+ opciones.get(j).getId());
-						Reserva a= adicionarReserva(aCambiar.getFechaInicio(), aCambiar.getFechaFin(), aCambiar.getCapacidad(), aCambiar.getIdOperador(), opciones.get(j).getId());
+					
+						
+					
+						Reserva a= adicionarReservaReposicion(aCambiar.getFechaInicio(), aCambiar.getFechaFin(), aCambiar.getCapacidad(), aCambiar.getIdUsuario(), opciones.get(j).getId());
 						long cancel= cancelarReservaPorEventualidad(aCambiar.getId());
 						log.trace("Reserva con id: "+ aCambiar.getId() +"fue cambiada por la reserva con id: "+a.getId()+ "en el inmueble"+ opciones.get(j).getId());
 						cambiado=true;
 						ReqFun9 cambioRealizado= new ReqFun9(aCambiar, a);
 						cambios.add(cambioRealizado);
 						break;
+						
 					}catch (Exception e) {
 						log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
 					}
 				}
-				if (cambiado=false) {
+				if (cambiado==false) {
 					ReqFun9 cambioRealizado= new ReqFun9(aCambiar, null);
 					cambios.add(cambioRealizado);
 				}
@@ -1030,7 +1034,8 @@ public class PersistenciaAlohAndes {
 			pm.close();
 		}
 	}
-
+	
+	
 	public Reserva adicionarReserva(Date fechaInicio, Date fechaFin, int capacidad, long idUsuario, long idInmueble)
 			throws Exception {
 
@@ -1038,6 +1043,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
+			
 			long idReserva = nextvalReserva();
 			long diffDays = ChronoUnit.DAYS.between(fechaInicio.toInstant(), fechaFin.toInstant());
 			Inmueble inm = sqlInmueble.darInmueblePorId(pm, idInmueble);
@@ -1047,11 +1053,11 @@ public class PersistenciaAlohAndes {
 			double descuento = 0;
 			long idDueno = darDuenoInmueble(pm, inm.getId(), inm.getTipo());
 			int estado = Reserva.ESTADO_SOLICITADO;
-
+		
 			if (inm.getCapacidad() < capacidad) {
 				throw new Exception("La capacidad ingresada supera la capacidad del inmueble");
 			}
-
+			
 			if (inm.getDisponible() == 0) {
 				throw new Exception("El inmueble no esta disponible para reservas");
 			}
@@ -1059,16 +1065,19 @@ public class PersistenciaAlohAndes {
 			if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays < 30) {
 				throw new Exception("Una habitacion tiene una reserva minima de un mes");
 			}
-
+			
+			//System.out.println("basura");
 			Usuario us = darUsuarioPorId(idUsuario);
+			
 			if (us.getTipo().equals(Usuario.TIPO_INVITADO) && !tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+				
 				throw new Exception("El usuario de tipo invitado solo puede arrendar vivienda");
 			}
-
+		
 			if (inm.getTipo().equals(Inmueble.TIPO_APARTAMENTO) && diffDays < 30) {
 				throw new Exception("El apartamento tiene reserva minima de un mes");
 			}
-
+			
 			if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
 				Vivienda viv = sqlVivienda.darViviendaPorId(pm, idInmueble);
 				if (viv.getDiasUtilizado() + diffDays > 30) {
@@ -1081,12 +1090,102 @@ public class PersistenciaAlohAndes {
 				throw new Exception(
 						"La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
 			}
-
+			
 			List<Reserva> reservasUs = sqlReserva.darReservasNoCanceladasEnFechasPorIdUsuario(pm, us.getId(),
 					fechaInicio, fechaFin);
-
+	
 			if (reservasUs != null && reservasUs.size() != 0) {
 				throw new Exception("El usuario ya tiene reservas para esas fechas");
+			}
+
+			List<Reserva> reservasIn = sqlReserva.darReservasNoCanceladasEnFechasParaInmueble(pm, fechaInicio, fechaFin,
+					idInmueble);
+
+			if (reservasIn != null && reservasIn.size() != 0) {
+				throw new Exception("El inmueble ya se encuentra reservado en esas fechas");
+			}
+
+			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idReserva, fechaInicio, fechaFin, costo,
+					fechaCancelar, pagado, descuento, capacidad, estado, idDueno, idUsuario, idInmueble, null);
+
+			Reserva re = new Reserva(idReserva, fechaInicio, fechaFin, costo, fechaCancelar, pagado, descuento,
+					capacidad, estado, idDueno, idUsuario, idInmueble, null);
+			if (re != null) {
+				if (inm.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+					Vivienda viv = sqlVivienda.darViviendaPorId(pm, inm.getId());
+					int diasNuevo = viv.getDiasUtilizado() + (int) diffDays;
+					actualizarViviendaDiasUtilizado(diasNuevo, inm.getId());
+				}
+			}
+			tx.commit();
+			log.trace("Inserción de Reserva: " + idReserva + ": " + tuplasInsertadas + " tuplas insertadas");
+
+			return re;
+		} catch (Exception e) {
+			log.error("Exception esta aqui : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
+	
+	public Reserva adicionarReservaReposicion(Date fechaInicio, Date fechaFin, int capacidad, long idUsuario, long idInmueble)
+			throws Exception {
+
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try {
+			tx.begin();
+			
+			long idReserva = nextvalReserva();
+			long diffDays = ChronoUnit.DAYS.between(fechaInicio.toInstant(), fechaFin.toInstant());
+			Inmueble inm = sqlInmueble.darInmueblePorId(pm, idInmueble);
+			double costo = calcularCostoReserva(pm, diffDays, inm.getTipo(), inm);
+			Date fechaCancelar = darFechaDeCancelacion(inm.getTipo(), fechaInicio, diffDays);
+			int pagado = 0;
+			double descuento = 0;
+			long idDueno = darDuenoInmueble(pm, inm.getId(), inm.getTipo());
+			int estado = Reserva.ESTADO_SOLICITADO;
+		
+			if (inm.getCapacidad() < capacidad) {
+				throw new Exception("La capacidad ingresada supera la capacidad del inmueble");
+			}
+			
+			if (inm.getDisponible() == 0) {
+				throw new Exception("El inmueble no esta disponible para reservas");
+			}
+			String tipo = inm.getTipo();
+			if (tipo.equals(Inmueble.TIPO_HABITACION) && diffDays < 30) {
+				throw new Exception("Una habitacion tiene una reserva minima de un mes");
+			}
+			
+			//System.out.println("basura");
+			Usuario us = darUsuarioPorId(idUsuario);
+			
+			if (us.getTipo().equals(Usuario.TIPO_INVITADO) && !tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+				
+				throw new Exception("El usuario de tipo invitado solo puede arrendar vivienda");
+			}
+		
+			if (inm.getTipo().equals(Inmueble.TIPO_APARTAMENTO) && diffDays < 30) {
+				throw new Exception("El apartamento tiene reserva minima de un mes");
+			}
+			
+			if (tipo.equals(Inmueble.TIPO_VIVIENDA)) {
+				Vivienda viv = sqlVivienda.darViviendaPorId(pm, idInmueble);
+				if (viv.getDiasUtilizado() + diffDays > 30) {
+					throw new Exception("Con las fechas dadas la vivienda seria utilizada mas de 30 dias en el año");
+				}
+			}
+			if (tipo.equals(Inmueble.TIPO_HABITACIONVIVIENDA) && !(us.getTipo().equals(Usuario.TIPO_ESTUDIANTE)
+					|| us.getTipo().equals(Usuario.TIPO_PROFESOR) || us.getTipo().equals(Usuario.TIPO_EMPLEADO)
+					|| us.getTipo().equals(Usuario.TIPO_PROFESORINVITADO))) {
+				throw new Exception(
+						"La habitacion vivienda solo puede ser usada por estudiantes, profesores, empleados");
 			}
 
 			List<Reserva> reservasIn = sqlReserva.darReservasNoCanceladasEnFechasParaInmueble(pm, fechaInicio, fechaFin,
@@ -1424,6 +1523,7 @@ public class PersistenciaAlohAndes {
 	}
 
 	public Usuario darUsuarioPorId(long idUsuario) {
+	
 		return sqlUsuario.darUsuarioPorId(pmf.getPersistenceManager(), idUsuario);
 	}
 
