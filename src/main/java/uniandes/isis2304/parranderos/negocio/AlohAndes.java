@@ -772,6 +772,29 @@ public class AlohAndes {
 		log.info("Consultando RFC4: " + listaConsulta);
 		return listaConsulta;
 	}
+	
+	public List<ReqConsulta7> mayorDemanda(String tipo) {
+		log.info("Consultado requerimiento de consulta 7 mayor demanda");
+		List<ReqConsulta7> listaConsulta = pp.mayorDemanda(tipo);
+		log.info("Consultando RFC7: " + listaConsulta);
+		return listaConsulta;
+	}
+	
+	public List<ReqConsulta7> mayorIngresos(String tipo) {
+		log.info("Consultado requerimiento de consulta 7 mayor ingresos");
+		List<ReqConsulta7> listaConsulta = pp.mayorIngresos(tipo);
+		log.info("Consultando RFC7: " + listaConsulta);
+		return listaConsulta;
+	}
+	
+	public List<ReqConsulta7> menorOcupacion(String tipo) {
+		log.info("Consultado requerimiento de consulta 7 menor ocupacion");
+		List<ReqConsulta7> listaConsulta = pp.menorOcupacion(tipo);
+		log.info("Consultando RFC7: " + listaConsulta);
+		return listaConsulta;
+	}
+	
+
 
 	
 

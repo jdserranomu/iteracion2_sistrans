@@ -11,6 +11,7 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta7;
 
 public class SQLUtil {
 	
@@ -110,6 +111,87 @@ public class SQLUtil {
 		return (List<ReqConsulta4>)q.executeList();
 	}
 	
+	public List<ReqConsulta7>  mayorDemanda(PersistenceManager pm, String tipo){
+		Query q = pm.newQuery(SQL, " Select to_char(fechainicio, 'YYYY-MM') as meses, count (*) as cuantos " + 
+				"    from reserva " + 
+				"    where estado=0 and idInmueble in (\r\n" + 
+				"        select id " + 
+				"        from inmueble " + 
+				"        where tipo=? " + 
+				"    ) " + 
+				"    group by to_char(fechainicio, 'YYYY-MM') " + 
+				"    having count(*) in ( " + 
+				"        Select max(cuantos) " + 
+				"        from( " + 
+				"            Select to_char(fechainicio, 'YYYY-MM') as meses, count (*) as cuantos " + 
+				"            from reserva " + 
+				"            where estado=0 and idInmueble in ( " + 
+				"                select id " + 
+				"                from inmueble " + 
+				"                where tipo=? " + 
+				"            )" + 
+				"            group by to_char(fechainicio, 'YYYY-MM') " + 
+				"        )  " + 
+				"    ) ");
+		q.setResultClass(ReqConsulta7.class);
+		q.setParameters(tipo,tipo);
+		return (List<ReqConsulta7>) q.executeList();
+	}
+	
+	public List<ReqConsulta7>  mayorIngresos(PersistenceManager pm, String tipo){
+		Query q = pm.newQuery(SQL, "  Select to_char(fechainicio, 'YYYY-MM') as meses, sum (valortotal) as total " + 
+				"    from reserva " + 
+				"    where estado=0 and idInmueble in ( " + 
+				"        select id " + 
+				"        from inmueble " + 
+				"        where tipo= ? " + 
+				"    ) " + 
+				"    group by to_char(fechainicio, 'YYYY-MM') " + 
+				"    having sum(valortotal) in ( " + 
+				"        Select  max(dinero) " + 
+				"        from( " + 
+				"            Select to_char(fechainicio, 'YYYY-MM') as meses, sum (valortotal) as dinero " + 
+				"            from reserva " + 
+				"            where estado=0 and idInmueble in ( " + 
+				"                select id " + 
+				"                from inmueble " + 
+				"                where tipo=? " + 
+				"            ) " + 
+				"            group by to_char(fechainicio, 'YYYY-MM') " + 
+				"        )  " + 
+				"    ) ");
+		q.setResultClass(ReqConsulta7.class);
+		q.setParameters(tipo,tipo);
+		return (List<ReqConsulta7>) q.executeList();
+	}
+	
+	public List<ReqConsulta7>  menorOcupacion(PersistenceManager pm, String tipo){
+		Query q = pm.newQuery(SQL, " Select to_char(fechainicio, 'YYYY-MM') as meses, count (*) as cuantos " + 
+				"    from reserva " + 
+				"    where estado=0 and idInmueble in (\r\n" + 
+				"        select id " + 
+				"        from inmueble " + 
+				"        where tipo=? " + 
+				"    ) " + 
+				"    group by to_char(fechainicio, 'YYYY-MM') " + 
+				"    having count(*) in ( " + 
+				"        Select min(cuantos) " + 
+				"        from( " + 
+				"            Select to_char(fechainicio, 'YYYY-MM') as meses, count (*) as cuantos " + 
+				"            from reserva " + 
+				"            where estado=0 and idInmueble in ( " + 
+				"                select id " + 
+				"                from inmueble " + 
+				"                where tipo=? " + 
+				"            )" + 
+				"            group by to_char(fechainicio, 'YYYY-MM') " + 
+				"        )  " + 
+				"    ) ");
+		q.setResultClass(ReqConsulta7.class);
+		q.setParameters(tipo,tipo);
+		return (List<ReqConsulta7>) q.executeList();
+	}
+	
 	public long nextvalInmueble (PersistenceManager pm){
         Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqInmueble () + ".nextval FROM DUAL");
         q.setResultClass(Long.class);
@@ -144,6 +226,8 @@ public class SQLUtil {
         long resp = (long) q.executeUnique();
         return resp;
 	}
+	
+	
 
 	public long [] limpiarAlohAndes (PersistenceManager pm){
 		Query qApartamento = pm.newQuery(SQL, "DELETE FROM " + paa.darTablaApartamento ());

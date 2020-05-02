@@ -35,6 +35,7 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta7;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
 import uniandes.isis2304.parranderos.negocio.Usuario;
@@ -1606,7 +1607,18 @@ public class PersistenciaAlohAndes {
 	public List<ReqConsulta4> RFC4(Date X, Date Y, List<String> servicios) {
 		return sqlUtil.RFC4(pmf.getPersistenceManager(), X, Y, servicios);
 	}
+	
+	public List<ReqConsulta7> mayorDemanda(String tipo){
+		return sqlUtil.mayorDemanda(pmf.getPersistenceManager(), tipo);
+	}
 
+	public List<ReqConsulta7> mayorIngresos(String tipo){
+		return sqlUtil.mayorIngresos(pmf.getPersistenceManager(), tipo);
+	}
+	
+	public List<ReqConsulta7> menorOcupacion(String tipo){
+		return sqlUtil.menorOcupacion(pmf.getPersistenceManager(), tipo);
+	}
 	
 	public long darDuenoInmueble(PersistenceManager pm, long id, String tipo) {
 

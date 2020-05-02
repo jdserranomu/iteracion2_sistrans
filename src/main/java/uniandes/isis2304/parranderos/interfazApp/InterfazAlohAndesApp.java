@@ -53,6 +53,7 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta7;
 import uniandes.isis2304.parranderos.negocio.ReqFun9;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
@@ -2107,6 +2108,21 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		}
 		return resp;
 	}
+	
+	private String listarRFC7(List<ReqConsulta7> mayorDemanda, List<ReqConsulta7> mayorDineros, List<ReqConsulta7> menorOcupacion) {
+		String resp = "Los datos del RFC7 son:\n";
+		int i = 1;
+		for (Object tb : mayorDemanda) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		for (Object tb : mayorDineros) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		for (Object tb : menorOcupacion) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
 
 	private String listarRFC4(List<ReqConsulta4> lista) {
 		String resp = "Los datos del RFC4 son:\n";
@@ -2250,6 +2266,29 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	}
+	
+	public void RFC7() {
+
+		try {
+			String[] choices = { Inmueble.TIPO_APARTAMENTO,Inmueble.TIPO_HABITACION, Inmueble.TIPO_HABITACIONHOSTAL
+					, Inmueble.TIPO_HABITACIONHOTEL, Inmueble.TIPO_HABITACIONVIVIENDA, Inmueble.TIPO_VIVIENDA};
+			String tipo = (String) JOptionPane.showInputDialog(null, "Selecciones el tipo", "Seleccione el tipo",
+					JOptionPane.QUESTION_MESSAGE, null, choices, choices[1]);
+			List<ReqConsulta7> mayorDemanda = alohAndes.mayorDemanda(tipo);
+			List<ReqConsulta7> mayorDineros = alohAndes.mayorIngresos(tipo);
+			List<ReqConsulta7> menorOcupacion = alohAndes.menorOcupacion(tipo);
+			String resultado = "En RFC7";
+			resultado += "\n" + listarRFC7(mayorDemanda,mayorDineros, menorOcupacion);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	
+	
 
 	/*
 	 * **************************************************************** Métodos de
