@@ -2113,15 +2113,19 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 	
 	private String listarRFC7(List<ReqConsulta7> mayorDemanda, List<ReqConsulta7> mayorDineros, List<ReqConsulta7> menorOcupacion) {
 		String resp = "Los datos del RFC7 son:\n";
-		int i = 1;
-		for (Object tb : mayorDemanda) {
-			resp += i++ + ". " + tb.toString() + "\n";
+
+		resp+="Meses de mayor demanda: \n";
+		for (int i=0;i<mayorDemanda.size();i++) {
+			resp+= "Mes: "+ mayorDemanda.get(i).getMeses()+ " con: "+ mayorDemanda.get(i).getCuantos()+ " alojamientos ocupados "; 
 		}
-		for (Object tb : mayorDineros) {
-			resp += i++ + ". " + tb.toString() + "\n";
+		resp+="\n Meses de mayores ingresos: \n";
+		for (int i=0;i<mayorDineros.size();i++) {
+			resp+= "Mes: "+ mayorDineros.get(i).getMeses()+ " con: "+ mayorDineros.get(i).getCuantos()+ " pesos ganados "; 
 		}
-		for (Object tb : menorOcupacion) {
-			resp += i++ + ". " + tb.toString() + "\n";
+		
+		resp+="\n Meses de menor ocupacion: \n";
+		for (int i=0;i<menorOcupacion.size();i++) {
+			resp+= "Mes: "+ menorOcupacion.get(i).getMeses()+ " con: "+ menorOcupacion.get(i).getCuantos()+ " alojamientos ocupados "; 
 		}
 		return resp;
 	}

@@ -797,6 +797,7 @@ public class AlohAndes {
 	public List<ReqConsulta7> mayorDemanda(String tipo) {
 		log.info("Consultado requerimiento de consulta 7 mayor demanda");
 		List<ReqConsulta7> listaConsulta = pp.mayorDemanda(tipo);
+		
 		log.info("Consultando RFC7: " + listaConsulta);
 		return listaConsulta;
 	}

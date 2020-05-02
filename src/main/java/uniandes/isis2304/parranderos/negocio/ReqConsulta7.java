@@ -4,30 +4,35 @@ import java.sql.Date;
 
 public class ReqConsulta7 {
 	
-	private Date fecha;
+	private String meses;
 	
-	private double cantidad;
+	private double cuantos;
 
-	public Date getFecha() {
-		return fecha;
+	public String getMeses() {
+		return meses;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setMeses(String meses) {
+		this.meses = meses;
 	}
 
-	public double getCantidad() {
-		return cantidad;
+	public double getCuantos() {
+		return cuantos;
 	}
 
-	public void setCantidad(double cantidad) {
-		this.cantidad = cantidad;
+	public void setCuantos(double cuantos) {
+		this.cuantos = cuantos;
 	}
 
-	public ReqConsulta7(Date fecha, double cantidad) {
+	public ReqConsulta7(String meses, double cuantos) {
 		super();
-		this.fecha = fecha;
-		this.cantidad = cantidad;
+		this.meses = meses;
+		this.cuantos = cuantos;
+	}
+
+	public ReqConsulta7() {
+		this.meses="";
+		this.cuantos=0;
 	}
 	
 	

@@ -161,9 +161,10 @@ public class SQLUtil {
 	
 	
 	public List<ReqConsulta7>  mayorDemanda(PersistenceManager pm, String tipo){
+		
 		Query q = pm.newQuery(SQL, " Select to_char(fechainicio, 'YYYY-MM') as meses, count (*) as cuantos " + 
 				"    from reserva " + 
-				"    where estado=0 and idInmueble in (\r\n" + 
+				"    where estado=0 and idInmueble in (" + 
 				"        select id " + 
 				"        from inmueble " + 
 				"        where tipo=? " + 
@@ -182,13 +183,16 @@ public class SQLUtil {
 				"            group by to_char(fechainicio, 'YYYY-MM') " + 
 				"        )  " + 
 				"    ) ");
-		q.setResultClass(ReqConsulta7.class);
+		
+		
 		q.setParameters(tipo,tipo);
+		q.setResultClass(ReqConsulta7.class);
+		System.out.println(q);
 		return (List<ReqConsulta7>) q.executeList();
 	}
 	
 	public List<ReqConsulta7>  mayorIngresos(PersistenceManager pm, String tipo){
-		Query q = pm.newQuery(SQL, "  Select to_char(fechainicio, 'YYYY-MM') as meses, sum (valortotal) as total " + 
+		Query q = pm.newQuery(SQL, "  Select to_char(fechainicio, 'YYYY-MM') as meses, sum (valortotal) as cuantos" + 
 				"    from reserva " + 
 				"    where estado=0 and idInmueble in ( " + 
 				"        select id " + 
@@ -210,6 +214,7 @@ public class SQLUtil {
 				"        )  " + 
 				"    ) ");
 		q.setResultClass(ReqConsulta7.class);
+		System.out.println(tipo);
 		q.setParameters(tipo,tipo);
 		return (List<ReqConsulta7>) q.executeList();
 	}
