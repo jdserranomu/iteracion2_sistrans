@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.org.apache.bcel.internal.classfile.PMGClass;
 
 import uniandes.isis2304.parranderos.negocio.Apartamento;
 import uniandes.isis2304.parranderos.negocio.ReqFun9;
@@ -35,6 +36,8 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta5;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta6;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta7;
 import uniandes.isis2304.parranderos.negocio.Reserva;
 import uniandes.isis2304.parranderos.negocio.ServicioMenaje;
@@ -1606,6 +1609,18 @@ public class PersistenciaAlohAndes {
 
 	public List<ReqConsulta4> RFC4(Date X, Date Y, List<String> servicios) {
 		return sqlUtil.RFC4(pmf.getPersistenceManager(), X, Y, servicios);
+	}
+	
+	public List<ReqConsulta5> RFC5() {
+		return sqlUtil.RFC5(pmf.getPersistenceManager());
+	}
+	
+	public ReqConsulta6 RFC6(long idUsuario) {
+		return sqlUtil.RFC6(pmf.getPersistenceManager(), idUsuario);
+	}
+	
+	public List<Usuario> RFC8(long idInmueble){
+		return sqlUtil.RFC8(pmf.getPersistenceManager(), idInmueble);
 	}
 	
 	public List<ReqConsulta7> mayorDemanda(String tipo){

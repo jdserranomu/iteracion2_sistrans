@@ -436,8 +436,20 @@
 					"event": "RFC4"
 				},
 				{
+					"label": "RFC5",
+					"event": "RFC5"
+				},
+				{
+					"label": "RFC6",
+					"event": "RFC6"
+				},
+				{
 					"label": "RFC7",
 					"event": "RFC7"
+				},
+				{
+					"label": "RFC8",
+					"event": "RFC8"
 				}
 			]
 		}

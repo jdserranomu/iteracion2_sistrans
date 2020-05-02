@@ -7,11 +7,15 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import uniandes.isis2304.parranderos.negocio.Inmueble;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta5;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta6;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta7;
+import uniandes.isis2304.parranderos.negocio.Usuario;
 
 public class SQLUtil {
 	
@@ -110,6 +114,51 @@ public class SQLUtil {
 
 		return (List<ReqConsulta4>)q.executeList();
 	}
+	
+	public List<ReqConsulta5> RFC5(PersistenceManager pm){
+		Query q=pm.newQuery(SQL, "select usuario.tipo as tipo, count(reserva.id) as numeroReservas, "
+				+ "sum(reserva.fechafin - reserva.fechainicio) as nochesContratado, sum(valortotal) as valorPagado " + 
+				"from usuario " + 
+				"left outer join reserva on usuario.id = reserva.idusuario " + 
+				"group by usuario.tipo");
+		q.setResultClass(ReqConsulta5.class);
+		return (List<ReqConsulta5>)q.executeList();
+	}
+	
+	public ReqConsulta6 RFC6(PersistenceManager pm, long idUsuario){
+		Query q=pm.newQuery(SQL, "select usuario.id as idusuario,  count(reserva.id) as numeroReservas, "
+				+ "sum(reserva.fechafin - reserva.fechainicio) as nochesContratado, sum(valortotal) as valorPagado " + 
+				"from usuario " + 
+				"left outer join reserva on usuario.id = reserva.idusuario " + 
+				"where usuario.id = ? " + 
+				"group by usuario.id");
+		q.setResultClass(ReqConsulta6.class);
+		q.setParameters(idUsuario);
+		return (ReqConsulta6)q.executeUnique();
+	}
+	
+	
+	
+	
+	public List<Usuario> RFC8(PersistenceManager pm, long idInmueble){
+		Query q = pm.newQuery(SQL, "select * " + 
+				"from usuario " + 
+				"where id in " + 
+				"( " + 
+				"select idusuario " + 
+				"from " + 
+				"(select idinmueble, idusuario, count(*) as cnt, sum(fechafin-fechainicio) as suma " + 
+				"from reserva " + 
+				"where estado<>2 and idinmueble = ? " + 
+				"group by idinmueble, idusuario) " + 
+				"where cnt >= 3 or suma>=15)");
+		q.setParameters(idInmueble);
+		q.setResultClass(Usuario.class);
+		return (List<Usuario>) q.executeList();
+	}
+	
+	
+	
 	
 	public List<ReqConsulta7>  mayorDemanda(PersistenceManager pm, String tipo){
 		Query q = pm.newQuery(SQL, " Select to_char(fechainicio, 'YYYY-MM') as meses, count (*) as cuantos " + 

@@ -53,6 +53,8 @@ import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta5;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta6;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta7;
 import uniandes.isis2304.parranderos.negocio.ReqFun9;
 import uniandes.isis2304.parranderos.negocio.Reserva;
@@ -2132,6 +2134,16 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		}
 		return resp;
 	}
+	
+	private String listarRFC5(List<ReqConsulta5> lista) {
+		String resp = "Los datos del RFC5 son:\n";
+		int i = 1;
+		for (Object tb : lista) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
+	
 
 	private boolean repetido(List<String> listaServicios, String servicio) {
 		boolean repetido = false;
@@ -2267,6 +2279,38 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		}
 	}
 	
+	public void RFC5() {
+
+		try {
+			List<ReqConsulta5> listaConsulta = alohAndes.RFC5();
+			String resultado = "En RFC5";
+			resultado += "\n" + listarRFC5(listaConsulta);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	
+	public void RFC6() {
+
+		try {
+			long idUsuario = Long.parseLong( JOptionPane.showInputDialog(this, 
+					"ID usuario?","Mostrar uso de AlohAndes para usuario", JOptionPane.QUESTION_MESSAGE));
+			ReqConsulta6 listaConsulta = alohAndes.RFC6(idUsuario);
+			String resultado = "En RFC6";
+			resultado += "\n" + listaConsulta.toString();
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	
 	public void RFC7() {
 
 		try {
@@ -2279,6 +2323,23 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			List<ReqConsulta7> menorOcupacion = alohAndes.menorOcupacion(tipo);
 			String resultado = "En RFC7";
 			resultado += "\n" + listarRFC7(mayorDemanda,mayorDineros, menorOcupacion);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void RFC8() {
+
+		try {
+			
+			long idInmueble = Long.parseLong( JOptionPane.showInputDialog(this, 
+					"ID inmueble?","Encontrar los clientes frecuentes", JOptionPane.QUESTION_MESSAGE));
+			List<Usuario> usuarios = alohAndes.RFC8(idInmueble);
+			String resultado = "En RFC8";
+			resultado += "\n" + listarUsuario(usuarios);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
