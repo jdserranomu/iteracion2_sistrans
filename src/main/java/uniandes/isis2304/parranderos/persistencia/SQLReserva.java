@@ -85,11 +85,11 @@ public class SQLReserva {
 	}
 	
 	
-	public List<Reserva> darReservasParaInmueble (PersistenceManager pm, long idInmueble, Date fechaInicio) 
+	public List<Reserva> darReservasParaInmueble (PersistenceManager pm, long idInmueble, Date fecha) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND fechaInicio>= ? and estado=0 ORDER BY fechaInicio asc");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + paa.darTablaReserva() + " WHERE idInmueble = ? AND fechaFin>= ? and estado=0 ORDER BY fechaInicio asc");
 		q.setResultClass(Reserva.class);
-		Timestamp fechaStarTimestamp = new Timestamp(fechaInicio.getTime());
+		Timestamp fechaStarTimestamp = new Timestamp(fecha.getTime());
 		q.setParameters(idInmueble, fechaStarTimestamp);
 		return (List<Reserva>) q.executeList();
 	}

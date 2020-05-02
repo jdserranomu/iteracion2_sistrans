@@ -1372,8 +1372,8 @@ public class PersistenciaAlohAndes {
 				idInmueble);
 	}
 	
-	public List<Reserva> darReservasVigentesParaInmueble(long idInmueble, Date fechaInicio) {
-		return sqlReserva.darReservasParaInmueble(pmf.getPersistenceManager(),idInmueble, fechaInicio);
+	public List<Reserva> darReservasVigentesParaInmueble(long idInmueble, Date fecha) {
+		return sqlReserva.darReservasParaInmueble(pmf.getPersistenceManager(),idInmueble, fecha);
 	}
 
 	public List<Reserva> darReservasNoCanceladasEnFechasParaInmueble(Date fechaStart, Date fechaEnd, long idInmueble) {
