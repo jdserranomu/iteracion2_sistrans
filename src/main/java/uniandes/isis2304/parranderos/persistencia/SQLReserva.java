@@ -130,4 +130,15 @@ public class SQLReserva {
 		return (List<Reserva>) q.executeList();
 	}
 	
+	public List<Reserva> darReservasAntesFechaActualOrganizadasPorIdInmuebleYFechaInicio(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "select * " + 
+				"from reserva " + 
+				"where fechainicio<=? " + 
+				"order by idinmueble, fechainicio");
+		q.setResultClass(Reserva.class);
+		Timestamp hoy = new Timestamp(new Date().getTime());
+		q.setParameters(hoy, hoy);
+		return (List<Reserva>) q.executeList();
+	}
+	
 }

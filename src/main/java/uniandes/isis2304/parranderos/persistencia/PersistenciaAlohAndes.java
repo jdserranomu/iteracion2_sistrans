@@ -1,5 +1,8 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +22,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sun.org.apache.bcel.internal.classfile.PMGClass;
+import com.sun.org.apache.xpath.internal.operations.And;
 
 import uniandes.isis2304.parranderos.negocio.Apartamento;
 import uniandes.isis2304.parranderos.negocio.ReqFun9;
@@ -1621,6 +1625,70 @@ public class PersistenciaAlohAndes {
 	
 	public List<Usuario> RFC8(long idInmueble){
 		return sqlUtil.RFC8(pmf.getPersistenceManager(), idInmueble);
+	}
+	
+	
+	public List<Inmueble> RFC9() throws Exception{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		List<Inmueble> listaInmuebles = new ArrayList<Inmueble>();
+		try {
+			tx.begin();
+			Date fechaInicioOperaciones = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2019");
+			Date fechaActual = new Date();
+			List<Inmueble> listaInmueblesConfirmados = sqlInmueble.darInmueblesSinReservas(pm);
+			for(Inmueble inmueble: listaInmueblesConfirmados) {
+				listaInmuebles.add(inmueble);
+			}
+			List<Reserva> reservas = sqlReserva.darReservasAntesFechaActualOrganizadasPorIdInmuebleYFechaInicio(pm);
+			long idActual = -1;
+			boolean agregado = false;
+			long diffDays = 0;
+			for(int i = 0 ; i< reservas.size(); i++) {
+				Reserva reserva = reservas.get(i);
+				Inmueble inmueble = sqlInmueble.darInmueblePorId(pm, reserva.getIdInmueble());
+				boolean first = false;
+				if(idActual != reserva.getIdInmueble()) {
+					idActual = reserva.getIdInmueble();
+					agregado = false;
+					first = true;
+				}
+				if(first) {
+					diffDays = ChronoUnit.DAYS.between(fechaInicioOperaciones.toInstant(), reserva.getFechaInicio().toInstant());
+					if(diffDays>30) {
+						listaInmuebles.add(inmueble);
+						agregado = true;
+					}
+				}
+				if(!agregado && (i==reservas.size()-1 || reservas.get(i+1).getIdInmueble()!=idActual)) {
+					diffDays = ChronoUnit.DAYS.between(reserva.getFechaFin().toInstant(), fechaActual.toInstant());
+					if(fechaActual.compareTo(reserva.getFechaFin())>0 && diffDays>30) {
+						
+						listaInmuebles.add(inmueble);
+						agregado = true;
+					}
+				}
+				else if (!agregado){
+					Reserva siguienteReserva = reservas.get(i+1);
+					diffDays = ChronoUnit.DAYS.between(reserva.getFechaFin().toInstant(), siguienteReserva.getFechaInicio().toInstant());
+					if(diffDays>30) {
+						listaInmuebles.add(inmueble);
+						agregado = true;
+					}
+				}
+			}
+			tx.commit();
+			return listaInmuebles;
+			
+		} catch (Exception e) {
+			log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw e;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 	
 	public List<ReqConsulta7> mayorDemanda(String tipo){

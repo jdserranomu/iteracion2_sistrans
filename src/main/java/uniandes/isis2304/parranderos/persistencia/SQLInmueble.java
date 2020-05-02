@@ -136,5 +136,20 @@ public class SQLInmueble {
 	}
 	
 	
+	public List<Inmueble> darInmueblesSinReservas(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "select * " + 
+				"from inmueble " + 
+				"where inmueble.id not in (select idinmueble from reserva)");
+		q.setResultClass(Inmueble.class);
+		return (List<Inmueble>) q.executeList();
+	}
+	
+	public List<Inmueble> darInmueblesConReservas(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "select * " + 
+				"from inmueble " + 
+				"where inmueble.id in (select idinmueble from reserva)");
+		q.setResultClass(Inmueble.class);
+		return (List<Inmueble>) q.executeList();
+	}
 
 }

@@ -794,6 +794,13 @@ public class AlohAndes {
 		return listaConsulta;
 	}
 	
+	public List<Inmueble> RFC9() throws Exception{
+		log.info("Consultado requerimiento de consulta 9");
+		List<Inmueble> listaConsulta = pp.RFC9();
+		log.info("Consultando RFC9: " + listaConsulta);
+		return listaConsulta;
+	}
+	
 	public List<ReqConsulta7> mayorDemanda(String tipo) {
 		log.info("Consultado requerimiento de consulta 7 mayor demanda");
 		List<ReqConsulta7> listaConsulta = pp.mayorDemanda(tipo);

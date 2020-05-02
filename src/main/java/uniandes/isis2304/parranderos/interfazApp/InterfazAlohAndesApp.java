@@ -2356,6 +2356,20 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		}
 	}
 	
+	public void RFC9() {
+
+		try {
+			List<Inmueble> inmuebles = alohAndes.RFC9();
+			String resultado = "En RFC9";
+			resultado += "\n" + listarInmueble(inmuebles);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
 	
 	
 
