@@ -187,7 +187,7 @@ public class SQLUtil {
 		
 		q.setParameters(tipo,tipo);
 		q.setResultClass(ReqConsulta7.class);
-		System.out.println(q);
+
 		return (List<ReqConsulta7>) q.executeList();
 	}
 	
@@ -214,7 +214,7 @@ public class SQLUtil {
 				"        )  " + 
 				"    ) ");
 		q.setResultClass(ReqConsulta7.class);
-		System.out.println(tipo);
+	
 		q.setParameters(tipo,tipo);
 		return (List<ReqConsulta7>) q.executeList();
 	}

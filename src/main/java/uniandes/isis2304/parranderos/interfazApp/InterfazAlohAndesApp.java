@@ -2111,9 +2111,13 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		return resp;
 	}
 	
-	private String listarRFC7(List<ReqConsulta7> mayorDemanda, List<ReqConsulta7> mayorDineros, List<ReqConsulta7> menorOcupacion) {
-		String resp = "Los datos del RFC7 son:\n";
-
+	private String listarRFC7(List<ReqConsulta7> mayorDemanda, List<ReqConsulta7> mayorDineros, List<ReqConsulta7> menorOcupacion, String tipo) {
+		if (mayorDemanda.size()==0) {
+			return "No ha habido reservas para "+ tipo;
+		}
+		
+		String resp = "Los datos del RFC7 para "+tipo+" son:\n";
+		
 		resp+="Meses de mayor demanda: \n";
 		for (int i=0;i<mayorDemanda.size();i++) {
 			resp+= "Mes: "+ mayorDemanda.get(i).getMeses()+ " con: "+ mayorDemanda.get(i).getCuantos()+ " alojamientos ocupados "; 
@@ -2326,7 +2330,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			List<ReqConsulta7> mayorDineros = alohAndes.mayorIngresos(tipo);
 			List<ReqConsulta7> menorOcupacion = alohAndes.menorOcupacion(tipo);
 			String resultado = "En RFC7";
-			resultado += "\n" + listarRFC7(mayorDemanda,mayorDineros, menorOcupacion);
+			resultado += "\n" + listarRFC7(mayorDemanda,mayorDineros, menorOcupacion, tipo);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
