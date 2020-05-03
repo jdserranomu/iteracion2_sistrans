@@ -74,7 +74,7 @@ private final static String SQL = PersistenciaAlohAndes.SQL;
 				"	WHERE INM.DISPONIBLE = 1 " + a + 
 				"		AND NOT EXISTS (SELECT * " + 
 				"				FROM RESERVA RES " + 
-				"				WHERE RES.IDINMUEBLE = INM.ID " + 
+				"				WHERE RES.IDINMUEBLE = INM.ID AND RES.ESTADO<>2 " + 
 				"				AND (RES.FECHAINICIO BETWEEN ? AND ? OR RES.FECHAFIN BETWEEN ? AND ? )) " + 
 				"		AND INM.CAPACIDAD >= ? " +
 				"		AND VIV.DIASUTILIZADO+?<=30"+

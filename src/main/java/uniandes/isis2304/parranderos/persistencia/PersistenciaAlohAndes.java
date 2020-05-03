@@ -1305,6 +1305,19 @@ public class PersistenciaAlohAndes {
 				reserva.setEstado(Reserva.ESTADO_CANCELADO);
 				reserva.setValorTotal(nuevoPrecio);
 				long resp = sqlReserva.actualizarReservaPorId(pm,reserva.getId(), reserva);
+				Inmueble inmueble = sqlInmueble.darInmueblePorId(pm, reserva.getIdInmueble());
+				if(inmueble.getTipo().equals(Inmueble.TIPO_VIVIENDA)) {
+					Vivienda viv = sqlVivienda.darViviendaPorId(pm, inmueble.getId());
+					Date fechaDate = null;
+					if(reserva.getFechaInicio().compareTo(new Date())>0)
+						fechaDate = reserva.getFechaInicio();
+					else {
+						fechaDate = new Date();
+					}
+					long diffDays = ChronoUnit.DAYS.between(fechaDate.toInstant(), reserva.getFechaFin().toInstant());
+					int diasNuevo = viv.getDiasUtilizado() - (int) diffDays;
+					actualizarViviendaDiasUtilizado(diasNuevo, inmueble.getId());
+				}
 				resps.add(resp);
 			}
 			

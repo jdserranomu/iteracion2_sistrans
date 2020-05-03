@@ -106,7 +106,7 @@ public class SQLInmueble {
 				a + 
 				"		AND NOT EXISTS (SELECT * " + 
 				"				FROM RESERVA RES " + 
-				"				WHERE RES.IDINMUEBLE = INM.ID " + 
+				"				WHERE RES.IDINMUEBLE = INM.ID AND RES.STADO <> 2 " + 
 				"				AND (RES.FECHAINICIO BETWEEN ? AND ? OR RES.FECHAFIN BETWEEN ? AND ? )) " + 
 				"		AND INM.CAPACIDAD >= ? AND INM.TIPO = ? " +
 				"	GROUP BY INM.ID) " + 
