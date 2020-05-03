@@ -1802,6 +1802,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long[] resp = sqlUtil.limpiarAlohAndes(pm);
 			tx.commit();
