@@ -306,6 +306,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			PersonaNatural personaNatural = sqlPersonaNatural.darPersonaNaturalPorId(pm, idPersona);
 			if (personaNatural == null)
@@ -353,6 +354,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_HABITACION,
@@ -443,6 +445,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			PersonaJuridica hot = sqlPersonaJuridica.darPersonaJuridicaPorId(pm, idHotel);
 
@@ -492,6 +495,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			PersonaJuridica viv = sqlPersonaJuridica.darPersonaJuridicaPorId(pm, idVivienda);
 			if (!viv.getTipo().equals(PersonaJuridica.TIPO_VIVIENDAUNIVERSITARIA)) {
@@ -539,6 +543,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			PersonaJuridica personaJuridica = sqlPersonaJuridica.darPersonaJuridicaPorId(pm, idHostal);
 			if (personaJuridica == null)
@@ -564,6 +569,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlHorario.eliminarHorarioPorIdHostalYDia(pm, idHostal, dia);
 			tx.commit();
@@ -601,6 +607,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		List<ReqFun9> cambios= new ArrayList();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			Inmueble in= darInmueblePorId(idInmueble);
 			if (in==null) {
@@ -656,6 +663,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlInmueble.eliminarInmueblePorId(pm, idInmueble);
 			tx.commit();
@@ -675,6 +683,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			List<Reserva> reservas = sqlReserva.darReservasDespuesDeFechaPorIdInmueble(pm, new Date(), idInmueble);
 			if (reservas != null && reservas.size() > 0) {
@@ -698,6 +707,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlInmueble.habilitarOfertaInmueblePorId(pm, idInmueble);
 			tx.commit();
@@ -742,6 +752,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlInmueble.retirarOfertaInmueblePorId(pm, idInmueble);
 			tx.commit();
@@ -768,6 +779,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			ServicioMenaje servicioMenaje = sqlServicioMenaje.darServicioMenajePorNombre(pm, idServicioMenaje);
 			if (servicioMenaje == null)
@@ -802,6 +814,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlOfreceServicio.eliminarOfreceServicio(pm, idServicioMenaje, idInmueble);
 			tx.commit();
@@ -842,6 +855,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlOperador.eliminarOperadorPorId(pm, idOperador);
 			tx.commit();
@@ -875,6 +889,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long idOperador = nextvalOperador();
 			long tuplaOperador = sqlOperador.adicionarOperador(pm, idOperador, nombre, email, telefono);
@@ -927,6 +942,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long idOperador = nextvalOperador();
 			long tuplaOperador = sqlOperador.adicionarOperador(pm, idOperador, nombre, email, telefono);
@@ -968,6 +984,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			
 			long diffDays = ChronoUnit.DAYS.between(fechaInicio.toInstant(), fechaFin.toInstant());
@@ -1050,6 +1067,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			
 			long idReserva = nextvalReserva();
@@ -1235,6 +1253,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 
 			Reserva reserva = darReservaPorId(id);
@@ -1273,6 +1292,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			List<Reserva> reservas = sqlReserva.darReservasVigentesNoCanceladasPorReservaColectiva(pm, idReservaColectiva);
 			if (reservas == null || reservas.size() == 0) // Verifica que existe la reserva
@@ -1337,6 +1357,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlReserva.eliminarReservaPorId(pm, idReserva);
 			tx.commit();
@@ -1439,6 +1460,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long tuplasInsertadas = sqlServicioMenaje.adicionarServicioMenaje(pm, nombre, tipo);
 			tx.commit();
@@ -1459,6 +1481,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlServicioMenaje.eliminarServicioMenajePorNombre(pm, nombre);
 			tx.commit();
@@ -1494,6 +1517,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long idUsuario = nextvalUsuario();
 			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, idUsuario, nombre, email, telefono, tipo);
@@ -1515,6 +1539,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long resp = sqlUsuario.eliminarUsuarioPorId(pmf.getPersistenceManager(), idUsuario);
 			tx.commit();
@@ -1557,6 +1582,7 @@ public class PersistenciaAlohAndes {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			long idInmueble = nextvalInmueble();
 			long tuplaInmuble = sqlInmueble.adicionarInmueble(pm, idInmueble, direccion, Inmueble.TIPO_VIVIENDA,
@@ -1633,6 +1659,7 @@ public class PersistenciaAlohAndes {
 		Transaction tx = pm.currentTransaction();
 		List<Inmueble> listaInmuebles = new ArrayList<Inmueble>();
 		try {
+			tx.setIsolationLevel("serializable");
 			tx.begin();
 			Date fechaInicioOperaciones = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2019");
 			Date fechaActual = new Date();
