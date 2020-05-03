@@ -635,6 +635,7 @@ public class PersistenciaAlohAndes {
 						cambios.add(cambioRealizado);
 						break;
 						
+						
 					}catch (Exception e) {
 						log.error("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
 					}
