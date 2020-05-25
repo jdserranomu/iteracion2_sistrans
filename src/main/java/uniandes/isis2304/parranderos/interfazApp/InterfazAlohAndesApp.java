@@ -1938,6 +1938,14 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		}
 		return resp;
 	}
+	private String listarUsuarios(List<Usuario> lista) {
+		String resp = "Los usuarios existentes son:\n";
+		int i = 1;
+		for (Object tb : lista) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
 
 	private String listarHabitacion(List<Habitacion> lista) {
 		String resp = "Las Habitaciones existentes son:\n";
@@ -2368,7 +2376,68 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
+		
+		
+		
 	}
+	
+	public void RFC11() {
+
+		try {
+			long idInmueble = Long.parseLong( JOptionPane.showInputDialog(this, 
+					"ID inmueble?","Encontrar los clientes frecuentes", JOptionPane.QUESTION_MESSAGE));
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+			String fechaIni = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio",
+					JOptionPane.QUESTION_MESSAGE);
+			Date fechaInicio = dateFormat.parse(fechaIni);
+
+			String fechafi = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin",
+					JOptionPane.QUESTION_MESSAGE);
+			Date fechaFin = dateFormat.parse(fechafi);
+			List<Usuario> usuarios = alohAndes.RFC11(idInmueble, fechaInicio, fechaFin);
+			
+			String resultado = "En RFC11";
+			resultado += "\n" + listarUsuario(usuarios);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	
+	public void RFC10() {
+
+		try {
+			long idInmueble = Long.parseLong( JOptionPane.showInputDialog(this, 
+					"ID inmueble?","Encontrar los clientes frecuentes", JOptionPane.QUESTION_MESSAGE));
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+			String fechaIni = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha Inicio",
+					JOptionPane.QUESTION_MESSAGE);
+			Date fechaInicio = dateFormat.parse(fechaIni);
+
+			String fechafi = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin",
+					JOptionPane.QUESTION_MESSAGE);
+			Date fechaFin = dateFormat.parse(fechafi);
+			List<Usuario> usuarios = alohAndes.RFC10(idInmueble, fechaInicio, fechaFin);
+			
+			String resultado = "En RFC11";
+			resultado += "\n" + listarUsuario(usuarios);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	
+	
 	
 	
 	

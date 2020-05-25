@@ -246,6 +246,40 @@ public class SQLUtil {
 		return (List<ReqConsulta7>) q.executeList();
 	}
 	
+	
+	public List<Usuario> reqConsulta11(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin){
+		Query q= pm.newQuery(SQL, "SELECT *" + 
+				" FROM USUARIO" + 
+				" WHERE USUARIO.ID NOT IN (" + 
+				" SELECT USUARIO.ID" + 
+				" FROM USUARIO" + 
+				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
+				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ?" + 
+				" GROUP BY USUARIO.ID, USUARIO.NOMBRE, USUARIO.EMAIL, USUARIO.TELEFONO, USUARIO.TIPO)");
+		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
+		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
+		q.setResultClass(Usuario.class);
+		q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp);
+		return (List<Usuario>)q.executeList();
+	}
+	
+	public List<Usuario> reqConsulta10(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin){
+		Query q= pm.newQuery(SQL, "SELECT USUARIO.*" + 
+				" FROM USUARIO" + 
+				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
+				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ?" + 
+				" GROUP BY USUARIO.ID, USUARIO.NOMBRE, USUARIO.EMAIL, USUARIO.TELEFONO, USUARIO.TIPO");
+		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
+		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
+		q.setResultClass(Usuario.class);
+		q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp);
+		return (List<Usuario>)q.executeList();
+	}
+	
+	
+	
+	
+	
 	public long nextvalInmueble (PersistenceManager pm){
         Query q = pm.newQuery(SQL, "SELECT "+ paa.darSeqInmueble () + ".nextval FROM DUAL");
         q.setResultClass(Long.class);

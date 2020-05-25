@@ -455,6 +455,14 @@
 				{
 					"label": "RFC9",
 					"event": "RFC9"
+				},
+				{
+					"label":"RFC10",
+					"event":"RFC10"
+				},
+				{
+					"label":"RFC11",
+					"event":"RFC11"
 				}
 			]
 		}

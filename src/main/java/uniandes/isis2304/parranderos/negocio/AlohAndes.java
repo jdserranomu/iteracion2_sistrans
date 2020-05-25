@@ -801,6 +801,21 @@ public class AlohAndes {
 		return listaConsulta;
 	}
 	
+	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin){
+		log.info("Consultando requerimiento de consulta 11");
+		List<Usuario> lista= pp.RFC11(inmuebleId, inicio, fin);
+		log.info("Consultando RFC11"+ lista);
+		return lista;
+		
+	}
+	
+	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin){
+		log.info("Consultando requerimiento de consulta 10");
+		List<Usuario> lista= pp.RFC10(inmuebleId, inicio, fin);
+		log.info("Consultando RFC10"+ lista);
+		return lista;
+		
+	}
 	public List<ReqConsulta7> mayorDemanda(String tipo) {
 		log.info("Consultado requerimiento de consulta 7 mayor demanda");
 		List<ReqConsulta7> listaConsulta = pp.mayorDemanda(tipo);

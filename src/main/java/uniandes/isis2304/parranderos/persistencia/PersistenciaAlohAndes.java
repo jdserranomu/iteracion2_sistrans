@@ -1732,6 +1732,15 @@ public class PersistenciaAlohAndes {
 		}
 	}
 	
+	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin){
+		return sqlUtil.reqConsulta11(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		
+	}
+	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin){
+		return sqlUtil.reqConsulta10(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		
+	}
+	
 	public List<ReqConsulta7> mayorDemanda(String tipo){
 		return sqlUtil.mayorDemanda(pmf.getPersistenceManager(), tipo);
 	}
