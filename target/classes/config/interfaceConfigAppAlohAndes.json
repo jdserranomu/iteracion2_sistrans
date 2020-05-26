@@ -463,6 +463,22 @@
 				{
 					"label":"RFC11",
 					"event":"RFC11"
+				},
+				{
+					"label":"RFC12InmuebleMayor",
+					"event":"RFC12InmuebleMayor"
+				},
+				{
+					"label":"RFC12InmuebleMenor",
+					"event":"RFC12InmuebleMenor"
+				},
+				{
+					"label":"RFC12OperadorMayor",
+					"event":"RFC12OperadorMayor"
+				},
+				{
+					"label":"RFC12OperadorMenor",
+					"event":"RFC12OperadorMenor"
 				}
 			]
 		}
