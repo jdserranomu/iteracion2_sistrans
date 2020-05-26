@@ -2,6 +2,7 @@ package uniandes.isis2304.parranderos.persistencia;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.awt.print.Printable;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -1735,28 +1736,56 @@ public class PersistenciaAlohAndes {
 	}
 	
 	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin){
-		return sqlUtil.reqConsulta11(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		long startTime = System.nanoTime();
+		List<Usuario> list = sqlUtil.reqConsulta11(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		long endTime = System.nanoTime();
+		double time = (double)(endTime-startTime)/(10^9);
+		System.out.println(time+" seg");
+		return list;
+		
 		
 	}
 	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin){
-		return sqlUtil.reqConsulta10(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		long startTime = System.nanoTime();
+		List<Usuario> list = sqlUtil.reqConsulta10(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		long endTime = System.nanoTime();
+		double time = (double)(endTime-startTime)/(10^9);
+		System.out.println(time+" seg");
+		return list;
 		
 	}
 	
 	public List<ReqConsulta12Inmueble> RFC12InmuebleMayor() {
-		return sqlUtil.RFC12InmuebleMayor(pmf.getPersistenceManager());
+		long startTime = System.nanoTime();
+		List<ReqConsulta12Inmueble> list =  sqlUtil.RFC12InmuebleMayor(pmf.getPersistenceManager());
+		long endTime = System.nanoTime();
+		System.out.println(endTime-startTime);
+		return list;
+		
 	}
 	
 	public List<ReqConsulta12Inmueble> RFC12InmuebleMenor() {
-		return sqlUtil.RFC12InmuebleMenor(pmf.getPersistenceManager());
+		long startTime = System.nanoTime();
+		List<ReqConsulta12Inmueble> list = sqlUtil.RFC12InmuebleMenor(pmf.getPersistenceManager());
+		long endTime = System.nanoTime();
+		System.out.println(endTime-startTime);
+		return list;
 	}
 	
 	public List<ReqConsulta12Operador> RFC12OperadorMenor() {
-		return sqlUtil.RFC12OperadorMenor(pmf.getPersistenceManager());
+		long startTime = System.nanoTime();
+		List<ReqConsulta12Operador> list =sqlUtil.RFC12OperadorMenor(pmf.getPersistenceManager());
+		long endTime = System.nanoTime();
+		System.out.println(endTime-startTime);
+		return list;
 	}
 	
 	public List<ReqConsulta12Operador> RFC12OperadorMayor() {
-		return sqlUtil.RFC12OperadorMayor(pmf.getPersistenceManager());
+		long startTime = System.nanoTime();
+		List<ReqConsulta12Operador> list = sqlUtil.RFC12OperadorMayor(pmf.getPersistenceManager());
+		long endTime = System.nanoTime();
+		System.out.println(endTime-startTime);
+		return list;
 	}
 	
 	
