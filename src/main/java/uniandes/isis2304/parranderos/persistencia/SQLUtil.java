@@ -9,6 +9,8 @@ import javax.jdo.Query;
 
 import uniandes.isis2304.parranderos.negocio.Inmueble;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta12Inmueble;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta12Operador;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
@@ -275,6 +277,77 @@ public class SQLUtil {
 		q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp);
 		return (List<Usuario>)q.executeList();
 	}
+	
+	public List<ReqConsulta12Inmueble> RFC12InmuebleMayor(PersistenceManager pm){
+		Query query = pm.newQuery(SQL, "SELECT ID, DIRECCION, TIPO, CAPACIDAD, DISPONIBLE, FECHARESERVAFINAL, SEMANA, TASAOCUPACION " + 
+				"FROM (SELECT INMUEBLE.*, TRUNC(RESERVA.FECHAINICIO, 'DAY') AS SEMANA, AVG(RESERVA.CAPACIDAD/INMUEBLE.CAPACIDAD) AS TASAOCUPACION " + 
+				"FROM INMUEBLE " + 
+				"INNER JOIN RESERVA ON RESERVA.IDINMUEBLE = INMUEBLE.ID " + 
+				"GROUP BY INMUEBLE.ID, INMUEBLE.DIRECCION, INMUEBLE.TIPO, INMUEBLE.CAPACIDAD, INMUEBLE.DISPONIBLE, INMUEBLE.FECHARESERVAFINAL, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"WHERE (SEMANA, TASAOCUPACION) IN (SELECT SEMANA, MAX(TASAOCUPACION) " + 
+				"FROM " + 
+				"(SELECT INMUEBLE.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY') AS SEMANA, AVG(RESERVA.CAPACIDAD/INMUEBLE.CAPACIDAD) AS TASAOCUPACION " + 
+				"FROM INMUEBLE " + 
+				"INNER JOIN RESERVA ON RESERVA.IDINMUEBLE = INMUEBLE.ID " + 
+				"GROUP BY INMUEBLE.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"GROUP BY SEMANA)");
+		query.setResultClass(ReqConsulta12Inmueble.class);
+		return (List<ReqConsulta12Inmueble>)query.executeList();
+	}
+	
+	
+	public List<ReqConsulta12Inmueble> RFC12InmuebleMenor(PersistenceManager pm){
+		Query query = pm.newQuery(SQL, "SELECT ID, DIRECCION, TIPO, CAPACIDAD, DISPONIBLE, FECHARESERVAFINAL, SEMANA, TASAOCUPACION " + 
+				"FROM (SELECT INMUEBLE.*, TRUNC(RESERVA.FECHAINICIO, 'DAY') AS SEMANA, AVG(RESERVA.CAPACIDAD/INMUEBLE.CAPACIDAD) AS TASAOCUPACION " + 
+				"FROM INMUEBLE " + 
+				"INNER JOIN RESERVA ON RESERVA.IDINMUEBLE = INMUEBLE.ID " + 
+				"GROUP BY INMUEBLE.ID, INMUEBLE.DIRECCION, INMUEBLE.TIPO, INMUEBLE.CAPACIDAD, INMUEBLE.DISPONIBLE, INMUEBLE.FECHARESERVAFINAL, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"WHERE (SEMANA, TASAOCUPACION) IN (SELECT SEMANA, MIN(TASAOCUPACION) " + 
+				"FROM " + 
+				"(SELECT INMUEBLE.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY') AS SEMANA, AVG(RESERVA.CAPACIDAD/INMUEBLE.CAPACIDAD) AS TASAOCUPACION " + 
+				"FROM INMUEBLE " + 
+				"INNER JOIN RESERVA ON RESERVA.IDINMUEBLE = INMUEBLE.ID " + 
+				"GROUP BY INMUEBLE.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"GROUP BY SEMANA)");
+		query.setResultClass(ReqConsulta12Inmueble.class);
+		return (List<ReqConsulta12Inmueble>)query.executeList();
+	}
+	
+	
+	public List<ReqConsulta12Operador> RFC12OperadorMayor(PersistenceManager pm){
+		Query query = pm.newQuery(SQL, "SELECT ID, NOMBRE, EMAIL, TELEFONO, SEMANA\n" + 
+				"FROM (SELECT OPERADOR.ID, OPERADOR.NOMBRE, OPERADOR.EMAIL, OPERADOR.TELEFONO, TRUNC(RESERVA.FECHAINICIO, 'DAY')AS SEMANA, COUNT(*) AS C " + 
+				"FROM OPERADOR " + 
+				"INNER JOIN RESERVA ON OPERADOR.ID = RESERVA.IDOPERADOR " + 
+				"GROUP BY OPERADOR.ID,OPERADOR.NOMBRE, OPERADOR.EMAIL, OPERADOR.TELEFONO, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"WHERE (SEMANA, C) IN (SELECT SEMANA, MAX(C) " + 
+				"FROM " + 
+				"(SELECT OPERADOR.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')AS SEMANA, COUNT(*) AS C " + 
+				"FROM OPERADOR " + 
+				"INNER JOIN RESERVA ON OPERADOR.ID = RESERVA.IDOPERADOR " + 
+				"GROUP BY OPERADOR.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"GROUP BY SEMANA)");
+		query.setResultClass(ReqConsulta12Operador.class);
+		return (List<ReqConsulta12Operador>)query.executeList();
+	}
+	
+	public List<ReqConsulta12Operador> RFC12OperadorMenor(PersistenceManager pm){
+		Query query = pm.newQuery(SQL, "SELECT ID, NOMBRE, EMAIL, TELEFONO, SEMANA\n" + 
+				"FROM (SELECT OPERADOR.ID, OPERADOR.NOMBRE, OPERADOR.EMAIL, OPERADOR.TELEFONO, TRUNC(RESERVA.FECHAINICIO, 'DAY')AS SEMANA, COUNT(*) AS C " + 
+				"FROM OPERADOR " + 
+				"INNER JOIN RESERVA ON OPERADOR.ID = RESERVA.IDOPERADOR " + 
+				"GROUP BY OPERADOR.ID,OPERADOR.NOMBRE, OPERADOR.EMAIL, OPERADOR.TELEFONO, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"WHERE (SEMANA, C) IN (SELECT SEMANA, MIN(C) " + 
+				"FROM " + 
+				"(SELECT OPERADOR.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')AS SEMANA, COUNT(*) AS C " + 
+				"FROM OPERADOR " + 
+				"INNER JOIN RESERVA ON OPERADOR.ID = RESERVA.IDOPERADOR " + 
+				"GROUP BY OPERADOR.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
+				"GROUP BY SEMANA)");
+		query.setResultClass(ReqConsulta12Operador.class);
+		return (List<ReqConsulta12Operador>)query.executeList();
+	}
+	
 	
 	
 	

@@ -816,6 +816,36 @@ public class AlohAndes {
 		return lista;
 		
 	}
+	
+	public List<ReqConsulta12Inmueble> RFC12InmuebleMayor(){
+		log.info("Consultando requerimiento de consulta 12 inmueble mayor");
+		List<ReqConsulta12Inmueble> lista= pp.RFC12InmuebleMayor();
+		log.info("Consultando RFC12 inmueble mayor"+ lista);
+		return lista;
+	}
+	
+	public List<ReqConsulta12Inmueble> RFC12InmuebleMenor(){
+		log.info("Consultando requerimiento de consulta 12 inmueble menor");
+		List<ReqConsulta12Inmueble> lista= pp.RFC12InmuebleMenor();
+		log.info("Consultando RFC12 inmueble menor"+ lista);
+		return lista;
+	}
+	
+	public List<ReqConsulta12Operador> RFC12OperadorMayor(){
+		log.info("Consultando requerimiento de consulta 12 operador mayor");
+		List<ReqConsulta12Operador> lista= pp.RFC12OperadorMayor();
+		log.info("Consultando RFC12 operador mayor"+ lista);
+		return lista;
+	}
+	
+	public List<ReqConsulta12Operador> RFC12OperadorMenor(){
+		log.info("Consultando requerimiento de consulta 12 operador menor");
+		List<ReqConsulta12Operador> lista= pp.RFC12OperadorMenor();
+		log.info("Consultando RFC12 operador menor"+ lista);
+		return lista;
+	}
+	
+	
 	public List<ReqConsulta7> mayorDemanda(String tipo) {
 		log.info("Consultado requerimiento de consulta 7 mayor demanda");
 		List<ReqConsulta7> listaConsulta = pp.mayorDemanda(tipo);

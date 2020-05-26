@@ -50,6 +50,8 @@ import uniandes.isis2304.parranderos.negocio.Operador;
 import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
 import uniandes.isis2304.parranderos.negocio.PersonaNatural;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta12Inmueble;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta12Operador;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
@@ -2160,6 +2162,24 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		return resp;
 	}
 	
+	private String listarRFC12Inmueble(List<ReqConsulta12Inmueble> lista) {
+		String resp = "Los datos del RFC12 inmueble son:\n";
+		int i = 1;
+		for (Object tb : lista) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
+	
+	private String listarRFC12Operador(List<ReqConsulta12Operador> lista) {
+		String resp = "Los datos del RFC12 operador son:\n";
+		int i = 1;
+		for (Object tb : lista) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
+	
 
 	private boolean repetido(List<String> listaServicios, String servicio) {
 		boolean repetido = false;
@@ -2427,6 +2447,72 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			
 			String resultado = "En RFC11";
 			resultado += "\n" + listarUsuario(usuarios);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	
+	public void RFC12InmuebleMayor() {
+
+		try {
+			List<ReqConsulta12Inmueble> lista = alohAndes.RFC12InmuebleMayor();
+			
+			String resultado = "En RFC12 Inmueble mayor";
+			resultado += "\n" + listarRFC12Inmueble(lista);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	
+	public void RFC12InmuebleMenor() {
+
+		try {
+			List<ReqConsulta12Inmueble> lista = alohAndes.RFC12InmuebleMenor();
+			
+			String resultado = "En RFC12 Inmueble menor";
+			resultado += "\n" + listarRFC12Inmueble(lista);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	public void RFC12OperadorMayor() {
+
+		try {
+			List<ReqConsulta12Operador> lista = alohAndes.RFC12OperadorMayor();
+			
+			String resultado = "En RFC12 Inmueble menor";
+			resultado += "\n" + listarRFC12Operador(lista);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	public void RFC12OperadorMenor() {
+
+		try {
+			List<ReqConsulta12Operador> lista = alohAndes.RFC12OperadorMenor();
+			
+			String resultado = "En RFC12 Inmueble menor";
+			resultado += "\n" + listarRFC12Operador(lista);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {

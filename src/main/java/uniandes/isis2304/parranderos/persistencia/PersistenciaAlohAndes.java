@@ -37,6 +37,8 @@ import uniandes.isis2304.parranderos.negocio.Operador;
 import uniandes.isis2304.parranderos.negocio.PersonaJuridica;
 import uniandes.isis2304.parranderos.negocio.PersonaNatural;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta12Inmueble;
+import uniandes.isis2304.parranderos.negocio.ReqConsulta12Operador;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta2;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta3;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta4;
@@ -1740,6 +1742,23 @@ public class PersistenciaAlohAndes {
 		return sqlUtil.reqConsulta10(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
 		
 	}
+	
+	public List<ReqConsulta12Inmueble> RFC12InmuebleMayor() {
+		return sqlUtil.RFC12InmuebleMayor(pmf.getPersistenceManager());
+	}
+	
+	public List<ReqConsulta12Inmueble> RFC12InmuebleMenor() {
+		return sqlUtil.RFC12InmuebleMenor(pmf.getPersistenceManager());
+	}
+	
+	public List<ReqConsulta12Operador> RFC12OperadorMenor() {
+		return sqlUtil.RFC12OperadorMenor(pmf.getPersistenceManager());
+	}
+	
+	public List<ReqConsulta12Operador> RFC12OperadorMayor() {
+		return sqlUtil.RFC12OperadorMayor(pmf.getPersistenceManager());
+	}
+	
 	
 	public List<ReqConsulta7> mayorDemanda(String tipo){
 		return sqlUtil.mayorDemanda(pmf.getPersistenceManager(), tipo);
