@@ -804,7 +804,7 @@ public class AlohAndes {
 	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin){
 		log.info("Consultando requerimiento de consulta 11");
 		List<Usuario> lista= pp.RFC11(inmuebleId, inicio, fin);
-		log.info("Consultando RFC11"+ lista);
+		log.info("Consultando RFC11"+ lista.size());
 		return lista;
 		
 	}
@@ -812,7 +812,7 @@ public class AlohAndes {
 	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin){
 		log.info("Consultando requerimiento de consulta 10");
 		List<Usuario> lista= pp.RFC10(inmuebleId, inicio, fin);
-		log.info("Consultando RFC10"+ lista);
+		log.info("Consultando RFC10"+ lista.size());
 		return lista;
 		
 	}
@@ -842,6 +842,13 @@ public class AlohAndes {
 		log.info("Consultando requerimiento de consulta 12 operador menor");
 		List<ReqConsulta12Operador> lista= pp.RFC12OperadorMenor();
 		log.info("Consultando RFC12 operador menor"+ lista);
+		return lista;
+	}
+	
+	public List<Long> RFC13(){
+		log.info("Consultando requerimiento de consulta 13");
+		List<Long> lista= pp.RFC13();
+		log.info("Consultando RFC13 operador menor"+ lista.size());
 		return lista;
 	}
 	

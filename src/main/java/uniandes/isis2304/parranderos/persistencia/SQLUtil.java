@@ -251,13 +251,13 @@ public class SQLUtil {
 	
 	public List<Usuario> reqConsulta11(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin){
 		Query q= pm.newQuery(SQL, "SELECT *" + 
-				" FROM USUARIO" + 
+				" FROM USUARIO " + 
 				" WHERE USUARIO.ID NOT IN (" + 
 				" SELECT USUARIO.ID" + 
 				" FROM USUARIO" + 
 				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
 				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ?" + 
-				" GROUP BY USUARIO.ID, USUARIO.NOMBRE, USUARIO.EMAIL, USUARIO.TELEFONO, USUARIO.TIPO)");
+				" GROUP BY USUARIO.ID)" );
 		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
 		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
 		q.setResultClass(Usuario.class);
@@ -267,10 +267,13 @@ public class SQLUtil {
 	
 	public List<Usuario> reqConsulta10(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin){
 		Query q= pm.newQuery(SQL, "SELECT USUARIO.*" + 
+				" FROM" + 
+				" (SELECT USUARIO.ID" + 
 				" FROM USUARIO" + 
 				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
 				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ?" + 
-				" GROUP BY USUARIO.ID, USUARIO.NOMBRE, USUARIO.EMAIL, USUARIO.TELEFONO, USUARIO.TIPO");
+				" GROUP BY USUARIO.ID) X" + 
+				" INNER JOIN USUARIO ON USUARIO.ID = X.ID");
 		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
 		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
 		q.setResultClass(Usuario.class);
@@ -290,7 +293,7 @@ public class SQLUtil {
 				"FROM INMUEBLE " + 
 				"INNER JOIN RESERVA ON RESERVA.IDINMUEBLE = INMUEBLE.ID " + 
 				"GROUP BY INMUEBLE.ID, TRUNC(RESERVA.FECHAINICIO, 'DAY')) " + 
-				"GROUP BY SEMANA)");
+				"GROUP BY SEMANA) and rownum<=100");
 		query.setResultClass(ReqConsulta12Inmueble.class);
 		return (List<ReqConsulta12Inmueble>)query.executeList();
 	}
@@ -348,6 +351,40 @@ public class SQLUtil {
 		return (List<ReqConsulta12Operador>)query.executeList();
 	}
 	
+	
+	public List<Long> RC13(PersistenceManager pm){
+		Query query= pm.newQuery(SQL, "select usuario.id" + 
+				" from usuario" + 
+				" where usuario.id in (" + 
+				" " + 
+				" select usuario.id" + 
+				" from usuario" + 
+				" inner join reserva on reserva.idusuario=usuario.id" + 
+				" where reserva.valortotal>=19500" + 
+				" " + 
+				" ) or usuario.id in (" + 
+				" select usuario.id" + 
+				" from usuario" + 
+				" inner join reserva on reserva.idusuario=usuario.id" + 
+				" inner join inmueble on reserva.idinmueble=inmueble.id" + 
+				" inner join habitacionhotel on habitacionhotel.id=inmueble.id" + 
+				" where inmueble.tipo='Habitacion Hotel' and habitacionhotel.tipo='Suite'" + 
+				" ) or usuario.id in (" + 
+				" SELECT id" + 
+				" FROM " + 
+				" (SELECT ID, COUNT(*) AS C" + 
+				" FROM" + 
+				" (SELECT USUARIO.ID, TRUNC(RESERVA.FECHAINICIO,'MONTH')" + 
+				" FROM USUARIO" + 
+				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
+				" INNER JOIN INMUEBLE ON RESERVA.IDINMUEBLE = INMUEBLE.ID" + 
+				" GROUP BY USUARIO.ID, TRUNC(RESERVA.FECHAINICIO,'MONTH'))" + 
+				" GROUP BY ID)" + 
+				" )" + 
+				" group by usuario.id");
+		query.setResultClass(Long.class);
+		return (List<Long>)query.executeList();
+	}
 	
 	
 	

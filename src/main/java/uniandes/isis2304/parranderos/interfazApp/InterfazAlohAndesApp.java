@@ -2180,6 +2180,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 		return resp;
 	}
 	
+	private String listarRFC13Operador(List<Long> lista) {
+		String resp = "Los datos del RFC13 operador son:\n";
+		int i = 1;
+		for (Object tb : lista) {
+			resp += i++ + ". " + tb.toString() + "\n";
+		}
+		return resp;
+	}
+	
 
 	private boolean repetido(List<String> listaServicios, String servicio) {
 		boolean repetido = false;
@@ -2418,7 +2427,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			List<Usuario> usuarios = alohAndes.RFC11(idInmueble, fechaInicio, fechaFin);
 			
 			String resultado = "En RFC11";
-			resultado += "\n" + listarUsuario(usuarios);
+			//resultado += "\n" + listarUsuario(usuarios);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
@@ -2445,8 +2454,9 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			Date fechaFin = dateFormat.parse(fechafi);
 			List<Usuario> usuarios = alohAndes.RFC10(idInmueble, fechaInicio, fechaFin);
 			
-			String resultado = "En RFC11";
+			String resultado = "En RFC10";
 			resultado += "\n" + listarUsuario(usuarios);
+			
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {
@@ -2463,6 +2473,7 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			List<ReqConsulta12Inmueble> lista = alohAndes.RFC12InmuebleMayor();
 			
 			String resultado = "En RFC12 Inmueble mayor";
+		
 			resultado += "\n" + listarRFC12Inmueble(lista);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
@@ -2513,6 +2524,23 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			
 			String resultado = "En RFC12 Inmueble menor";
 			resultado += "\n" + listarRFC12Operador(lista);
+			resultado += "\n Operación terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		} catch (Exception e) {
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}	
+		
+	}
+	
+	
+	public void RFC13() {
+
+		try {
+			List<Long> lista = alohAndes.RFC13();
+			
+			String resultado = "En RFC13 Inmueble menor";
+			resultado += "\n" + listarRFC13Operador(lista);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {

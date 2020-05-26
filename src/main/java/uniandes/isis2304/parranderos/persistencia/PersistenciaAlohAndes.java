@@ -1788,6 +1788,10 @@ public class PersistenciaAlohAndes {
 		return list;
 	}
 	
+	public List<Long> RFC13() {
+		return sqlUtil.RC13(pmf.getPersistenceManager());
+	}
+	
 	
 	public List<ReqConsulta7> mayorDemanda(String tipo){
 		return sqlUtil.mayorDemanda(pmf.getPersistenceManager(), tipo);
