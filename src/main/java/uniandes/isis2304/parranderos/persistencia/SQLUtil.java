@@ -265,7 +265,8 @@ public class SQLUtil {
 		return (List<Usuario>)q.executeList();
 	}
 	
-	public List<Usuario> reqConsulta10(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin){
+	public List<Usuario> reqConsulta10(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin, List<String> carac){
+		String ordenar=asString(carac);
 		Query q= pm.newQuery(SQL, "SELECT USUARIO.*" + 
 				" FROM" + 
 				" (SELECT USUARIO.ID" + 
@@ -273,11 +274,27 @@ public class SQLUtil {
 				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
 				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ?" + 
 				" GROUP BY USUARIO.ID) X" + 
-				" INNER JOIN USUARIO ON USUARIO.ID = X.ID");
+				" INNER JOIN USUARIO ON USUARIO.ID = X.ID order by "+ ordenar);
 		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
 		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
 		q.setResultClass(Usuario.class);
 		q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp);
+		return (List<Usuario>)q.executeList();
+	}
+	public List<Usuario> reqConsulta10Usuario(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin, long idUsuario, List<String> carac){
+		String ordenar=asString(carac);
+		Query q= pm.newQuery(SQL, "SELECT USUARIO.*" + 
+				" FROM" + 
+				" (SELECT USUARIO.ID" + 
+				" FROM USUARIO" + 
+				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
+				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ? and usuario.id=?" + 
+				" GROUP BY USUARIO.ID) X" + 
+				" INNER JOIN USUARIO ON USUARIO.ID = X.ID order by "+ ordenar);
+		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
+		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
+		q.setResultClass(Usuario.class);
+		q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp, idUsuario);
 		return (List<Usuario>)q.executeList();
 	}
 	
@@ -423,6 +440,18 @@ public class SQLUtil {
         q.setResultClass(Long.class);
         long resp = (long) q.executeUnique();
         return resp;
+	}
+	public String asString(List<String> lista) {
+		String ans="";
+		for (int i=0;i<lista.size();i++) {
+			if (i==lista.size()-1) {
+				ans+="Usuario."+lista.get(i);
+			}else {
+			ans+= "Usuario."+lista.get(i)+",";
+			}
+			}
+			
+		return ans;
 	}
 	
 	

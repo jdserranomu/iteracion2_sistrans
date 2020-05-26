@@ -455,7 +455,6 @@
 				{
 					"label": "RFC9",
 					"event": "RFC9"
-					"label":"RFC10",
 				},
 				{
 					"label":"RFC10",
@@ -480,6 +479,10 @@
 				{
 					"label":"RFC12OperadorMenor",
 					"event":"RFC12OperadorMenor"
+				},
+				{
+					"label":"RFC13",
+					"event":"RFC13"
 				}
 			]
 		}

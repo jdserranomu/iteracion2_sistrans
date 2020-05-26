@@ -1745,9 +1745,19 @@ public class PersistenciaAlohAndes {
 		
 		
 	}
-	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin){
+	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin, List<String> carac){
 		long startTime = System.nanoTime();
-		List<Usuario> list = sqlUtil.reqConsulta10(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		List<Usuario> list = sqlUtil.reqConsulta10(pmf.getPersistenceManager(), inmuebleId, inicio, fin, carac);
+		long endTime = System.nanoTime();
+		double time = (double)(endTime-startTime)/(10^9);
+		System.out.println(time+" seg");
+		return list;
+		
+	}
+	
+	public List<Usuario> RFC10Usuario(long inmuebleId, Date inicio, Date fin, long idUsuario,List<String> carac){
+		long startTime = System.nanoTime();
+		List<Usuario> list = sqlUtil.reqConsulta10Usuario(pmf.getPersistenceManager(), inmuebleId, inicio, fin, idUsuario, carac);
 		long endTime = System.nanoTime();
 		double time = (double)(endTime-startTime)/(10^9);
 		System.out.println(time+" seg");

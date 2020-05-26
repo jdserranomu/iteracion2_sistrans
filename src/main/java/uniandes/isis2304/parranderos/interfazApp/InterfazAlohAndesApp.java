@@ -22,6 +22,7 @@ import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -2441,6 +2442,15 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 	public void RFC10() {
 
 		try {
+			List<String>carac=new ArrayList<>();
+			JList list = new JList<>(new String[] {"ID", "NOMBRE", "EMAIL", "TIPO"});
+			JOptionPane.showMessageDialog(
+			  null, list, "seleccion por que parametros quiere ordenar", JOptionPane.PLAIN_MESSAGE);
+			
+			carac=list.getSelectedValuesList();
+			
+			long idUsuario = Long.parseLong( JOptionPane.showInputDialog(this, 
+					"ID usuario?","id usuario", JOptionPane.QUESTION_MESSAGE));
 			long idInmueble = Long.parseLong( JOptionPane.showInputDialog(this, 
 					"ID inmueble?","Encontrar los clientes frecuentes", JOptionPane.QUESTION_MESSAGE));
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -2452,11 +2462,22 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			String fechafi = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin",
 					JOptionPane.QUESTION_MESSAGE);
 			Date fechaFin = dateFormat.parse(fechafi);
-			List<Usuario> usuarios = alohAndes.RFC10(idInmueble, fechaInicio, fechaFin);
-			
+			List<Usuario>usuarios= new ArrayList<>();
 			String resultado = "En RFC10";
-			resultado += "\n" + listarUsuario(usuarios);
+			if (idUsuario==0) {
+			resultado+= " para administrador";
+				
+			usuarios = alohAndes.RFC10(idInmueble, fechaInicio, fechaFin, carac);
 			
+			
+			}else{
+			if (alohAndes.darUsuarioPorId(idUsuario)!=null) {
+				usuarios=alohAndes.RFC10Usuario(idInmueble, fechaInicio, fechaFin, idUsuario, carac);
+			}
+				
+			}
+			resultado = "En RFC10";
+			resultado += "\n" + listarUsuario(usuarios);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {

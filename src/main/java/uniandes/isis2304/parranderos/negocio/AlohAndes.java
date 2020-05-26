@@ -809,9 +809,16 @@ public class AlohAndes {
 		
 	}
 	
-	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin){
+	public List<Usuario> RFC10(long inmuebleId, Date inicio, Date fin, List<String> carac){
 		log.info("Consultando requerimiento de consulta 10");
-		List<Usuario> lista= pp.RFC10(inmuebleId, inicio, fin);
+		List<Usuario> lista= pp.RFC10(inmuebleId, inicio, fin,carac);
+		log.info("Consultando RFC10"+ lista.size());
+		return lista;
+		
+	}
+	public List<Usuario> RFC10Usuario(long inmuebleId, Date inicio, Date fin, long idUsuario,List<String> carac){
+		log.info("Consultando requerimiento de consulta 10");
+		List<Usuario> lista= pp.RFC10Usuario(inmuebleId, inicio, fin, idUsuario, carac);
 		log.info("Consultando RFC10"+ lista.size());
 		return lista;
 		
