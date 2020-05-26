@@ -2425,10 +2425,18 @@ public class InterfazAlohAndesApp extends JFrame implements ActionListener {
 			String fechafi = JOptionPane.showInputDialog(this, "Fecha (YYYY-MM-DD)?", "Adicionar fecha fin",
 					JOptionPane.QUESTION_MESSAGE);
 			Date fechaFin = dateFormat.parse(fechafi);
-			List<Usuario> usuarios = alohAndes.RFC11(idInmueble, fechaInicio, fechaFin);
+			long usuario = Long.parseLong(JOptionPane.showInputDialog(this, "id usuario?", "Usuario identificacion",
+					JOptionPane.QUESTION_MESSAGE));
+			int intOrdId = Integer.parseInt(JOptionPane.showInputDialog(this, "1->Si, 0->No", "Ordenar por id",
+					JOptionPane.QUESTION_MESSAGE));
+			int intOrdNombre = Integer.parseInt(JOptionPane.showInputDialog(this, "1->Si, 0->No", "Ordenar por nombre",
+					JOptionPane.QUESTION_MESSAGE));
+			int intOrdEmail = Integer.parseInt(JOptionPane.showInputDialog(this, "1->Si, 0->No", "Ordenar por email",
+					JOptionPane.QUESTION_MESSAGE));
+			List<Usuario> usuarios = alohAndes.RFC11(idInmueble, fechaInicio, fechaFin, intOrdId==1, intOrdNombre==1, intOrdEmail==1, usuario);
 			
 			String resultado = "En RFC11";
-			//resultado += "\n" + listarUsuario(usuarios);
+			resultado += "\n" + listarUsuario(usuarios);
 			resultado += "\n Operación terminada";
 			panelDatos.actualizarInterfaz(resultado);
 		} catch (Exception e) {

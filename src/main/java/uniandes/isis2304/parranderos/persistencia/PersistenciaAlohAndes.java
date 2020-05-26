@@ -1735,11 +1735,11 @@ public class PersistenciaAlohAndes {
 		}
 	}
 	
-	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin){
+	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin, boolean ordId, boolean ordNombre, boolean ordEmail, long idUsuario){
 		long startTime = System.nanoTime();
-		List<Usuario> list = sqlUtil.reqConsulta11(pmf.getPersistenceManager(), inmuebleId, inicio, fin);
+		List<Usuario> list = sqlUtil.reqConsulta11(pmf.getPersistenceManager(), inmuebleId, inicio, fin, ordId, ordNombre, ordEmail, idUsuario);
 		long endTime = System.nanoTime();
-		double time = (double)(endTime-startTime)/(10^9);
+		double time = (double)(endTime-startTime)/(1000000000);
 		System.out.println(time+" seg");
 		return list;
 		
@@ -1759,7 +1759,7 @@ public class PersistenciaAlohAndes {
 		long startTime = System.nanoTime();
 		List<Usuario> list = sqlUtil.reqConsulta10Usuario(pmf.getPersistenceManager(), inmuebleId, inicio, fin, idUsuario, carac);
 		long endTime = System.nanoTime();
-		double time = (double)(endTime-startTime)/(10^9);
+		double time = (double)(endTime-startTime)/(1000000000);
 		System.out.println(time+" seg");
 		return list;
 		

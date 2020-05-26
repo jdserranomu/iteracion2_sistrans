@@ -801,9 +801,9 @@ public class AlohAndes {
 		return listaConsulta;
 	}
 	
-	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin){
+	public List<Usuario> RFC11(long inmuebleId, Date inicio, Date fin, boolean ordId, boolean ordNombre, boolean ordEmail, long idUsuario){
 		log.info("Consultando requerimiento de consulta 11");
-		List<Usuario> lista= pp.RFC11(inmuebleId, inicio, fin);
+		List<Usuario> lista= pp.RFC11(inmuebleId, inicio, fin, ordId, ordNombre, ordEmail, idUsuario);
 		log.info("Consultando RFC11"+ lista.size());
 		return lista;
 		

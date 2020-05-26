@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import oracle.net.aso.i;
 import uniandes.isis2304.parranderos.negocio.Inmueble;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta1;
 import uniandes.isis2304.parranderos.negocio.ReqConsulta12Inmueble;
@@ -249,19 +250,42 @@ public class SQLUtil {
 	}
 	
 	
-	public List<Usuario> reqConsulta11(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin){
-		Query q= pm.newQuery(SQL, "SELECT *" + 
+	public List<Usuario> reqConsulta11(PersistenceManager pm, long inmuebleId, Date fechaInicio, Date fechaFin, boolean ordId, boolean ordNombre, boolean ordEmail, long idUsuario){
+		String qString = "SELECT *" + 
 				" FROM USUARIO " + 
 				" WHERE USUARIO.ID NOT IN (" + 
 				" SELECT USUARIO.ID" + 
 				" FROM USUARIO" + 
 				" INNER JOIN RESERVA ON USUARIO.ID = RESERVA.IDUSUARIO" + 
 				" WHERE IDINMUEBLE = ? AND FECHAINICIO BETWEEN ? AND ? AND FECHAFIN BETWEEN ? AND ?" + 
-				" GROUP BY USUARIO.ID)" );
+				" GROUP BY USUARIO.ID) AND ROWNUM<100";
+		if (idUsuario != 0) {
+			qString += " AND USUARIO.ID = ?";
+		}
+		if (ordId || ordNombre || ordEmail) {
+			qString += " ORDER BY";
+			if(ordId) {
+				qString+= " USUARIO.ID";
+				if(ordNombre || ordEmail)
+					qString+= ",";
+			}
+			if(ordNombre) {
+				qString+= " USUARIO.NOMBRE";
+				if(ordEmail)
+					qString+= ",";
+			}
+			if(ordEmail) {
+				qString+= " USUARIO.EMAIL";
+			}
+		}
+		Query q= pm.newQuery(SQL,  qString);
 		Timestamp xTimestamp = new Timestamp(fechaInicio.getTime());
 		Timestamp yTimestamp = new Timestamp(fechaFin .getTime());
 		q.setResultClass(Usuario.class);
-		q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp);
+		if(idUsuario!=0)
+			q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp, idUsuario);
+		else
+			q.setParameters(inmuebleId, xTimestamp, yTimestamp, xTimestamp,yTimestamp);
 		return (List<Usuario>)q.executeList();
 	}
 	
