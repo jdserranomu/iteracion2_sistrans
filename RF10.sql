@@ -1,1 +1,0 @@
-UPDATE Inmueble  SET disponible = 1 WHERE id =98
